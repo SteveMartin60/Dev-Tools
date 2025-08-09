@@ -1,0 +1,6 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.defaultFormatter": "ms-dotnettools.csdevkit",
+    "workbench.colorTheme": "Visual Studio Light",
+    "editor.mouseWheelZoom": true
+}

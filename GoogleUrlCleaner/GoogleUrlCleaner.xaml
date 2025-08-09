@@ -1,0 +1,38 @@
+﻿<Window x:Class="GoogleUrlCleaner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Google URL Cleaner" Height="450" Width="600"
+        Background="#F5FBFF"
+        Margin="10"
+        Padding="10">
+    <Grid Style="{StaticResource BlueGridStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Enter or Paste Google Search URLs (one per line):" Style="{StaticResource BlueLabelStyle}" Grid.Row="0" Margin="0,0,0,5"/>
+
+        <TextBox x:Name="InputUrl" Grid.Row="1" Style="{StaticResource BlueTextBoxStyle}" TextChanged="InputUrl_TextChanged" Margin="0,0,0,10" 
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
+
+        <Label Content="Original URLs:" Style="{StaticResource BlueLabelStyle}" Grid.Row="2" Margin="0,0,0,5"/>
+
+        <TextBox x:Name="OriginalUrlDisplay" Grid.Row="3" Style="{StaticResource BlueTextBoxStyle}" IsReadOnly="True" Background="LightGray" Margin="0,0,0,10"
+                 AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
+
+            <Label Content="Cleaned URLs:" Style="{StaticResource BlueLabelStyle}" Grid.Row="4" Margin="0,0,0,5"/>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,10">
+                <TextBox x:Name="CleanedUrlDisplay" Style="{StaticResource BlueTextBoxStyle}" IsReadOnly="True" Margin="0,0,10,0" Background="LightGray" 
+                     AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" HorizontalAlignment="Stretch" Width="Auto"/>
+                <Button x:Name="CopyButton" Content="Copy to Clipboard" Style="{StaticResource BlueButtonStyle}" Click="CopyButton_Click" Width="150"/>
+            </StackPanel>
+    </Grid>
+</Window>
+    

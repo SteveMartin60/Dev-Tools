@@ -1,0 +1,15 @@
+﻿<Window x:Class="IconsRestorer.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Source={StaticResource localResourses}, Path=Title}" Height="226" Width="315" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Icon="/IconsRestorer;component/images/desktop.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Margin="10" Content="{Binding Source={StaticResource localResourses}, Path=Save   }" Command="{Binding SavePositions   }" />
+        <Button Grid.Row="1" Margin="10" Content="{Binding Source={StaticResource localResourses}, Path=Restore}" Command="{Binding RestorePositions}" />
+    </Grid>
+</Window>

@@ -1,0 +1,172 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--....................................................................-->
+    <!-- Blue Button Style Definition                                       -->
+    <!--....................................................................-->
+    <Style x:Key="BlueButtonStyle" TargetType="Button">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#2196F3" Offset="0" />
+                    <GradientStop Color="#1E88E5" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="8" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!-- Hover Effect -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1E88E5" Offset="0" />
+                            <GradientStop Color="#1976D2" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <!-- Pressed Effect -->
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1976D2" Offset="0" />
+                            <GradientStop Color="#1565C0" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <!-- Disabled Effect -->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#CCCCCC" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="#888888" />
+                <Setter Property="Opacity" Value="0.6" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--....................................................................-->
+    <!-- Blue ToggleButton Style Definition                                 -->
+    <!--....................................................................-->
+    <Style x:Key="BlueToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#2196F3" Offset="0" />
+                    <GradientStop Color="#1E88E5" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border CornerRadius="8" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!-- Hover Effect -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1E88E5" Offset="0" />
+                            <GradientStop Color="#1976D2" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <!-- Pressed Effect -->
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1976D2" Offset="0" />
+                            <GradientStop Color="#1565C0" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <!-- Disabled Effect -->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#CCCCCC" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="#888888" />
+                <Setter Property="Opacity" Value="0.6" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--....................................................................-->
+    <!-- Blue TextBox Style                                                 -->
+    <!--....................................................................-->
+    <Style x:Key="BlueTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Foreground" Value="#2196F3" />
+        <Setter Property="BorderBrush" Value="#90CAF9" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <!--....................................................................-->
+    <!-- Blue Label Style                                                   -->
+    <!--....................................................................-->
+    <Style x:Key="BlueLabelStyle" TargetType="Label">
+        <Setter Property="Foreground" Value="#2196F3" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="0,0,0,5" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!--....................................................................-->
+    <!-- Blue Grid Style                                                    -->
+    <!--....................................................................-->
+    <Style x:Key="BlueGridStyle" TargetType="Grid">
+        <Setter Property="Background" Value="#F5FBFF" />
+        <Setter Property="Margin" Value="10" />
+    </Style>
+
+    <!--....................................................................-->
+    <!-- Blue Border Style                                                  -->
+    <!--....................................................................-->
+    <Style x:Key="BlueBorderStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#90CAF9"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Background" Value="#F5FBFF"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Margin" Value="1"/>
+    </Style>
+    <!--....................................................................-->
+</ResourceDictionary>
+    

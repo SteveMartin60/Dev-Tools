@@ -1,0 +1,49 @@
+﻿<Window x:Class="CodeConsolidator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Code Exporter" Height="900" Width="1600"
+        WindowStartupLocation="CenterScreen"
+        Topmost="False" Icon="/Icons/icon_243.ico">
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TopControlPanel" Orientation="Horizontal" Grid.Row="0" Margin="5">
+            <Button Content="Select Folder" Click="SelectFolderButton_Click" Margin="0 0 10 0"/>
+            <CheckBox x:Name="RecursiveSearchCheckBox" 
+              Content="Search Subfolders" 
+              VerticalAlignment="Center"
+              Margin="0 0 10 0"
+              IsChecked="True"/>
+            <Button Content="Export Code" Click="ExportCodeButton_Click" Margin="0 0 10 0"/>
+            <Button Content="Toggle Dark Mode" Click="ToggleDarkModeButton_Click" Margin="0 0 10 0"/>
+            <Button Content="Refresh" Click="RefreshButton_Click" Margin="0 0 10 0"/>
+            <Button Content="Clear" Click="ClearButton_Click" Margin="0 0 10 0"/>
+            <TextBlock x:Name="StatusText" VerticalAlignment="Center" Margin="10 0 0 0" Foreground="Gray"/>
+            <Button x:Name="PinButton" 
+        Click="PinButton_Click" 
+        Margin="0 0 10 0"
+        Width="24" 
+        Height="24" 
+        Padding="0">
+                <Image x:Name="PinIcon" 
+           Width="16" 
+           Height="16"/>
+            </Button>
+            
+        </StackPanel>
+        <RichTextBox x:Name="CodeDisplay" 
+                     Grid.Row="1"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     FontFamily="Consolas"
+                     FontSize="12"
+                     IsReadOnly="True">
+            <FlowDocument />
+        </RichTextBox>
+    </Grid>
+</Window>
+    

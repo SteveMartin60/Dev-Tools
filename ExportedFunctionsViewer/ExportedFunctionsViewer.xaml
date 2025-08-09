@@ -1,0 +1,56 @@
+﻿<Window x:Class="ExportedFunctionsViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExportedFunctionsViewer"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        SizeChanged="Window_SizeChanged"
+        LocationChanged="Window_LocationChanged"
+        Title="Exported Functions Viewer" Height="800" Width="1160">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel (TreeView) -->
+        <DockPanel Grid.Column="0">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
+                <TextBox x:Name="FolderPathTextBox" Width="180" Margin="0,0,5,0"/>
+                <Button Content="Browse" Width="60" Click="OnBrowseButtonClick"/>
+            </StackPanel>
+
+            <TreeView x:Name="FolderTreeView" Margin="5"
+                      ItemsSource="{Binding FileSystemItems}"
+                      SelectedItemChanged="OnTreeViewSelectedItemChanged">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type local:DirectoryItem}" 
+                                              ItemsSource="{Binding FileSystemItems}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type local:ExecutableFileItem}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+        </DockPanel>
+
+        <!-- Right Panel (DataGrid) -->
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+
+        <DataGrid x:Name="ExportsDataGrid" Grid.Column="2" Margin="5"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ordinal" Binding="{Binding Ordinal}" Width="60"/>
+                <DataGridTextColumn Header="Hint" Binding="{Binding Hint}" Width="60"/>
+                <DataGridTextColumn Header="RVA" Binding="{Binding RVA}" Width="80"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Demangled Name" Binding="{Binding DemangledName}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

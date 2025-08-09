@@ -1,0 +1,57 @@
+﻿<Window x:Class="WebScraper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WebScraper"
+        mc:Ignorable="d"
+        Title="MainWindow" Width="2400" Height="807" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500*"/>
+            <ColumnDefinition Width="1100*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <!--.........................................................-->
+        <ListBox Grid.Column="0" x:Name="ListBox_Log"  Style="{DynamicResource ListBoxStyle}" SelectionChanged="ListBox_Log_SelectionChanged" Loaded="ListBox_OnLoaded" FontFamily="Consolas"/>
+        <!--.........................................................-->
+        <ListBox Grid.Column="1" x:Name="ListBoxLinks" Style="{DynamicResource ListBoxStyle}" SelectionChanged="ListBox_Log_SelectionChanged" Loaded="ListBox_OnLoaded" FontFamily="Consolas"/>
+        <!--.........................................................-->
+        <Label x:Name="Label_Status" Content="Stat Bar" Padding="0,0,0,0" Margin="7,4,0,0" FontSize="16" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <!--.................................................................-->
+        <UniformGrid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Columns="5" Rows="1">
+            <!--.............................................................-->
+            <Button x:Name="ButtonProcessSB" Style="{StaticResource ButtonRoundLarge}" Content="Do Translate" Click="ButtonDoTranslate_Click" Margin="0,0,40,0"/>
+            <!--.............................................................-->
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="ButtonProcessTag" Style="{StaticResource ButtonRoundLarge}" Content="Process Tag" Click="Tag_Click" />
+                <ComboBox x:Name="ComboBox_Tags" FontSize="16" Padding="4,-1,4,1" SelectedIndex="2" SelectionChanged="TagSelectionChanged" Margin="0,0,30,0" DisplayMemberPath="TagName" SelectedValuePath="Url"/>
+            </StackPanel>
+            <!--.............................................................-->
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="ButtonProcessCategory" Style="{StaticResource ButtonRoundLarge}" Content="Process Category" Click="Category_Click"/>
+                <!--.............................................................-->
+                <ComboBox x:Name="ComboBox_Categories" FontSize="16" Padding="4,-1,4,1" SelectedIndex="2" SelectionChanged="CategorySelectionChanged" />
+                <!--.............................................................-->
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="ButtonProcessSearch" Style="{StaticResource ButtonRoundLarge}" Content="Process Search" Click="Search_Click" Width="Auto"/>
+                <!--.............................................................-->
+                <ComboBox x:Name="ComboBox_Search" FontSize="16" Padding="4,-1,4,1" SelectedIndex="2" SelectionChanged="SearchSelectionChanged" Margin="0,0,30,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <!--.............................................................-->
+                <Button x:Name="ButtonProcessChannel" Style="{StaticResource ButtonRoundLarge}" Content="Process Channel" Click="Channel_Click" Width="Auto"/>
+                <!--.............................................................-->
+                <ComboBox x:Name="ComboBox_Channels" FontSize="16" Padding="4,-1,4,1" SelectedIndex="2" SelectionChanged="ChannelSelectionChanged" Margin="0,0,30,0"/>
+                <!--.............................................................-->
+            </StackPanel>
+        </UniformGrid>
+        <!--.........................................................-->
+
+        <!--.........................................................-->
+    </Grid>
+</Window>

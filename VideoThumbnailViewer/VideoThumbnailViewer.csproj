@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>resources\icon-video-player.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="VideoThumbnailViewer.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="resources\chinese-translations.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources\icon-video-player.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="MediaToolkit" Version="1.1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="resources\placeholder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="chinese-translations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+</Project>

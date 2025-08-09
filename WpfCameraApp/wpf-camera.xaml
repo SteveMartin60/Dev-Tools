@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfCameraApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Webcam Capture" 
+        Height="600" 
+        Width="800" 
+        MinHeight="300" 
+        MinWidth="400" 
+        WindowStartupLocation="CenterScreen"
+        Closed="Window_Closed"
+        >
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+            <Button x:Name="StartButton" Content="Start" Click="StartButton_Click" Margin="5" Width="80"/>
+            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" Margin="5" Width="80"/>
+            <Button x:Name="CaptureButton" Content="Capture Frame" Click="CaptureButton_Click" Margin="5" Width="100"/>
+            <ComboBox x:Name="ResolutionComboBox" Width="150" Margin="5" SelectionChanged="ResolutionComboBox_SelectionChanged"/>
+        </StackPanel>
+        <Viewbox Grid.Row="1" Stretch="Uniform" >
+            <Image x:Name="CameraImage"/>
+        </Viewbox>
+        <StatusBar Grid.Row="2">
+            <TextBlock x:Name="StatusText" />
+        </StatusBar>
+    </Grid>
+</Window>

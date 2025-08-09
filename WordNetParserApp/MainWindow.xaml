@@ -1,0 +1,32 @@
+﻿<Window x:Class="WordNetParserApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WordNet Word Parser" Height="450" Width="600">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <Label Content="Select Part of Speech:" FontWeight="Bold"/>
+            <ComboBox x:Name="PartOfSpeechComboBox" Width="200" Margin="5,0,0,0" 
+                     SelectionChanged="PartOfSpeechComboBox_SelectionChanged">
+                <ComboBoxItem Content="Noun"/>
+                <ComboBoxItem Content="Verb"/>
+                <ComboBoxItem Content="Adjective (JJ)"/>
+                <ComboBoxItem Content="Adverb (RB)"/>
+                <ComboBoxItem Content="Comparative Adverb (RBR)"/>
+                <ComboBoxItem Content="Superlative Adverb (RBS)"/>
+                <ComboBoxItem Content="Superlative Adjective (JJS)"/>
+            </ComboBox>
+        </StackPanel>
+
+        <ListBox x:Name="WordsListBox" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+
+        <TextBlock x:Name="StatusTextBlock" Grid.Row="2" Margin="0,10,0,0" 
+                  Text="Select a part of speech to load words." Foreground="Gray"/>
+    </Grid>
+</Window>
+    

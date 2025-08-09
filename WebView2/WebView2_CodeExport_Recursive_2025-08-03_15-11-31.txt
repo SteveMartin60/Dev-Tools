@@ -1,0 +1,2295 @@
+// ======================================================================
+◈ Begin File: AdBlocker.cs
+// -----------------------------------
+
+   1 | // AdBlocker.cs
+   2 | // Full, un-abbreviated drop-in file
+   3 | // -------------------------------------------------
+   4 | // Automatically removes:
+   5 | //   • Known ad domains
+   6 | //   • Elements with known ad-related class names
+   7 | //   • Ad background images
+   8 | //   • Ad iframes
+   9 | //   • Social spam pop-ups delivered via iframes / inline HTML
+  10 | 
+  11 | using Microsoft.Web.WebView2.Core;
+  12 | using System.Linq;
+  13 | using System.Text;
+  14 | using System.Threading.Tasks;
+  15 | 
+  16 | namespace WebView2Browser
+  17 | {
+  18 |     public class AdBlocker
+  19 |     {
+  20 |         private readonly CoreWebView2 _webView;
+  21 | 
+  22 |         public AdBlocker(CoreWebView2 webView)
+  23 |         {
+  24 |             _webView = webView;
+  25 |             SetupNavigationHandler();
+  26 |         }
+  27 | 
+  28 |         private void SetupNavigationHandler()
+  29 |         {
+  30 |             // 1. Cancel navigation to known ad domains
+  31 |             _webView.NavigationStarting += (sender, args) =>
+  32 |             {
+  33 |                 if (BlockList.AdDomains.Any(domain => args.Uri.Contains(domain)))
+  34 |                 {
+  35 |                     args.Cancel = true;
+  36 |                 }
+  37 |             };
+  38 | 
+  39 |             // 2. Apply cosmetic blocking after every successful navigation
+  40 |             _webView.NavigationCompleted += async (sender, args) =>
+  41 |             {
+  42 |                 if (args.IsSuccess)
+  43 |                 {
+  44 |                     await ApplyAdBlocking();
+  45 |                 }
+  46 |             };
+  47 |         }
+  48 | 
+  49 |         private async Task ApplyAdBlocking()
+  50 |         {
+  51 |             // Prepare comma-separated, back-tick-quoted lists
+  52 |             string classList = string.Join(",", BlockList.AdClasses.Select(c => $"`{c}`"));
+  53 |             string domainList = string.Join(",", BlockList.AdDomains.Select(d => $"`{d}`"));
+  54 | 
+  55 |             // JavaScript that runs inside every page
+  56 |             string script = $$"""
+  57 |                 // ---------- 1.  Remove elements linking to known ad domains ----------
+  58 |                 const adDomains = [{{domainList}}];
+  59 |                 adDomains.forEach(domain => {
+  60 |                     document.querySelectorAll(`a[href*='${domain}']`).forEach(el => el.remove());
+  61 |                 });
+  62 | 
+  63 |                 // ---------- 2.  Remove elements with known ad classes ----------
+  64 |                 const adClasses = [{{classList}}];
+  65 |                 adClasses.forEach(className => {
+  66 |                     const elements = document.getElementsByClassName(className);
+  67 |                     while (elements.length > 0) elements[0].remove();
+  68 |                 });
+  69 | 
+  70 |                 // ---------- 3.  Remove background images served from ad domains ----------
+  71 |                 document.querySelectorAll('[style*="background-image"]').forEach(el => {
+  72 |                     if (adDomains.some(d => el.style.backgroundImage.includes(d))) el.remove();
+  73 |                 });
+  74 | 
+  75 |                 // ---------- 4.  Remove ad iframes ----------
+  76 |                 document.querySelectorAll('iframe').forEach(iframe => {
+  77 |                     if (adDomains.some(d => iframe.src?.includes(d))) iframe.remove();
+  78 |                 });
+  79 | 
+  80 |                 // ---------- 5.  Kill social spam pop-ups ----------
+  81 |                 (() => {
+  82 |                     // Remove root-level iframes (common spam vector)
+  83 |                     document.querySelectorAll('body > iframe').forEach(f => {
+  84 |                         try { f.remove(); } catch {}
+  85 |                     });
+  86 | 
+  87 |                     // Universal spam detector
+  88 |                     const killSpam = () => {
+  89 |                         // a) Remove suspicious iframes (empty src, data:, blob:)
+  90 |                         document.querySelectorAll('iframe').forEach(f => {
+  91 |                             if (!f.src || f.src.startsWith('data:') || f.src.startsWith('blob:')) {
+  92 |                                 try {
+  93 |                                     const doc = f.contentDocument || f.contentWindow?.document;
+  94 |                                     if (doc && doc.body && doc.body.textContent.includes('Do you want to fuck me?')) {
+  95 |                                         f.remove();
+  96 |                                     }
+  97 |                                 } catch { /* cross-origin, ignore */ }
+  98 |                             }
+  99 |                         });
+ 100 | 
+ 101 |                         // b) Remove inline spam nodes
+ 102 |                         document.querySelectorAll('.w.r-b, .w.l-b, .w.r-t, .w.l-t').forEach(el => {
+ 103 |                             if (el.textContent.includes('Do you want to fuck me?')) {
+ 104 |                                 el.remove();
+ 105 |                             }
+ 106 |                         });
+ 107 |                     };
+ 108 | 
+ 109 |                     // Run once immediately
+ 110 |                     killSpam();
+ 111 | 
+ 112 |                     // Keep watching for late injections
+ 113 |                     new MutationObserver(killSpam).observe(document.body, {
+ 114 |                         childList: true,
+ 115 |                         subtree: true
+ 116 |                     });
+ 117 |                 })();
+ 118 |             """;
+ 119 | 
+ 120 |             await _webView.ExecuteScriptAsync(script);
+ 121 |         }
+ 122 |     }
+ 123 | }
+ 124 | 
+
+// -----------------------------------
+◈ End File: AdBlocker.cs
+// ======================================================================
+
+// ======================================================================
+◇ Begin File: App.xaml
+// -----------------------------------
+
+   1 | <Application x:Class="WebView2.App"<Application x:Class="WebView2.App"
+   2 |              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |              xmlns:local="clr-namespace:WebView2"
+   5 |              StartupUri="WebView2.xaml">
+   6 |     <Application.Resources>
+   7 |          
+   8 |     </Application.Resources>
+   9 | </Application>
+  10 | 
+
+// -----------------------------------
+◇ End File: App.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: App.xaml.cs
+// -----------------------------------
+
+   1 | using System.Configuration;
+   2 | using System.Data;
+   3 | using System.Windows;
+   4 | 
+   5 | namespace WebView2
+   6 | {
+   7 |     /// <summary>
+   8 |     /// Interaction logic for App.xaml
+   9 |     /// </summary>
+  10 |     public partial class App : Application
+  11 |     {
+  12 |     }
+  13 | 
+  14 | }
+  15 | 
+
+// -----------------------------------
+◈ End File: App.xaml.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: AssemblyInfo.cs
+// -----------------------------------
+
+   1 | using System.Windows;
+   2 | 
+   3 | [assembly: ThemeInfo(
+   4 |     ResourceDictionaryLocation.None,            //where theme specific resource dictionaries are located
+   5 |                                                 //(used if a resource is not found in the page,
+   6 |                                                 // or application resource dictionaries)
+   7 |     ResourceDictionaryLocation.SourceAssembly   //where the generic resource dictionary is located
+   8 |                                                 //(used if a resource is not found in the page,
+   9 |                                                 // app, or any theme specific resource dictionaries)
+  10 | )]
+  11 | 
+
+// -----------------------------------
+◈ End File: AssemblyInfo.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: BlockList.cs
+// -----------------------------------
+
+   1 | using System.Collections.Generic;
+   2 | 
+   3 | namespace WebView2Browser
+   4 | {
+   5 |     public static class BlockList
+   6 |     {
+   7 |         public static readonly HashSet<string> AdDomains = new HashSet<string>
+   8 |         {
+   9 |             "tsyndicate.com",
+  10 |             "doubleclick.net",
+  11 |             "googleads.g.doubleclick.net",
+  12 |             "adservice.google.com",
+  13 |             "googlesyndication.com",
+  14 |             "adnxs.com",
+  15 |             "amazon-adsystem.com",
+  16 |             "scorecardresearch.com",
+  17 |             "facebook.com/tr/",
+  18 |             "ads.twitter.com",
+  19 |             "advertising.com",
+  20 |             "taboola.com",
+  21 |             "outbrain.com"
+  22 |         };
+  23 | 
+  24 |         public static readonly HashSet<string> AdClasses = new HashSet<string>
+  25 |         {
+  26 |             "mn-thumb__holder",
+  27 |             "mn-thumb__img",
+  28 |             "ad-container",
+  29 |             "ad-banner",
+  30 |             "ad-wrapper",
+  31 |             "ad-unit",
+  32 |             "ad-placeholder",
+  33 |             "ad-slot",
+  34 |             "advertisement",
+  35 |             "advert",
+  36 |             "ad__",
+  37 |             "adsbygoogle",
+  38 |             "ad-box",
+  39 |             "ad-head",
+  40 |             "ad-body",
+  41 |             "w",          // top-level wrapper
+  42 |             "cnts",       // inner flex container
+  43 |         };
+  44 | 
+  45 |         public static readonly HashSet<string> AdAttributes = new HashSet<string>
+  46 |         {
+  47 |             "data-ad",
+  48 |             "data-ad-client",
+  49 |             "data-ad-slot",
+  50 |             "data-ad-targeting",
+  51 |             "data-adbreak",
+  52 |             "data-ad-position"
+  53 |         };
+  54 |     }
+  55 | }
+  56 | 
+
+// -----------------------------------
+◈ End File: BlockList.cs
+// ======================================================================
+
+// ======================================================================
+◇ Begin File: DevToolsWindow.xaml
+// -----------------------------------
+
+   1 | <!-- DevToolsWindow.xaml -->
+   2 | <Window x:Class="WebView2Browser.DevToolsWindow"<Window x:Class="WebView2Browser.DevToolsWindow"
+   3 |         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   4 |         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   5 |         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+   6 |         Title="Developer Tools" Height="600" Width="800"
+   7 |         WindowStartupLocation="CenterOwner">
+   8 | 	<Grid>
+   9 | 		<wv2:WebView2 x:Name="DevToolsWebView"/>
+  10 | 	</Grid>
+  11 | </Window>
+  12 | 
+
+// -----------------------------------
+◇ End File: DevToolsWindow.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: DevToolsWindow.xaml.cs
+// -----------------------------------
+
+   1 | using Microsoft.Web.WebView2.Core;
+   2 | using System;
+   3 | using System.Windows;
+   4 | 
+   5 | namespace WebView2Browser
+   6 | {
+   7 |     public partial class DevToolsWindow : Window
+   8 |     {
+   9 |         public DevToolsWindow(CoreWebView2 parentWebView, CoreWebView2Environment environment)
+  10 |         {
+  11 |             InitializeComponent();
+  12 |             InitializeDevTools(parentWebView, environment);
+  13 |             Closing += DevToolsWindow_Closing;
+  14 |         }
+  15 | 
+  16 |         private async void InitializeDevTools(CoreWebView2 parentWebView, CoreWebView2Environment environment)
+  17 |         {
+  18 |             try
+  19 |             {
+  20 |                 await DevToolsWebView.EnsureCoreWebView2Async(environment);
+  21 |                 parentWebView.OpenDevToolsWindow();
+  22 |             }
+  23 |             catch (Exception ex)
+  24 |             {
+  25 |                 MessageBox.Show($"Failed to initialize DevTools: {ex.Message}", "Error",
+  26 |                     MessageBoxButton.OK, MessageBoxImage.Error);
+  27 |                 Close();
+  28 |             }
+  29 |         }
+  30 | 
+  31 |         private void DevToolsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+  32 |         {
+  33 |             DevToolsWebView?.Dispose();
+  34 |         }
+  35 |     }
+  36 | }
+  37 | 
+
+// -----------------------------------
+◈ End File: DevToolsWindow.xaml.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: EventHandlers.cs
+// -----------------------------------
+
+   1 | // EventHandlers.cs
+   2 | using System;
+   3 | using System.Diagnostics;
+   4 | using System.Text.Json;
+   5 | using System.Windows;
+   6 | using System.Windows.Input;
+   7 | 
+   8 | namespace WebView2Browser
+   9 | {
+  10 |     public partial class MainWindow : Window
+  11 |     {
+  12 |         // --- Navigation Button Event Handlers ---
+  13 | 
+  14 |         private async void BackButton_Click(object sender, RoutedEventArgs e)
+  15 |         {
+  16 |             if (_isInitialized && WebViewControl.CoreWebView2.CanGoBack)
+  17 |                 NavigationHandler.GoBack();
+  18 |         }
+  19 | 
+  20 |         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
+  21 |         {
+  22 |             if (_isInitialized && WebViewControl.CoreWebView2.CanGoForward)
+  23 |                 NavigationHandler.GoForward();
+  24 |         }
+  25 | 
+  26 |         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+  27 |         {
+  28 |             if (_isInitialized)
+  29 |                 NavigationHandler.Refresh();
+  30 |         }
+  31 | 
+  32 |         private async void HomeButton_Click(object sender, RoutedEventArgs e)
+  33 |         {
+  34 |             if (_isInitialized)
+  35 |                 await NavigationHandler.NavigateToAddressAsync("about:blank");
+  36 |         }
+  37 | 
+  38 |         private async void GoButton_Click(object sender, RoutedEventArgs e) =>
+  39 |             await NavigationHandler.NavigateToAddressAsync();
+  40 | 
+  41 |         private async void AddressBar_KeyDown(object sender, KeyEventArgs e)
+  42 |         {
+  43 |             if (e.Key == Key.Enter)
+  44 |                 await NavigationHandler.NavigateToAddressAsync();
+  45 |         }
+  46 | 
+  47 |         private async void StopButton_Click(object sender, RoutedEventArgs e)
+  48 |         {
+  49 |             if (_isInitialized)
+  50 |             {
+  51 |                 WebViewControl.CoreWebView2.Stop();
+  52 |                 StatusText.Text = "Loading stopped";
+  53 |             }
+  54 |         }
+  55 | 
+  56 |         private async void DevToolsButton_Click(object sender, RoutedEventArgs e)
+  57 |         {
+  58 |             if (!_isInitialized) return;
+  59 | 
+  60 |             try
+  61 |             {
+  62 |                 if (DevToolsWindow == null || !DevToolsWindow.IsLoaded)
+  63 |                 {
+  64 |                     var environment = await WebViewEnvironment.GetSharedEnvironmentAsync();
+  65 |                     DevToolsWindow = new DevToolsWindow(WebViewControl.CoreWebView2, environment);
+  66 | 
+  67 |                     DevToolsWindow.Closed += (s, args) => DevToolsWindow = null;
+  68 |                     DevToolsWindow.Show();
+  69 |                 }
+  70 |                 else
+  71 |                 {
+  72 |                     DevToolsWindow.Activate();
+  73 |                 }
+  74 |             }
+  75 |             catch (Exception ex)
+  76 |             {
+  77 |                 MessageBox.Show($"Failed to open DevTools: {ex.Message}", "Error",
+  78 |                                 MessageBoxButton.OK, MessageBoxImage.Error);
+  79 |             }
+  80 |         }
+  81 | 
+  82 |         // --- Find Feature Event Handlers ---
+  83 | 
+  84 |         /// <summary>
+  85 |         /// Handles the click event for the "Find Next" button.
+  86 |         /// Sends a 'next' command to the find helper script via postMessage.
+  87 |         /// </summary>
+  88 |         private async void FindNext_Click(object sender, RoutedEventArgs e)
+  89 |         {
+  90 |             await FindAsync("next", FindBox.Text);
+  91 |         }
+  92 | 
+  93 |         /// <summary>
+  94 |         /// Handles the click event for the "Find Previous" button.
+  95 |         /// Sends a 'prev' command to the find helper script via postMessage.
+  96 |         /// </summary>
+  97 |         private async void FindPrev_Click(object sender, RoutedEventArgs e)
+  98 |         {
+  99 |             await FindAsync("prev", FindBox.Text);
+ 100 |         }
+ 101 | 
+ 102 |         /// <summary>
+ 103 |         /// Handles the KeyDown event for the Find text box.
+ 104 |         /// If Enter is pressed, sends a 'start' command to initiate the search.
+ 105 |         /// </summary>
+ 106 |         private async void FindBox_KeyDown(object sender, KeyEventArgs e)
+ 107 |         {
+ 108 |             if (e.Key == Key.Enter)
+ 109 |             {
+ 110 |                 await FindAsync("start", FindBox.Text);
+ 111 |             }
+ 112 |         }
+ 113 | 
+ 114 |         /// <summary>
+ 115 |         /// Sends a command to the find helper JavaScript running in the WebView.
+ 116 |         /// Uses PostWebMessageAsString to communicate across the isolated world boundary.
+ 117 |         /// </summary>
+ 118 |         /// <param name="command">The command to send (e.g., "start", "next", "prev", "clear").</param>
+ 119 |         /// <param name="term">The search term, if applicable (e.g., for "start").</param>
+ 120 |         private async Task FindAsync(string command, string term = null)
+ 121 |         {
+ 122 |             // Ensure the WebView2 core is initialized before sending messages
+ 123 |             if (WebViewControl?.CoreWebView2 == null)
+ 124 |             {
+ 125 |                 Debug.WriteLine("FindAsync: CoreWebView2 is not initialized.");
+ 126 |                 return;
+ 127 |             }
+ 128 | 
+ 129 |             try
+ 130 |             {
+ 131 |                 // Create the message object to send to JavaScript
+ 132 |                 var message = new
+ 133 |                 {
+ 134 |                     command = command, // "start", "next", "prev", "clear"
+ 135 |                     term = term,       // Search term (can be null for next/prev/clear)
+ 136 |                     caseSensitive = CaseSensitiveChk?.IsChecked == true // Get checkbox state
+ 137 |                 };
+ 138 | 
+ 139 |                 // Serialize the message object to a JSON string
+ 140 |                 string jsonMessage = JsonSerializer.Serialize(message);
+ 141 | 
+ 142 |                 // Use PostWebMessageAsString to send the JSON message to the page's main world
+ 143 |                 // This is the correct method for sending messages to scripts injected via AddScriptToExecuteOnDocumentCreatedAsync
+ 144 |                 WebViewControl.CoreWebView2.PostWebMessageAsString(jsonMessage);
+ 145 | 
+ 146 |                 Debug.WriteLine($"FindAsync: Sent message: {jsonMessage}");
+ 147 |             }
+ 148 |             catch (Exception ex)
+ 149 |             {
+ 150 |                 // Log any errors that occur during message sending
+ 151 |                 Debug.WriteLine($"FindAsync: Error sending message: {ex.Message}");
+ 152 |                 // Optionally, show an error message to the user
+ 153 |                 // MessageBox.Show($"Find operation failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+ 154 |             }
+ 155 |         }
+ 156 |     }
+ 157 | }
+ 158 | 
+
+// -----------------------------------
+◈ End File: EventHandlers.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: history-store.cs
+// -----------------------------------
+
+   1 | using System.IO;
+   2 | using System.Text.Json;
+   3 | 
+   4 | namespace WebView2Browser
+   5 | {
+   6 |     public static class HistoryStore
+   7 |     {
+   8 |         private static readonly string PathToFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WebView2Browser", "history.json");
+   9 | 
+  10 |         public static void Add(string url)
+  11 |         {
+  12 |             if (string.IsNullOrWhiteSpace(url) || url.StartsWith("about:")) 
+  13 |                 return;
+  14 | 
+  15 |             Directory.CreateDirectory(Path.GetDirectoryName(PathToFile)!);
+  16 | 
+  17 |             var list = Load();
+  18 |             list.Remove(url);        // move to top
+  19 |             list.Insert(0, url);
+  20 |             list = list.Distinct().Take(200).ToList();
+  21 | 
+  22 |             File.WriteAllText(PathToFile, JsonSerializer.Serialize(list));
+  23 |         }
+  24 | 
+  25 |         public static List<string> Load()
+  26 |         {
+  27 |             return File.Exists(PathToFile)
+  28 |                 ? JsonSerializer.Deserialize<List<string>>(File.ReadAllText(PathToFile))!
+  29 |                 : new List<string>();
+  30 |         }
+  31 |     }
+  32 | }
+  33 | 
+
+// -----------------------------------
+◈ End File: history-store.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: hotkeys.cs
+// -----------------------------------
+
+   1 | // hotkeys.cs
+   2 | // Standard Edge-like keyboard shortcuts for WebView2Browser
+   3 | // ------------------------------------------------------------------
+   4 | 
+   5 | using System.Windows;
+   6 | using System.Windows.Input;
+   7 | using System.Windows.Interop;
+   8 | using WindowsInput;
+   9 | using WindowsInput.Native;
+  10 | 
+  11 | namespace WebView2Browser
+  12 | {
+  13 |     public partial class MainWindow : Window
+  14 |     {
+  15 |         protected override void OnKeyDown(KeyEventArgs e)
+  16 |         {
+  17 |             // -----------------------------------------------------------------
+  18 |             // TAB MANAGEMENT
+  19 |             // -----------------------------------------------------------------
+  20 |             if (Keyboard.Modifiers == ModifierKeys.Control)
+  21 |             {
+  22 |                 switch (e.Key)
+  23 |                 {
+  24 |                     case Key.T:                 // Ctrl + T → New tab
+  25 |                         e.Handled = true;
+  26 |                         AddNewTab();            // your existing method
+  27 |                         return;
+  28 | 
+  29 |                     case Key.W:                 // Ctrl + W → Close tab
+  30 |                     case Key.F4:                // Ctrl + F4 → Close tab
+  31 |                         e.Handled = true;
+  32 |                         CloseCurrentTab();      // your existing method
+  33 |                         return;
+  34 | 
+  35 |                     case Key.Tab:               // Ctrl + Tab → Next tab
+  36 |                         e.Handled = true;
+  37 |                         SelectNextTab(+1);
+  38 |                         return;
+  39 |                 }
+  40 |             }
+  41 | 
+  42 |             if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift) && e.Key == Key.Tab)
+  43 |             {                                   // Ctrl + Shift + Tab → Previous tab
+  44 |                 e.Handled = true;
+  45 |                 SelectNextTab(-1);
+  46 |                 return;
+  47 |             }
+  48 | 
+  49 |             // -----------------------------------------------------------------
+  50 |             // ADDRESS BAR & SEARCH
+  51 |             // -----------------------------------------------------------------
+  52 |             if (Keyboard.Modifiers == ModifierKeys.Control)
+  53 |             {
+  54 |                 switch (e.Key)
+  55 |                 {
+  56 |                     case Key.L:                 // Ctrl + L → focus address bar
+  57 |                     case Key.E:                 // Ctrl + E → focus address bar (search mode)
+  58 |                         e.Handled = true;
+  59 |                         AddressBar.Focus();
+  60 |                         AddressBar.SelectAll();
+  61 |                         return;
+  62 | 
+  63 |                     case Key.Enter:             // Ctrl + Enter → auto-add www./.com
+  64 |                         e.Handled = true;
+  65 |                         AutoCompleteUrl();
+  66 |                         return;
+  67 | 
+  68 |                     case Key.R:                 // Ctrl + R → reload
+  69 |                         e.Handled = true;
+  70 |                         WebViewControl.CoreWebView2?.Reload();
+  71 |                         return;
+  72 |                 }
+  73 |             }
+  74 | 
+  75 |             if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.F)
+  76 |             {
+  77 |                 e.Handled = true;
+  78 |                 FindBox.Focus();
+  79 |                 FindBox.SelectAll();
+  80 |                 return;
+  81 |             }
+  82 | 
+  83 |             if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift) && e.Key == Key.R)
+  84 |             {                                   // Ctrl + Shift + R → hard refresh
+  85 |                 e.Handled = true;
+  86 |                 WebViewControl.CoreWebView2?.Reload();
+  87 |                 return;
+  88 |             }
+  89 | 
+  90 |             // Alt + D → focus address bar (alternate shortcut)
+  91 |             if (e.Key == Key.D && Keyboard.Modifiers == ModifierKeys.Alt)
+  92 |             {
+  93 |                 e.Handled = true;
+  94 |                 AddressBar.Focus();
+  95 |                 AddressBar.SelectAll();
+  96 |                 return;
+  97 |             }
+  98 | 
+  99 |             // -----------------------------------------------------------------
+ 100 |             // NAVIGATION
+ 101 |             // -----------------------------------------------------------------
+ 102 |             if (Keyboard.Modifiers == ModifierKeys.None)
+ 103 |             {
+ 104 |                 switch (e.Key)
+ 105 |                 {
+ 106 |                     case Key.F5:                // F5 → reload
+ 107 |                         e.Handled = true;
+ 108 |                         WebViewControl.CoreWebView2?.Reload();
+ 109 |                         return;
+ 110 |                 }
+ 111 |             }
+ 112 | 
+ 113 |             if (Keyboard.Modifiers == ModifierKeys.Alt)
+ 114 |             {
+ 115 |                 switch (e.Key)
+ 116 |                 {
+ 117 |                     case Key.Left:              // Alt + Left → back
+ 118 |                         e.Handled = true;
+ 119 |                         WebViewControl.CoreWebView2?.GoBack();
+ 120 |                         return;
+ 121 | 
+ 122 |                     case Key.Right:             // Alt + Right → forward
+ 123 |                         e.Handled = true;
+ 124 |                         WebViewControl.CoreWebView2?.GoForward();
+ 125 |                         return;
+ 126 |                 }
+ 127 |             }
+ 128 | 
+ 129 |             // -----------------------------------------------------------------
+ 130 |             // DEV TOOLS
+ 131 |             // -----------------------------------------------------------------
+ 132 |             if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift) && e.Key == Key.I)
+ 133 |             {
+ 134 |                 e.Handled = true;
+ 135 |                 DevToolsButton_Click(this, null);
+ 136 |                 return;
+ 137 |             }
+ 138 | 
+ 139 |             if (Keyboard.Modifiers == ModifierKeys.None && e.Key == Key.F12)
+ 140 |             {
+ 141 |                 e.Handled = true;
+ 142 |                 DevToolsButton_Click(this, null);
+ 143 |                 return;
+ 144 |             }
+ 145 | 
+ 146 |             if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift) && e.Key == Key.I)
+ 147 |             {
+ 148 |                 e.Handled = true;
+ 149 |                 DevToolsButton_Click(this, null);
+ 150 |                 return;
+ 151 |             }
+ 152 | 
+ 153 |             base.OnKeyDown(e);
+ 154 |         }
+ 155 | 
+ 156 |         /* ---------------------------------------------------------------------
+ 157 |            Helper placeholders – wire these to your existing logic
+ 158 |         --------------------------------------------------------------------- */
+ 159 |         private void AddNewTab() { /* your tab-adding code */ }
+ 160 |         private void CloseCurrentTab() { /* your tab-closing code */ }
+ 161 |         private void SelectNextTab(int dir) { /* dir = +1 next, -1 prev */ }
+ 162 |         private void AutoCompleteUrl()
+ 163 |         {
+ 164 |             var text = AddressBar.Text.Trim();
+ 165 |             if (string.IsNullOrWhiteSpace(text)) return;
+ 166 | 
+ 167 |             if (!text.StartsWith("http"))
+ 168 |                 text = "www." + text + ".com";
+ 169 | 
+ 170 |             AddressBar.Text = text.StartsWith("http") ? text : "https://" + text;
+ 171 |             NavigationHandler?.NavigateToAddressAsync(text);
+ 172 |         }
+ 173 |     }
+ 174 | }
+ 175 | 
+
+// -----------------------------------
+◈ End File: hotkeys.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: html-capture.cs
+// -----------------------------------
+
+   1 | using AngleSharp.Browser;
+   2 | using System;
+   3 | using System.Collections.Generic;
+   4 | using System.Diagnostics;
+   5 | using System.IO;
+   6 | using System.Linq;
+   7 | using System.Text;
+   8 | using System.Threading.Tasks;
+   9 | using System.Windows;
+  10 | using System.Windows.Navigation;
+  11 | 
+  12 | namespace WebView2Browser
+  13 | {
+  14 |     public partial class MainWindow : Window
+  15 |     {
+  16 |         private async Task CaptureHtml()
+  17 |         {
+  18 |             try
+  19 |             {
+  20 |                 var capturedLines = await HtmlCaptureService.CaptureHtmlToFile();
+  21 | 
+  22 |                 var results = capturedLines
+  23 |                     .Where(line => line.Contains("<a href=\"/") && line.Contains("title") && line.Contains("/video/"))
+  24 |                     .ToList();
+  25 | 
+  26 |                 for (int i = 0; i < capturedLines.Count; i++)
+  27 |                 {
+  28 |                     var line = capturedLines[i];
+  29 | 
+  30 |                     if (line.Contains("<a>...</a>"))
+  31 |                     {
+  32 |                         int Index = i;
+  33 | 
+  34 |                         MaxPageCount = Convert.ToInt32(capturedLines[Index + 3].Split(">")[1].Split("<")[0]);
+  35 | 
+  36 |                         Debug.WriteLine(MaxPageCount);
+  37 |                     }
+  38 |                 }
+  39 | 
+  40 |                 for (int i = 0; i < results.Count; i++)
+  41 |                 {
+  42 |                     results[i] = results[i].Replace("<a href=\"/", SiteAddress).Replace(">", "").Trim();
+  43 |                 }
+  44 | 
+  45 |                 Links.AddRange(results);
+  46 | 
+  47 |                 File.WriteAllLines(@$"{LinksSavePath}FaceSitting-Links.txt", Links);
+  48 | 
+  49 |                 foreach (var line in results)
+  50 |                 {
+  51 |                     Debug.WriteLine(line.Trim());
+  52 |                 }
+  53 |             }
+  54 |             catch (Exception ex)
+  55 |             {
+  56 |                 Console.WriteLine($"Error processing HTML: {ex.Message}");
+  57 |             }
+  58 |         }
+  59 | 
+  60 |         private async Task<List<string>> CaptureLines()
+  61 |         {
+  62 |             List<string> capturedLines = await HtmlCaptureService.CaptureHtmlToFile();
+  63 |             return capturedLines;
+  64 |         }
+  65 | 
+  66 |         private async Task SetMaxPageCount()
+  67 |         {
+  68 |             var capturedLines = await CaptureLines();
+  69 | 
+  70 |             for (int i = 0; i < capturedLines.Count; i++)
+  71 |             {
+  72 |                 var line = capturedLines[i];
+  73 | 
+  74 |                 if (line.Contains("<a>...</a>"))
+  75 |                 {
+  76 |                     int Index = i;
+  77 | 
+  78 |                     MaxPageCount = Convert.ToInt32(capturedLines[Index + 3].Split(">")[1].Split("<")[0]);
+  79 | 
+  80 |                     Debug.WriteLine(MaxPageCount);
+  81 |                 }
+  82 |             }
+  83 |         }
+  84 | 
+  85 |         private async Task DoCapture(bool DoSubPages = true)
+  86 |         {
+  87 |             await SetMaxPageCount();
+  88 | 
+  89 |             while (CurrentPageIndex < MaxPageCount)
+  90 |             {
+  91 |                 await CaptureHtml();
+  92 | 
+  93 |                 CurrentAddress = BaseUrl.Replace("?q=fhd", "") + CurrentPageIndex++ + "/?q=fhd";
+  94 | 
+  95 |                 if (string.IsNullOrEmpty(BaseUrl))
+  96 |                 {
+  97 |                     BaseUrl = CurrentAddress;
+  98 |                 }
+  99 | 
+ 100 |                 await NavigationHandler.NavigateToAddressAsync(CurrentAddress);
+ 101 |             }
+ 102 |         }
+ 103 | 
+ 104 |         private async void CaptureHtmlButton_Click(object sender, RoutedEventArgs e)
+ 105 |         {
+ 106 |             await DoCapture();
+ 107 |         }
+ 108 |     }
+ 109 | }
+ 110 | 
+
+// -----------------------------------
+◈ End File: html-capture.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: HtmlCaptureManager.cs
+// -----------------------------------
+
+   1 | using System;
+   2 | using System.Collections.Generic;
+   3 | using System.Diagnostics;
+   4 | using System.IO;
+   5 | using System.Linq;
+   6 | using System.Threading.Tasks;
+   7 | 
+   8 | namespace WebView2Browser
+   9 | {
+  10 |     public class HtmlCaptureManager
+  11 |     {
+  12 |         private readonly HtmlCaptureService _htmlCaptureService;
+  13 |         private readonly WebViewNavigationHandler _navigationHandler;
+  14 | 
+  15 |         public List<string> Links { get; } = new List<string>();
+  16 |         public string BaseUrl { get; set; }
+  17 |         public string CurrentAddress { get; set; }
+  18 |         public int MaxPageCount { get; set; }
+  19 |         public string LinksSavePath { get; set; }
+  20 |         public int CurrentPageIndex { get; set; } = 1;
+  21 | 
+  22 |         public HtmlCaptureManager(HtmlCaptureService htmlCaptureService, WebViewNavigationHandler navigationHandler, string linksSavePath)
+  23 |         {
+  24 |             _htmlCaptureService = htmlCaptureService;
+  25 |             _navigationHandler = navigationHandler;
+  26 |             LinksSavePath = linksSavePath;
+  27 |         }
+  28 | 
+  29 |         public async Task CaptureAndProcessHtml()
+  30 |         {
+  31 |             if (string.IsNullOrEmpty(BaseUrl))
+  32 |             {
+  33 |                 BaseUrl = CurrentAddress;
+  34 |             }
+  35 | 
+  36 |             var capturedLines = await _htmlCaptureService.CaptureHtmlToFile();
+  37 |             ProcessCapturedHtml(capturedLines);
+  38 | 
+  39 |             CurrentAddress = $"{BaseUrl.Replace("?q=fhd", "")}{CurrentPageIndex++}/?q=fhd";
+  40 |             await _navigationHandler.NavigateToAddressAsync(CurrentAddress);
+  41 |         }
+  42 | 
+  43 |         private void ProcessCapturedHtml(List<string> capturedLines)
+  44 |         {
+  45 |             var results = capturedLines
+  46 |                 .Where(line => line.Contains("<a href=\"/") && line.Contains("title") && line.Contains("/video/"))
+  47 |                 .Select(line => line.Replace("<a href=\"/", "https://mysite.com/").Replace(">", "").Trim())
+  48 |                 .ToList();
+  49 | 
+  50 |             Links.AddRange(results);
+  51 |             SaveLinksToFile();
+  52 |             LogResults(results);
+  53 |             FindMaxPageCount(capturedLines);
+  54 |         }
+  55 | 
+  56 |         private void SaveLinksToFile()
+  57 |         {
+  58 |             File.WriteAllLines($@"{LinksSavePath}FaceSitting-Links.txt", Links);
+  59 |         }
+  60 | 
+  61 |         private void LogResults(IEnumerable<string> results)
+  62 |         {
+  63 |             foreach (var line in results)
+  64 |             {
+  65 |                 Debug.WriteLine(line.Trim());
+  66 |             }
+  67 |         }
+  68 | 
+  69 |         private void FindMaxPageCount(List<string> capturedLines)
+  70 |         {
+  71 |             for (int i = 0; i < capturedLines.Count; i++)
+  72 |             {
+  73 |                 if (capturedLines[i].Contains("<a>...</a>"))
+  74 |                 {
+  75 |                     MaxPageCount = Convert.ToInt32(capturedLines[i + 3].Split(">")[1].Split("<")[0]);
+  76 |                     Debug.WriteLine(MaxPageCount);
+  77 |                     break;
+  78 |                 }
+  79 |             }
+  80 |         }
+  81 |     }
+  82 | }
+  83 | 
+
+// -----------------------------------
+◈ End File: HtmlCaptureManager.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: HtmlCaptureService.cs
+// -----------------------------------
+
+   1 | using AngleSharp;
+   2 | using AngleSharp.Html;
+   3 | using AngleSharp.Html.Parser;
+   4 | using HtmlAgilityPack;
+   5 | using Microsoft.Web.WebView2.Core;
+   6 | using System;
+   7 | using System.IO;
+   8 | using System.Text;
+   9 | using System.Text.RegularExpressions;
+  10 | using System.Windows;
+  11 | using System.Windows.Controls;
+  12 | 
+  13 | namespace WebView2Browser
+  14 | {
+  15 |     public class HtmlCaptureService
+  16 |     {
+  17 |         private readonly CoreWebView2 _webView;
+  18 |         private readonly TextBlock _statusText;
+  19 | 
+  20 |         public HtmlCaptureService(CoreWebView2 webView, TextBlock statusText)
+  21 |         {
+  22 |             _webView = webView;
+  23 |             _statusText = statusText;
+  24 |         }
+  25 | 
+  26 |         public async Task<List<string>> CaptureHtmlToFile()
+  27 |         {
+  28 |             try
+  29 |             {
+  30 |                 _statusText.Text = "Capturing HTML...";
+  31 | 
+  32 |                 // Get raw HTML from WebView2
+  33 |                 string jsonEncodedHtml = await _webView.ExecuteScriptAsync(
+  34 |                     "document.documentElement.outerHTML");
+  35 | 
+  36 |                 // Remove JSON quotes
+  37 |                 string rawHtml = jsonEncodedHtml;
+  38 |                 if (rawHtml.Length >= 2 && rawHtml[0] == '"' && rawHtml[rawHtml.Length - 1] == '"')
+  39 |                 {
+  40 |                     rawHtml = rawHtml.Substring(1, rawHtml.Length - 2);
+  41 |                 }
+  42 | 
+  43 |                 // Unescape characters
+  44 |                 string unescapedHtml = Regex.Unescape(rawHtml);
+  45 | 
+  46 |                 // Parse and format with AngleSharp
+  47 |                 var parser = new HtmlParser();
+  48 |                 var document = parser.ParseDocument(unescapedHtml);
+  49 | 
+  50 |                 string formattedHtml = document.ToHtml(new AngleSharp.Html.PrettyMarkupFormatter
+  51 |                 {
+  52 |                     Indentation = "    ", // 4 spaces
+  53 |                     NewLine = "\n"
+  54 |                 });
+  55 | 
+  56 |                 // Clean up empty lines (keeping single empty lines)
+  57 |                 string cleanHtml = RemoveConsecutiveEmptyLines(formattedHtml);
+  58 | 
+  59 |                 // Ensure directory exists
+  60 |                 Directory.CreateDirectory(@"D:\Dev-Tools\WebView2\captured\");                
+  61 | 
+  62 |                 string CaptureTitle = _webView.Source.Split("?")[0].Replace("https://", "").Replace("/", "-");
+  63 | 
+  64 |                 string filePath = Path.Combine(@"D:\Dev-Tools\WebView2\captured\", $"{CaptureTitle}{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.html");
+  65 | 
+  66 |                 // Save to file
+  67 |                 File.WriteAllText(filePath, cleanHtml, Encoding.UTF8);
+  68 | 
+  69 |                 _statusText.Text = $"HTML saved to {filePath}";
+  70 |                 //MessageBox.Show($"HTML content saved to:\n{filePath}", "Capture Complete", MessageBoxButton.OK, MessageBoxImage.Information);
+  71 | 
+  72 |                 // Split into lines - keeping empty lines but removing consecutive ones
+  73 |                 var lines = cleanHtml.Split(
+  74 |                     new[] { "\r\n", "\r", "\n" },
+  75 |                     StringSplitOptions.None
+  76 |                 ).ToList();
+  77 | 
+  78 |                 return lines;
+  79 |             }
+  80 |             catch (Exception ex)
+  81 |             {
+  82 |                 _statusText.Text = "Capture failed";
+  83 |                 MessageBox.Show($"Failed to capture HTML: {ex.Message}",
+  84 |                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+  85 |                 return new List<string>(); // Return empty list on error
+  86 |             }
+  87 |         }
+  88 | 
+  89 |         public string FormatHtmlWithBetterIndentation(string rawHtml)
+  90 |         {
+  91 |             var doc = new HtmlDocument();
+  92 |             doc.LoadHtml(rawHtml);
+  93 | 
+  94 |             var sb = new StringBuilder();
+  95 |             using (var writer = new StringWriter(sb))
+  96 |             {
+  97 |                 foreach (var node in doc.DocumentNode.ChildNodes)
+  98 |                 {
+  99 |                     WriteNodeWithImprovedFormatting(node, writer, 0);
+ 100 |                 }
+ 101 |             }
+ 102 | 
+ 103 |             return sb.ToString();
+ 104 |         }
+ 105 | 
+ 106 |         private void WriteNodeWithImprovedFormatting(HtmlNode node, TextWriter writer, int indentLevel)
+ 107 |         {
+ 108 |             string indent = new string(' ', indentLevel * 4);
+ 109 |             string childIndent = new string(' ', (indentLevel + 1) * 4);
+ 110 | 
+ 111 |             switch (node.NodeType)
+ 112 |             {
+ 113 |                 case HtmlNodeType.Element:
+ 114 |                     // Skip formatting for inline elements and special cases
+ 115 |                     if (IsInlineElement(node.Name) ||
+ 116 |                         node.HasClass("prettier-ignore-start") ||
+ 117 |                         node.HasClass("prettier-ignore-end"))
+ 118 |                     {
+ 119 |                         writer.Write(node.OuterHtml);
+ 120 |                         return;
+ 121 |                     }
+ 122 | 
+ 123 |                     writer.Write($"{indent}<{node.Name}");
+ 124 | 
+ 125 |                     // Write attributes
+ 126 |                     if (node.HasAttributes)
+ 127 |                     {
+ 128 |                         foreach (var attr in node.Attributes)
+ 129 |                         {
+ 130 |                             writer.Write($" {attr.Name}=\"{attr.Value}\"");
+ 131 |                         }
+ 132 |                     }
+ 133 | 
+ 134 |                     if (node.ChildNodes.Count == 0 && HtmlNode.IsEmptyElement(node.Name))
+ 135 |                     {
+ 136 |                         writer.WriteLine(" />");
+ 137 |                     }
+ 138 |                     else
+ 139 |                     {
+ 140 |                         writer.WriteLine(">");
+ 141 | 
+ 142 |                         // Special handling for text nodes to avoid extra newlines
+ 143 |                         if (node.ChildNodes.Count == 1 &&
+ 144 |                             node.FirstChild.NodeType == HtmlNodeType.Text)
+ 145 |                         {
+ 146 |                             writer.Write(childIndent);
+ 147 |                             WriteNodeWithImprovedFormatting(node.FirstChild, writer, 0);
+ 148 |                             writer.WriteLine();
+ 149 |                         }
+ 150 |                         else
+ 151 |                         {
+ 152 |                             foreach (var child in node.ChildNodes)
+ 153 |                             {
+ 154 |                                 WriteNodeWithImprovedFormatting(child, writer, indentLevel + 1);
+ 155 |                             }
+ 156 |                         }
+ 157 | 
+ 158 |                         writer.WriteLine($"{indent}</{node.Name}>");
+ 159 |                     }
+ 160 |                     break;
+ 161 | 
+ 162 |                 case HtmlNodeType.Text:
+ 163 |                     string text = node.InnerText.Trim();
+ 164 |                     if (!string.IsNullOrEmpty(text))
+ 165 |                     {
+ 166 |                         writer.Write(text);
+ 167 |                     }
+ 168 |                     break;
+ 169 | 
+ 170 |                 case HtmlNodeType.Comment:
+ 171 |                     writer.WriteLine($"{indent}<!--{node.InnerHtml}-->");
+ 172 |                     break;
+ 173 | 
+ 174 |                 default:
+ 175 |                     writer.Write(node.OuterHtml);
+ 176 |                     break;
+ 177 |             }
+ 178 |         }
+ 179 | 
+ 180 |         private bool IsInlineElement(string tagName)
+ 181 |         {
+ 182 |             return tagName switch
+ 183 |             {
+ 184 |                 "a" or "span" or "strong" or "em" or "b" or "i" or "img" or "svg" or "use" => true,
+ 185 |                 _ => false
+ 186 |             };
+ 187 |         }
+ 188 | 
+ 189 |         public string RemoveConsecutiveEmptyLines(string text)
+ 190 |         {
+ 191 |             return Regex.Replace(text, @"(\r?\n){3,}", "\n\n");
+ 192 |         }
+ 193 |     }
+ 194 | }
+ 195 | 
+
+// -----------------------------------
+◈ End File: HtmlCaptureService.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: ImageToggleHandler.cs
+// -----------------------------------
+
+   1 | using Microsoft.Web.WebView2.Core;
+   2 | using System;
+   3 | using System.Collections.Generic;
+   4 | using System.Linq;
+   5 | using System.Text;
+   6 | using System.Threading.Tasks;
+   7 | 
+   8 | namespace WebView2Browser
+   9 | {
+  10 |     public class ImageToggleHandler
+  11 |     {
+  12 |         private readonly CoreWebView2 _webView;
+  13 |         private bool _imagesDisabled = true; // Default to blocked
+  14 |         private bool _videosDisabled = true; // Default to blocked
+  15 |         private bool _backgroundImagesDisabled = true; // Flag to control background image blocking logic
+  16 | 
+  17 |         public ImageToggleHandler(CoreWebView2 webView)
+  18 |         {
+  19 |             _webView = webView ?? throw new ArgumentNullException(nameof(webView));
+  20 |             InitializeBlocking();
+  21 |             SetupNavigationHandlers();
+  22 |         }
+  23 | 
+  24 |         public void ToggleImages()
+  25 |         {
+  26 |             _imagesDisabled = !_imagesDisabled;
+  27 |             // Note: Toggling might require navigation reload to take full effect on already loaded resources
+  28 |         }
+  29 | 
+  30 |         public void ToggleVideos()
+  31 |         {
+  32 |             _videosDisabled = !_videosDisabled;
+  33 |             // Note: Toggling might require navigation reload to take full effect on already loaded resources
+  34 |         }
+  35 | 
+  36 |         private void InitializeBlocking()
+  37 |         {
+  38 |             // Add filters for standard image and media requests
+  39 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
+  40 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Media);
+  41 | 
+  42 |             // Add filter for 'Other' context. This is crucial for catching:
+  43 |             // - blob: URLs (like the one in your Bing example)
+  44 |             // - Dynamically generated images
+  45 |             // - Some SVGs or resources not strictly classified as Image
+  46 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Other);
+  47 | 
+  48 |             _webView.WebResourceRequested += OnWebResourceRequested;
+  49 |         }
+  50 | 
+  51 |         private void OnWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
+  52 |         {
+  53 |             // Block standard images if disabled
+  54 |             if (_imagesDisabled && e.ResourceContext == CoreWebView2WebResourceContext.Image)
+  55 |             {
+  56 |                 e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Image blocked by browser settings");
+  57 |                 return;
+  58 |             }
+  59 | 
+  60 |             // Block videos if disabled
+  61 |             if (_videosDisabled && e.ResourceContext == CoreWebView2WebResourceContext.Media)
+  62 |             {
+  63 |                 e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Media blocked by browser settings");
+  64 |                 return;
+  65 |             }
+  66 | 
+  67 |             // Attempt to block background images
+  68 |             // Check if background image blocking logic is conceptually enabled
+  69 |             // and the resource is an Image or Other (for blobs)
+  70 |             if (_backgroundImagesDisabled &&
+  71 |                 (e.ResourceContext == CoreWebView2WebResourceContext.Image ||
+  72 |                  e.ResourceContext == CoreWebView2WebResourceContext.Other))
+  73 |             {
+  74 |                 string requestUri = e.Request.Uri;
+  75 | 
+  76 |                 // Heuristic 1: Block blob: URLs - These are often used for dynamically loaded backgrounds
+  77 |                 if (requestUri.StartsWith("blob:", StringComparison.OrdinalIgnoreCase))
+  78 |                 {
+  79 |                     // Optionally, log for debugging: Console.WriteLine($"Blocking blob URL: {requestUri}");
+  80 |                     e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Blob background image blocked");
+  81 |                     return;
+  82 |                 }
+  83 | 
+  84 |                 // Heuristic 2: Block based on common background image patterns (if identifiable)
+  85 |                 // This is tricky without knowing the site structure, but you can add checks here
+  86 |                 // Example (uncomment and adapt if needed):
+  87 |                 /*
+  88 |                 var lowerUri = requestUri.ToLowerInvariant();
+  89 |                 if (lowerUri.Contains("/background") || lowerUri.Contains("/bg_") || lowerUri.Contains("wallpaper"))
+  90 |                 {
+  91 |                      e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Potential background image blocked");
+  92 |                      return;
+  93 |                 }
+  94 |                 */
+  95 | 
+  96 |                 // Heuristic 3: Block based on known ad domains (leveraging existing AdBlocker logic might be better,
+  97 |                 // but for self-contained ImageToggleHandler, you could duplicate or pass a reference)
+  98 |                 // This requires access to BlockList.AdDomains or similar.
+  99 |                 // Example placeholder (requires BlockList.AdDomains to be accessible or passed in):
+ 100 |                 /*
+ 101 |                 if (BlockList.AdDomains.Any(domain => requestUri.IndexOf(domain, StringComparison.OrdinalIgnoreCase) >= 0))
+ 102 |                 {
+ 103 |                     e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Image from ad domain blocked");
+ 104 |                     return;
+ 105 |                 }
+ 106 |                 */
+ 107 | 
+ 108 |                 // Add more heuristics here if needed...
+ 109 |             }
+ 110 |         }
+ 111 | 
+ 112 | 
+ 113 |         private void SetupNavigationHandlers()
+ 114 |         {
+ 115 |             // 1️⃣  Inject CSS to hide standard image tags and common background image classes/elements
+ 116 |             _webView.AddScriptToExecuteOnDocumentCreatedAsync(
+ 117 |                 """
+ 118 |         (() => {
+ 119 |             /* Create a style element to hold our blocking rules */
+ 120 |             const style = document.createElement('style');
+ 121 |             style.id = 'webview2-bg-blocker-id-specific'; // Give it an ID
+ 122 |             style.textContent = `
+ 123 |                 /* === Existing Rules for <img>, <svg>, <video>, <iframe>, and inline SVG backgrounds === */
+ 124 |                 img, svg, picture, image { display: none !important; }
+ 125 |                 .tip svg, .w svg, .popup svg { display: none !important; }
+ 126 |                 *[style*="background-image:url('data:image/svg+xml"],
+ 127 |                 *[style*="background-image:url(\\"image/svg+xml"],
+ 128 |                 *[style*="background-image:url(data:image/svg+xml"]
+ 129 |                 { display: none !important; background-image: none !important; }
+ 130 |                 video, iframe { display: none !important; }
+ 131 | 
+ 132 |                 /* === NEW/ENHANCED RULES for Background Images === */
+ 133 |                 /* --- Target the specific ID and Class from the Bing HTML --- */
+ 134 |                 #img_cont, .img_cont, .hp_top_cover {
+ 135 |                     /* Attempt to override background-image via CSS */
+ 136 |                     background-image: none !important;
+ 137 |                     /* Optionally, hide the entire element if override isn't enough */
+ 138 |                     /* display: none !important; */
+ 139 |                 }
+ 140 |                 /* --- Target shaders container --- */
+ 141 |                 .shaders {
+ 142 |                      background-image: none !important;
+ 143 |                      /* Hiding shaders might be necessary */
+ 144 |                      /* display: none !important; */
+ 145 |                 }
+ 146 |                 /* --- Target specific Bing icon classes if needed --- */
+ 147 |                 /* Add .hbic_* classes here if they use background images via CSS */
+ 148 |             `;
+ 149 |             document.documentElement.firstElementChild.appendChild(style);
+ 150 |         })();
+ 151 |         """
+ 152 |             );
+ 153 | 
+ 154 |             // 2️⃣  Use NavigationCompleted to run a script that specifically targets the element
+ 155 |             // and removes/overrides the inline style more directly and repeatedly.
+ 156 |             _webView.NavigationCompleted += async (_, args) =>
+ 157 |             {
+ 158 |                 if (!args.IsSuccess) return;
+ 159 | 
+ 160 |                 await _webView.ExecuteScriptAsync(
+ 161 |                     """
+ 162 |             (() => {
+ 163 |                 const hideImagesAndBackgrounds = () => {
+ 164 |                     // Hide standard image/svg tags (existing logic)
+ 165 |                     document.querySelectorAll(
+ 166 |                         'img,svg,picture,image,.tip svg,.w svg,.popup svg'
+ 167 |                     ).forEach(el => el.style.display = 'none');
+ 168 | 
+ 169 |                     // --- NEW/ENHANCED: Directly target the specific Bing element ---
+ 170 |                     const imgContElement = document.getElementById('img_cont');
+ 171 |                     if (imgContElement) {
+ 172 |                         // Remove the background-image property from the inline style entirely
+ 173 |                         imgContElement.style.removeProperty('background-image');
+ 174 |                         // Also force it to none via style attribute
+ 175 |                         imgContElement.style.backgroundImage = 'none !important';
+ 176 |                         // Optionally, hide the element completely if needed
+ 177 |                         // imgContElement.style.display = 'none !important';
+ 178 |                     }
+ 179 | 
+ 180 |                     const hpTopCoverElement = document.getElementById('hp_top_cover');
+ 181 |                     if (hpTopCoverElement) {
+ 182 |                         hpTopCoverElement.style.removeProperty('background-image');
+ 183 |                         hpTopCoverElement.style.backgroundImage = 'none !important';
+ 184 |                         // Optionally, hide the element completely if needed
+ 185 |                         // hpTopCoverElement.style.display = 'none !important';
+ 186 |                     }
+ 187 | 
+ 188 |                     // Target elements by class name and remove inline background styles
+ 189 |                     const elementsToClear = document.querySelectorAll('.img_cont, .hp_top_cover, .shaders');
+ 190 |                     elementsToClear.forEach(el => {
+ 191 |                         // Remove the property from the inline style
+ 192 |                         el.style.removeProperty('background-image');
+ 193 |                         // Forcefully set it to none
+ 194 |                         el.style.setProperty('background-image', 'none', 'important');
+ 195 |                         // Optionally, hide the element completely if needed
+ 196 |                         // el.style.setProperty('display', 'none', 'important');
+ 197 |                     });
+ 198 | 
+ 199 |                     // Optional: Apply a broad override again after DOM changes (use cautiously)
+ 200 |                     // Uncomment the lines below if needed.
+ 201 |                     /*
+ 202 |                     document.querySelectorAll('*').forEach(el => {
+ 203 |                         // Only apply if it seems to have a background image set
+ 204 |                         // if (el.style.backgroundImage && el.style.backgroundImage !== 'none') {
+ 205 |                             el.style.setProperty('background-image', 'none', 'important');
+ 206 |                         // }
+ 207 |                     });
+ 208 |                     */
+ 209 |                 };
+ 210 | 
+ 211 |                 // Run the hiding logic immediately
+ 212 |                 hideImagesAndBackgrounds();
+ 213 | 
+ 214 |                 // Keep watching for late inserts/mutations and re-run the logic
+ 215 |                 // This is crucial for elements that are added or modified dynamically
+ 216 |                 const observer = new MutationObserver(hideImagesAndBackgrounds);
+ 217 |                 observer.observe(document.body, { childList: true, subtree: true });
+ 218 | 
+ 219 |                 // Optional: Run the logic periodically as a last resort
+ 220 |                 // This can help catch changes that MutationObserver might miss
+ 221 |                 // or if styles are reapplied very quickly by page scripts.
+ 222 |                 // Adjust interval time (ms) as needed, consider performance.
+ 223 |                 // const intervalId = setInterval(hideImagesAndBackgrounds, 500); // Every 500ms
+ 224 |                 // Clear interval on page unload/navigation start if needed (advanced)
+ 225 |             })();
+ 226 |             """
+ 227 |                 );
+ 228 |             };
+ 229 |         }
+ 230 | 
+ 231 |         // Optional: Method to toggle background image blocking if you want a separate control
+ 232 |         // public void ToggleBackgroundImages()
+ 233 |         // {
+ 234 |         //     _backgroundImagesDisabled = !_backgroundImagesDisabled;
+ 235 |         //     // Note: Toggling might require navigation reload to take full effect
+ 236 |         // }
+ 237 |     }
+ 238 | }
+ 239 | 
+
+// -----------------------------------
+◈ End File: ImageToggleHandler.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: KeyboardHelper.cs
+// -----------------------------------
+
+   1 | using System.Runtime.InteropServices;
+   2 | using System.Windows;
+   3 | 
+   4 | namespace WebView2Browser
+   5 | {
+   6 |     public partial class MainWindow : Window
+   7 |     {
+   8 |         internal static class KeyboardHelper
+   9 |         {
+  10 |             [DllImport("user32.dll")]
+  11 |             private static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+  12 | 
+  13 |             private const uint WM_KEYDOWN  = 0x0100;
+  14 |             private const uint WM_KEYUP    = 0x0101;
+  15 |             private const int  VK_CONTROL  = 0x11;
+  16 |             private const int  VK_F        = 0x46;
+  17 | 
+  18 |             public static void SendCtrlF(IntPtr hWnd)
+  19 |             {
+  20 |                 PostMessage(hWnd, WM_KEYDOWN, VK_CONTROL, IntPtr.Zero);
+  21 |                 PostMessage(hWnd, WM_KEYDOWN, VK_F,       IntPtr.Zero);
+  22 |                 PostMessage(hWnd, WM_KEYUP,   VK_F,       IntPtr.Zero);
+  23 |                 PostMessage(hWnd, WM_KEYUP,   VK_CONTROL, IntPtr.Zero);
+  24 |             }
+  25 |         }
+  26 |     }
+  27 | }
+  28 | 
+
+// -----------------------------------
+◈ End File: KeyboardHelper.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: RelayCommand.cs
+// -----------------------------------
+
+   1 | using System;
+   2 | using System.Collections.Generic;
+   3 | using System.Linq;
+   4 | using System.Text;
+   5 | using System.Threading.Tasks;
+   6 | using System.Windows.Input;
+   7 | 
+   8 | namespace WebView2Browser
+   9 | {
+  10 |     // Put this anywhere in WebView2Browser namespace
+  11 |     public class RelayCommand : ICommand
+  12 |     {
+  13 |         private readonly Action<object?> _execute;
+  14 |         public RelayCommand(Action<object?> execute) => _execute = execute;
+  15 |         public bool CanExecute(object? parameter) => true;
+  16 |         public void Execute(object? parameter) => _execute(parameter);
+  17 |         public event EventHandler? CanExecuteChanged { add { } remove { } }
+  18 |     }
+  19 | }
+  20 | 
+
+// -----------------------------------
+◈ End File: RelayCommand.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: TabViewModel.cs
+// -----------------------------------
+
+   1 | // ======================================================================
+   2 | // TabViewModel.cs
+   3 | // ======================================================================
+   4 | using Microsoft.Web.WebView2.Core;
+   5 | using Microsoft.Web.WebView2.Wpf;
+   6 | using System;
+   7 | using System.ComponentModel;
+   8 | using System.Windows;
+   9 | 
+  10 | namespace WebView2Browser
+  11 | {
+  12 |     public sealed class TabViewModel : INotifyPropertyChanged, IDisposable
+  13 |     {
+  14 |         public Task WhenReady => _readyTcs.Task;
+  15 |         private readonly TaskCompletionSource<bool> _readyTcs = new();
+  16 | 
+  17 |         public string Header
+  18 |         {
+  19 |             get => _header;
+  20 |             set { _header = value; OnPropertyChanged(); }
+  21 |         }
+  22 |         private string _header = "New tab";
+  23 | 
+  24 |         public string Address
+  25 |         {
+  26 |             get => _address;
+  27 |             set { _address = value; OnPropertyChanged(); }
+  28 |         }
+  29 |         private string _address = "about:blank";
+  30 | 
+  31 |         public Microsoft.Web.WebView2.Wpf.WebView2 WebView { get; } = new Microsoft.Web.WebView2.Wpf.WebView2();
+  32 | 
+  33 |         public CoreWebView2 CoreWebView2 => WebView.CoreWebView2;
+  34 | 
+  35 |         public TabViewModel()
+  36 |         {
+  37 |             _ = InitAsync();
+  38 |         }
+  39 | 
+  40 |         private async Task InitAsync()
+  41 |         {
+  42 |             try
+  43 |             {
+  44 |                 await WebView.EnsureCoreWebView2Async(await WebViewEnvironment.GetSharedEnvironmentAsync());
+  45 | 
+  46 |                 CoreWebView2.NavigationCompleted += (s, e) =>
+  47 |                 {
+  48 |                     Application.Current.Dispatcher.Invoke(() =>
+  49 |                     {
+  50 |                         Address = WebView.Source?.ToString() ?? "about:blank";
+  51 |                         Header = Uri.TryCreate(Address, UriKind.Absolute, out var uri)
+  52 |                             ? uri.Host.Equals("about:blank", StringComparison.OrdinalIgnoreCase)
+  53 |                                 ? "New tab"
+  54 |                                 : uri.Host
+  55 |                             : "Unknown";
+  56 |                     });
+  57 |                 };
+  58 | 
+  59 |                 _readyTcs.SetResult(true);
+  60 |             }
+  61 |             catch (Exception ex)
+  62 |             {
+  63 |                 _readyTcs.SetException(ex);
+  64 |             }
+  65 |         }
+  66 | 
+  67 |         public void Dispose()
+  68 |         {
+  69 |             WebView?.Dispose();
+  70 |         }
+  71 | 
+  72 |         public event PropertyChangedEventHandler PropertyChanged;
+  73 |         private void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string p = null)
+  74 |             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(p));
+  75 |     }
+  76 | }
+  77 | 
+
+// -----------------------------------
+◈ End File: TabViewModel.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: UrlHistoryProvider.cs
+// -----------------------------------
+
+   1 | // ======================================================================
+   2 | // UrlHistoryProvider.cs
+   3 | // ======================================================================
+   4 | using System;
+   5 | using System.Collections.ObjectModel;
+   6 | using System.IO;
+   7 | using System.Linq;
+   8 | using System.Text.Json;
+   9 | 
+  10 | namespace WebView2Browser
+  11 | {
+  12 |     public sealed class UrlHistoryProvider
+  13 |     {
+  14 |         private readonly ObservableCollection<string> _items = new();
+  15 |         private static readonly string HistoryPath = Path.Combine(
+  16 |             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+  17 |             "WebView2Browser", "history.json");
+  18 | 
+  19 |         public ReadOnlyObservableCollection<string> Items { get; }
+  20 | 
+  21 |         public UrlHistoryProvider()
+  22 |         {
+  23 |             Items = new ReadOnlyObservableCollection<string>(_items);
+  24 |             Load();
+  25 |         }
+  26 | 
+  27 |         public void Add(string url)
+  28 |         {
+  29 |             if (string.IsNullOrWhiteSpace(url) || url.StartsWith("about:")) return;
+  30 | 
+  31 |             _items.Remove(url);
+  32 |             _items.Insert(0, url);
+  33 | 
+  34 |             // Trim to 200 items
+  35 |             while (_items.Count > 200)
+  36 |                 _items.RemoveAt(_items.Count - 1);
+  37 | 
+  38 |             Save();
+  39 |         }
+  40 | 
+  41 |         private void Load()
+  42 |         {
+  43 |             try
+  44 |             {
+  45 |                 if (!File.Exists(HistoryPath)) return;
+  46 |                 var list = JsonSerializer.Deserialize<string[]>(File.ReadAllText(HistoryPath));
+  47 |                 foreach (var u in list ?? Array.Empty<string>())
+  48 |                     _items.Add(u);
+  49 |             }
+  50 |             catch { /* ignore corrupt file */ }
+  51 |         }
+  52 | 
+  53 |         private void Save()
+  54 |         {
+  55 |             try
+  56 |             {
+  57 |                 Directory.CreateDirectory(Path.GetDirectoryName(HistoryPath)!);
+  58 |                 File.WriteAllText(HistoryPath,
+  59 |                     JsonSerializer.Serialize(_items.ToArray(), new JsonSerializerOptions { WriteIndented = true }));
+  60 |             }
+  61 |             catch { /* ignore I/O errors */ }
+  62 |         }
+  63 |     }
+  64 | }
+  65 | 
+
+// -----------------------------------
+◈ End File: UrlHistoryProvider.cs
+// ======================================================================
+
+// ======================================================================
+⚙ Begin File: WebView2.csproj
+// -----------------------------------
+
+   1 | <Project Sdk="Microsoft.NET.Sdk">
+   2 | 
+   3 |   <PropertyGroup>
+   4 |     <OutputType>WinExe</OutputType>
+   5 |     <TargetFramework>net9.0-windows</TargetFramework>
+   6 |     <Nullable>enable</Nullable>
+   7 |     <ImplicitUsings>enable</ImplicitUsings>
+   8 |     <UseWPF>true</UseWPF>
+   9 |     <ApplicationIcon>icons\custom-browser-03.ico</ApplicationIcon>
+  10 |   </PropertyGroup>
+  11 | 
+  12 |   <ItemGroup>
+  13 |     <PackageReference Include="AngleSharp" Version="1.3.0" />
+  14 |     <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+  15 |     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3296.44" />
+  16 |     <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
+  17 |     <PackageReference Include="WindowsInput" Version="6.4.1" />
+  18 |   </ItemGroup>
+  19 | 
+  20 |   <ItemGroup>
+  21 |     <None Update="findHelper.js">
+  22 |       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  23 |     </None>
+  24 |   </ItemGroup>
+  25 | 
+  26 |   <ItemGroup>
+  27 |     <Folder Include="captured\" />
+  28 |   </ItemGroup>
+  29 | 
+  30 | </Project>
+  31 | 
+
+// -----------------------------------
+⚙ End File: WebView2.csproj
+// ======================================================================
+
+// ======================================================================
+◇ Begin File: WebView2.xaml
+// -----------------------------------
+
+   1 | <!-- WebView2.xaml -->
+   2 | <Window x:Class="WebView2Browser.MainWindow"<Window x:Class="WebView2Browser.MainWindow"
+   3 |         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   4 |         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   5 |         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+   6 |         Title="WebView2 Browser" Height="800" Width="1200"
+   7 |         WindowStartupLocation="CenterScreen">
+   8 |     <Grid>
+   9 |         <Grid.RowDefinitions>
+  10 |             <RowDefinition Height="Auto"/>
+  11 |             <RowDefinition Height="*"/>
+  12 |             <RowDefinition Height="22"/>
+  13 |         </Grid.RowDefinitions>
+  14 | 
+  15 |         <StackPanel>
+  16 |             <!--............................................................-->
+  17 |             <Grid Grid.Row="0" Margin="5">
+  18 |                 <Grid.ColumnDefinitions>
+  19 |                     <ColumnDefinition Width="Auto"/>
+  20 |                     <ColumnDefinition Width="*"/>
+  21 |                     <ColumnDefinition Width="Auto"/>
+  22 |                 </Grid.ColumnDefinitions>
+  23 | 
+  24 |                 <!--............................................................-->
+  25 |                 <UniformGrid x:Name="UniformGrid_Buttons" Columns="4" Grid.Column="0">
+  26 |                     <Button    x:Name="BackButton"    Content="←" Width="40" Height="25" Margin="2" Click="BackButton_Click"    />
+  27 |                     <Button    x:Name="ForwardButton" Content="→" Width="40" Height="25" Margin="2" Click="ForwardButton_Click" />
+  28 |                     <Button    x:Name="RefreshButton" Content="↻" Width="40" Height="25" Margin="2" Click="RefreshButton_Click" />
+  29 |                     <Button    x:Name="HomeButton"    Content="⌂" Width="40" Height="25" Margin="2" Click="HomeButton_Click"    />
+  30 |                 </UniformGrid>
+  31 |                 <!--............................................................-->
+  32 |                 <Grid x:Name="Grid_Address" Grid.Column="1" HorizontalAlignment="Stretch">
+  33 |                     <Grid.ColumnDefinitions>
+  34 |                         <ColumnDefinition Width="*"/>
+  35 |                         <ColumnDefinition Width="Auto"/>
+  36 |                     </Grid.ColumnDefinitions>
+  37 |                     <TextBox   x:Name="AddressBar" Grid.Column="0" MinWidth="400" Margin="5,2" HorizontalAlignment="Stretch"/>
+  38 |                     <Button    x:Name="GoButton"   Grid.Column="1" Content="Go" Width="50" Margin="2" Click="GoButton_Click"/>
+  39 |                 </Grid>
+  40 |                 <!--............................................................-->
+  41 |                 <StackPanel x:Name="StackPanel_Tools" Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+  42 |                     <!--............................................................-->
+  43 |                     <Button       x:Name="DevToolsButton"     Content="DevTools"      Width="100" Height="25" Margin="5,2" Click="DevToolsButton_Click"/>
+  44 |                     <Button       x:Name="CaptureHtmlButton"  Content="Capture HTML"  Width="100" Height="25" Margin="5,2" Click="CaptureHtmlButton_Click"/>
+  45 | 
+  46 |                     <ToggleButton x:Name="ToggleImagesButton" Content="Images On/Off" Width="100" Height="25" Margin="5,2" VerticalAlignment="Center" IsChecked="False" Checked="ToggleImages_Changed" Unchecked="ToggleImages_Changed"/>
+  47 |                     <ToggleButton x:Name="ToggleVideosButton" Content="Videos On/Off" Width="100" Height="25" Margin="5,2" VerticalAlignment="Center" IsChecked="False" Checked="ToggleVideos_Changed" Unchecked="ToggleVideos_Changed"/>
+  48 |                     <!--............................................................-->
+  49 |                     <Button x:Name="StopButton" Content="Stop" Width="60" Height="25" Margin="5,2" Click="StopButton_Click"/>
+  50 |                     <!--............................................................-->
+  51 |                 </StackPanel>
+  52 |                 <!--............................................................-->
+  53 |             </Grid>
+  54 |             <!--............................................................-->
+  55 |             <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="0 0 0 1" Background="#FFF5F5F5" Visibility="Visible">
+  56 |                 <StackPanel Orientation="Horizontal" Margin="6">
+  57 |                     <TextBox x:Name="FindBox" Width="200" Margin="0 0 6 0" VerticalContentAlignment="Center" KeyDown="FindBox_KeyDown"/>
+  58 |                     <Button x:Name="FindNextBtn" Content="▼" Width="30" Click="FindNext_Click"/>
+  59 |                     <Button x:Name="FindPrevBtn" Content="▲" Width="30" Margin="2 0 6 0" Click="FindPrev_Click"/>
+  60 |                     <CheckBox x:Name="CaseSensitiveChk" Content="Aa" Margin="0 0 6 0" ToolTip="Case sensitive"/>
+  61 |                     <TextBlock x:Name="MatchLabel" VerticalAlignment="Center"/>
+  62 |                 </StackPanel>
+  63 |             </Border>
+  64 |             <!--............................................................-->
+  65 |         </StackPanel>
+  66 |         <TextBlock x:Name="StatusText" Margin="2" Grid.Row="2" Text="Test"/>
+  67 |         <TabControl Grid.Row="1">
+  68 |             <wv2:WebView2 x:Name="WebViewControl" Grid.Row="1"/>
+  69 |             <wv2:WebView2 x:Name="WebViewControl2" Grid.Row="1"/>
+  70 |         </TabControl>
+  71 |     </Grid>
+  72 | </Window>
+  73 | 
+
+// -----------------------------------
+◇ End File: WebView2.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: WebView2.xaml.cs
+// -----------------------------------
+
+   1 | // WebView2.xaml.cs — Add WebMessageReceived handler
+   2 | 
+   3 | using Microsoft.Web.WebView2.Core;
+   4 | using System;
+   5 | using System.Collections.ObjectModel;
+   6 | using System.ComponentModel;
+   7 | using System.Diagnostics;
+   8 | using System.IO;
+   9 | using System.Runtime.InteropServices;
+  10 | using System.Text;
+  11 | using System.Text.Json;
+  12 | using System.Windows;
+  13 | using System.Windows.Controls;
+  14 | using System.Windows.Input;
+  15 | using System.Windows.Threading;
+  16 | 
+  17 | namespace WebView2Browser
+  18 | {
+  19 |     public partial class MainWindow : Window
+  20 |     {
+  21 |         private string _findScript;
+  22 |         public ICommand OpenDevToolsCommand { get; }
+  23 | 
+  24 |         private WebViewNavigationHandler NavigationHandler { get; set; }
+  25 |         private DevToolsWindow DevToolsWindow { get; set; }
+  26 |         private ImageToggleHandler ImageToggleHandler { get; set; }
+  27 |         private HtmlCaptureService HtmlCaptureService { get; set; }
+  28 |         private bool _isInitialized { get; set; } = false;
+  29 |         private string CurrentAddress { get; set; }
+  30 |         private string SiteAddress { get; set; }
+  31 |         private string LinksSavePath { get; set; } = @"D:\TS-RO\";
+  32 |         private string BaseUrl { get; set; }
+  33 |         public int MaxPageCount { get; set; } = 0;
+  34 |         public int CurrentPageIndex { get; set; } = 1;
+  35 | 
+  36 |         private List<string> Links { get; set; } = new List<string>();
+  37 | 
+  38 |         private AdBlocker AdBlocker { get; set; }
+  39 |         private HtmlCaptureManager CaptureManager { get; set; }
+  40 |         private HtmlCaptureService CaptureService { get; set; }
+  41 | 
+  42 |         public MainWindow()
+  43 |         {
+  44 |             InitializeComponent();
+  45 |             InitializeAsync();
+  46 | 
+  47 |             OpenDevToolsCommand = new RelayCommand(_ => DevToolsButton_Click(this, null));
+  48 | 
+  49 |             Loaded += MainWindow_Loaded;
+  50 |             Closing += MainWindow_Closing;
+  51 |             AddressBar.KeyDown += AddressBar_KeyDown;
+  52 |             ToggleImagesButton.Checked += ToggleImages_Changed;
+  53 |             ToggleImagesButton.Unchecked += ToggleImages_Changed;
+  54 |             ToggleVideosButton.Checked += ToggleVideos_Changed;
+  55 |             ToggleVideosButton.Unchecked += ToggleVideos_Changed;
+  56 |         }
+  57 | 
+  58 |         private async void InitializeAsync()
+  59 |         {
+  60 |             try
+  61 |             {
+  62 |                 StatusText.Text = "Initializing WebView2 environment…";
+  63 |                 var environment = await WebViewEnvironment.GetSharedEnvironmentAsync();
+  64 | 
+  65 |                 await WebViewControl.EnsureCoreWebView2Async(environment);
+  66 | 
+  67 |                 // ────────────────────────────────────────────────────────────────
+  68 |                 // 1. Navigation handler
+  69 |                 // ────────────────────────────────────────────────────────────────
+  70 |                 NavigationHandler = new WebViewNavigationHandler(
+  71 |                     WebViewControl.CoreWebView2,
+  72 |                     StatusText,
+  73 |                     AddressBar);
+  74 |                 NavigationHandler.SetupNavigationHandlers();
+  75 | 
+  76 |                 // ────────────────────────────────────────────────────────────────
+  77 |                 // 2. Security / privacy tweaks
+  78 |                 // ────────────────────────────────────────────────────────────────
+  79 |                 WebViewSecuritySettings.ApplySecureSettings(WebViewControl.CoreWebView2.Settings);
+  80 | 
+  81 |                 // 3. Custom UA string
+  82 |                 WebViewControl.CoreWebView2.Settings.UserAgent =
+  83 |                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+  84 |                     "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+  85 | 
+  86 |                 // 4. Deny geolocation
+  87 |                 WebViewControl.CoreWebView2.PermissionRequested += (s, e) =>
+  88 |                 {
+  89 |                     if (e.PermissionKind == CoreWebView2PermissionKind.Geolocation)
+  90 |                     {
+  91 |                         e.State = CoreWebView2PermissionState.Deny;
+  92 |                         e.Handled = true;
+  93 |                     }
+  94 |                 };
+  95 | 
+  96 |                 // ────────────────────────────────────────────────────────────────
+  97 |                 // 5. Ad-blocking
+  98 |                 // ────────────────────────────────────────────────────────────────
+  99 |                 AdBlocker = new AdBlocker(WebViewControl.CoreWebView2);
+ 100 | 
+ 101 |                 // ────────────────────────────────────────────────────────────────
+ 102 |                 // 6. Image / video toggle handler
+ 103 |                 // ────────────────────────────────────────────────────────────────
+ 104 |                 ImageToggleHandler = new ImageToggleHandler(WebViewControl.CoreWebView2);
+ 105 | 
+ 106 |                 // ────────────────────────────────────────────────────────────────
+ 107 |                 // 7. HTML-capture services
+ 108 |                 // ────────────────────────────────────────────────────────────────
+ 109 |                 HtmlCaptureService = new HtmlCaptureService(WebViewControl.CoreWebView2, StatusText);
+ 110 |                 CaptureManager = new HtmlCaptureManager(HtmlCaptureService, NavigationHandler, LinksSavePath);
+ 111 | 
+ 112 |                 // ────────────────────────────────────────────────────────────────
+ 113 |                 // 8. Inject find-helper script for Ctrl+F
+ 114 |                 // ────────────────────────────────────────────────────────────────
+ 115 |                 string findHelperJsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "findHelper.js");
+ 116 |                 if (File.Exists(findHelperJsPath))
+ 117 |                 {
+ 118 |                     string findScript = File.ReadAllText(findHelperJsPath);
+ 119 |                     await WebViewControl.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(findScript);
+ 120 |                 }
+ 121 | 
+ 122 |                 // ────────────────────────────────────────────────────────────────
+ 123 |                 // 9. Listen for find results
+ 124 |                 // ────────────────────────────────────────────────────────────────
+ 125 |                 WebViewControl.CoreWebView2.WebMessageReceived += (sender, args) =>
+ 126 |                 {
+ 127 |                     try
+ 128 |                     {
+ 129 |                         string json = args.TryGetWebMessageAsString();
+ 130 |                         using JsonDocument doc = JsonDocument.Parse(json);
+ 131 |                         var root = doc.RootElement;
+ 132 | 
+ 133 |                         if (root.TryGetProperty("type", out var type) && type.GetString() == "findResult")
+ 134 |                         {
+ 135 |                             int matchCount = root.TryGetProperty("matchCount", out var mc) ? mc.GetInt32() : 0;
+ 136 |                             int activeIndex = -1;
+ 137 | 
+ 138 |                             if (root.TryGetProperty("activeIndex", out var ai))
+ 139 |                             {
+ 140 |                                 activeIndex = ai.GetInt32();
+ 141 |                             }
+ 142 | 
+ 143 |                             Application.Current.Dispatcher.Invoke(() =>
+ 144 |                             {
+ 145 |                                 if (matchCount == 0)
+ 146 |                                 {
+ 147 |                                     MatchLabel.Text = "";
+ 148 |                                 }
+ 149 |                                 else
+ 150 |                                 {
+ 151 |                                     MatchLabel.Text = $"{activeIndex + 1} of {matchCount}";
+ 152 |                                 }
+ 153 |                             });
+ 154 |                         }
+ 155 |                     }
+ 156 |                     catch (Exception ex)
+ 157 |                     {
+ 158 |                         Debug.WriteLine($"WebMessageReceived error: {ex.Message}");
+ 159 |                     }
+ 160 |                 };
+ 161 | 
+ 162 |                 // ────────────────────────────────────────────────────────────────
+ 163 |                 // 10. Ready flag
+ 164 |                 // ────────────────────────────────────────────────────────────────
+ 165 |                 _isInitialized = true;
+ 166 |                 StatusText.Text = "Ready";
+ 167 |             }
+ 168 |             catch (Exception ex)
+ 169 |             {
+ 170 |                 StatusText.Text = "Initialization failed";
+ 171 |                 MessageBox.Show(
+ 172 |                     $"Failed to initialize WebView2:\n{ex.Message}",
+ 173 |                     "Error",
+ 174 |                     MessageBoxButton.OK,
+ 175 |                     MessageBoxImage.Error);
+ 176 |             }
+ 177 |         }
+ 178 | 
+ 179 |         private void SetSiteAddress()
+ 180 |         {
+ 181 |             string url = CurrentAddress;
+ 182 |             if (Uri.TryCreate(url, UriKind.Absolute, out Uri uri))
+ 183 |             {
+ 184 |                 SiteAddress = $"{uri.Scheme}://{uri.Host}";
+ 185 |             }
+ 186 |         }
+ 187 | 
+ 188 |         private void ToggleImages_Changed(object sender, RoutedEventArgs e)
+ 189 |         {
+ 190 |             if (!_isInitialized) return;
+ 191 |             // Pass the current IsChecked state (true = images enabled, false = images disabled)
+ 192 |             // The handler name 'Changed' implies setting the state based on the checkbox.
+ 193 |             // Assuming the checkbox 'On' means 'images are enabled/displayed'.
+ 194 |             bool imagesEnabled = ToggleImagesButton.IsChecked == true;
+ 195 |             ImageToggleHandler.ToggleImages();
+ 196 |         }
+ 197 | 
+ 198 |         private void ToggleVideos_Changed(object sender, RoutedEventArgs e)
+ 199 |         {
+ 200 |             if (!_isInitialized) return;
+ 201 |             // Pass the current IsChecked state (true = videos enabled, false = videos disabled)
+ 202 |             bool videosEnabled = ToggleVideosButton.IsChecked == true;
+ 203 |             ImageToggleHandler.ToggleVideos();
+ 204 |         }
+ 205 | 
+ 206 | 
+ 207 |         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+ 208 |         {
+ 209 |             while (!_isInitialized)
+ 210 |                 await Task.Delay(50);
+ 211 | 
+ 212 |             Loaded -= MainWindow_Loaded;
+ 213 | 
+ 214 |             Activate();
+ 215 |             AddressBar.Focus();
+ 216 |             AddressBar.SelectAll();
+ 217 |         }
+ 218 | 
+ 219 |         private void MainWindow_Closing(object? sender, CancelEventArgs e)
+ 220 |         {
+ 221 |             try
+ 222 |             {
+ 223 |                 WebViewControl?.Dispose();
+ 224 |             }
+ 225 |             catch (Exception ex)
+ 226 |             {
+ 227 |                 MessageBox.Show($"Error during cleanup: {ex.Message}", "Warning",
+ 228 |                     MessageBoxButton.OK, MessageBoxImage.Warning);
+ 229 |             }
+ 230 |         }
+ 231 | 
+ 232 |         private async void CaptureFullHtmlButton_Click(object sender, RoutedEventArgs e)
+ 233 |         {
+ 234 |             if (!_isInitialized) return;
+ 235 | 
+ 236 |             try
+ 237 |             {
+ 238 |                 string html = await WebViewControl.CoreWebView2.ExecuteScriptAsync(
+ 239 |                     "document.documentElement.outerHTML");
+ 240 | 
+ 241 |                 if (html.StartsWith("\"") && html.EndsWith("\""))
+ 242 |                 {
+ 243 |                     html = html.Substring(1, html.Length - 2);
+ 244 |                     html = System.Text.RegularExpressions.Regex.Unescape(html);
+ 245 |                 }
+ 246 | 
+ 247 |                 string filePath = Path.Combine(
+ 248 |                     Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+ 249 |                     $"FullHtmlCapture_{DateTime.Now:yyyyMMddHHmmss}.html");
+ 250 | 
+ 251 |                 File.WriteAllText(filePath, html, Encoding.UTF8);
+ 252 | 
+ 253 |                 MessageBox.Show($"Full HTML saved to:\n{filePath}", "Capture Complete",
+ 254 |                     MessageBoxButton.OK, MessageBoxImage.Information);
+ 255 |             }
+ 256 |             catch (Exception ex)
+ 257 |             {
+ 258 |                 MessageBox.Show($"Failed to capture HTML: {ex.Message}", "Error",
+ 259 |                     MessageBoxButton.OK, MessageBoxImage.Error);
+ 260 |             }
+ 261 |         }
+ 262 |     }
+ 263 | }
+ 264 | 
+
+// -----------------------------------
+◈ End File: WebView2.xaml.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: WebViewEnvironment.cs
+// -----------------------------------
+
+   1 | using Microsoft.Web.WebView2.Core;
+   2 | 
+   3 | namespace WebView2Browser
+   4 | {
+   5 |     public static class WebViewEnvironment
+   6 |     {
+   7 |         private static CoreWebView2Environment _sharedEnvironment;
+   8 |         private static readonly SemaphoreSlim _envLock = new SemaphoreSlim(1, 1);
+   9 | 
+  10 |         public static async Task<CoreWebView2Environment> GetSharedEnvironmentAsync()
+  11 |         {
+  12 |             if (_sharedEnvironment == null)
+  13 |             {
+  14 |                 await _envLock.WaitAsync();
+  15 |                 try
+  16 |                 {
+  17 |                     if (_sharedEnvironment == null)
+  18 |                     {
+  19 |                         _sharedEnvironment = await CoreWebView2Environment.CreateAsync();
+  20 |                     }
+  21 |                 }
+  22 |                 finally
+  23 |                 {
+  24 |                     _envLock.Release();
+  25 |                 }
+  26 |             }
+  27 |             return _sharedEnvironment;
+  28 |         }
+  29 |     }
+  30 | }
+  31 | 
+
+// -----------------------------------
+◈ End File: WebViewEnvironment.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: WebViewNavigationHandler.cs
+// -----------------------------------
+
+   1 | using Microsoft.Web.WebView2.Core;
+   2 | using System;
+   3 | using System.Runtime.InteropServices;
+   4 | using System.Threading;
+   5 | using System.Threading.Tasks;
+   6 | using System.Windows;
+   7 | using System.Windows.Controls;
+   8 | 
+   9 | namespace WebView2Browser
+  10 | {
+  11 |     public class WebViewNavigationHandler
+  12 |     {
+  13 |         private readonly CoreWebView2 _webView;
+  14 |         private readonly TextBlock _statusText;
+  15 |         private readonly TextBox _addressBar;
+  16 |         private TaskCompletionSource<bool> _navigationTaskCompletionSource;
+  17 |         private TaskCompletionSource<bool> _domReadyCompletionSource;
+  18 | 
+  19 |         public WebViewNavigationHandler(CoreWebView2 webView, TextBlock statusText, TextBox addressBar)
+  20 |         {
+  21 |             _webView = webView;
+  22 |             _statusText = statusText;
+  23 |             _addressBar = addressBar;
+  24 |         }
+  25 | 
+  26 |         public void SetupNavigationHandlers()
+  27 |         {
+  28 |             _webView.NewWindowRequested += (sender, args) =>
+  29 |             {
+  30 |                 args.Handled = true;
+  31 |                 Application.Current.Dispatcher.Invoke(async () =>
+  32 |                 {
+  33 |                     await NavigateToAddressAsync(args.Uri);
+  34 |                     _statusText.Text = $"Loading: {args.Uri}";
+  35 |                 });
+  36 |             };
+  37 | 
+  38 |             _webView.NavigationStarting += (sender, args) =>
+  39 |                 Application.Current.Dispatcher.Invoke(() => _statusText.Text = $"Loading: {args.Uri}");
+  40 | 
+  41 | 
+  42 |             _webView.NavigationCompleted += (_, args) =>
+  43 |                 Application.Current.Dispatcher.Invoke(() =>
+  44 |                 {
+  45 |                     _statusText.Text = args.IsSuccess ? "Ready" : $"Failed: {args.WebErrorStatus}";
+  46 | 
+  47 |                     // Only update the bar if it doesn't already have focus
+  48 |                     if (!_addressBar.IsKeyboardFocusWithin)
+  49 |                         UpdateAddressBar();
+  50 |                 });
+  51 | 
+  52 | 
+  53 |             _webView.SourceChanged += (sender, args) =>
+  54 |                 Application.Current.Dispatcher.Invoke(UpdateAddressBar);
+  55 |         }
+  56 | 
+  57 |         public async Task NavigateToAddressAsync(string address = "", int timeoutMilliseconds = 30000)
+  58 |         {
+  59 |             if (_webView == null) return;
+  60 | 
+  61 |             string currentAddress = string.IsNullOrEmpty(address)
+  62 |                 ? _addressBar.Text.Trim()
+  63 |                 : address;
+  64 | 
+  65 |             if (string.IsNullOrWhiteSpace(currentAddress))
+  66 |             {
+  67 |                 await _webView.ExecuteScriptAsync("window.location.href = 'about:blank';");
+  68 |                 return;
+  69 |             }
+  70 | 
+  71 |             if (!currentAddress.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
+  72 |                 !currentAddress.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+  73 |             {
+  74 |                 currentAddress = "https://" + currentAddress;
+  75 |             }
+  76 | 
+  77 |             void NavigationCompletedHandler(object sender, CoreWebView2NavigationCompletedEventArgs e)
+  78 |             {
+  79 |                 _webView.NavigationCompleted -= NavigationCompletedHandler;
+  80 |                 _navigationTaskCompletionSource?.TrySetResult(e.IsSuccess);
+  81 |             }
+  82 | 
+  83 |             async void DOMReadyHandler(object sender, EventArgs e)
+  84 |             {
+  85 |                 _webView.DOMContentLoaded -= DOMReadyHandler;
+  86 | 
+  87 |                 try
+  88 |                 {
+  89 |                     var isPageComplete = await _webView.ExecuteScriptAsync(@"
+  90 |                         (function() {
+  91 |                             if (document.readyState === 'complete') return true;
+  92 |                             return new Promise(resolve => {
+  93 |                                 const timer = setTimeout(() => resolve(false), 5000);
+  94 |                                 window.addEventListener('load', () => {
+  95 |                                     clearTimeout(timer);
+  96 |                                     resolve(true);
+  97 |                                 }, {once: true});
+  98 |                             });
+  99 |                         })();
+ 100 |                     ");
+ 101 | 
+ 102 |                     _domReadyCompletionSource?.TrySetResult(isPageComplete == "true");
+ 103 |                 }
+ 104 |                 catch (Exception ex)
+ 105 |                 {
+ 106 |                     _domReadyCompletionSource?.TrySetException(ex);
+ 107 |                 }
+ 108 |             }
+ 109 | 
+ 110 |             try
+ 111 |             {
+ 112 |                 _navigationTaskCompletionSource = new TaskCompletionSource<bool>();
+ 113 |                 _domReadyCompletionSource = new TaskCompletionSource<bool>();
+ 114 | 
+ 115 |                 var webViewRef = _webView;
+ 116 | 
+ 117 |                 var cancellationTokenSource = new CancellationTokenSource(timeoutMilliseconds);
+ 118 | 
+ 119 |                 cancellationTokenSource.Token.Register(() =>
+ 120 |                 {
+ 121 |                     // 1. Always marshal to the UI thread
+ 122 |                     Application.Current.Dispatcher.Invoke(() =>
+ 123 |                     {
+ 124 |                         // 2. Prevent use after dispose
+ 125 |                         try
+ 126 |                         {
+ 127 |                             _webView.Stop();
+ 128 |                         }
+ 129 |                         catch (InvalidOperationException) { /* already gone */ }
+ 130 |                         catch (COMException) { /* already gone */ }
+ 131 |                     });
+ 132 | 
+ 133 |                     _navigationTaskCompletionSource?.TrySetCanceled();
+ 134 |                     _domReadyCompletionSource?.TrySetCanceled();
+ 135 |                 });
+ 136 | 
+ 137 |                 _webView.NavigationCompleted += NavigationCompletedHandler;
+ 138 |                 _webView.DOMContentLoaded += DOMReadyHandler;
+ 139 | 
+ 140 |                 _webView.Navigate(currentAddress);
+ 141 | 
+ 142 |                 await Task.WhenAny(
+ 143 |                     Task.WhenAll(_navigationTaskCompletionSource.Task, _domReadyCompletionSource.Task),
+ 144 |                     Task.Delay(timeoutMilliseconds, cancellationTokenSource.Token)
+ 145 |                 );
+ 146 | 
+ 147 |                 if (cancellationTokenSource.IsCancellationRequested)
+ 148 |                 {
+ 149 |                     throw new TimeoutException($"Navigation timed out after {timeoutMilliseconds}ms");
+ 150 |                 }
+ 151 | 
+ 152 |                 if (!_navigationTaskCompletionSource.Task.Result || !_domReadyCompletionSource.Task.Result)
+ 153 |                 {
+ 154 |                     //throw new Exception("Page failed to load completely");
+ 155 |                 }
+ 156 |             }
+ 157 |             catch (OperationCanceledException)
+ 158 |             {
+ 159 |                 throw new TimeoutException($"Navigation timed out after {timeoutMilliseconds}ms");
+ 160 |             }
+ 161 |             catch (Exception ex)
+ 162 |             {
+ 163 |                 Application.Current.Dispatcher.Invoke(() =>
+ 164 |                 {
+ 165 |                     _statusText.Text = "Navigation error";
+ 166 |                 });
+ 167 |                 throw;
+ 168 |             }
+ 169 |             finally
+ 170 |             {
+ 171 |                 _webView.NavigationCompleted -= NavigationCompletedHandler;
+ 172 |                 _webView.DOMContentLoaded -= DOMReadyHandler;
+ 173 |             }
+ 174 |         }
+ 175 | 
+ 176 |         public void GoBack()
+ 177 |         {
+ 178 |             if (_webView?.CanGoBack == true)
+ 179 |                 _webView.GoBack();
+ 180 |         }
+ 181 | 
+ 182 |         public void GoForward()
+ 183 |         {
+ 184 |             if (_webView?.CanGoForward == true)
+ 185 |                 _webView.GoForward();
+ 186 |         }
+ 187 | 
+ 188 |         public void Refresh()
+ 189 |         {
+ 190 |             _webView?.Reload();
+ 191 |         }
+ 192 | 
+ 193 |         public void GoHome()
+ 194 |         {
+ 195 |             _webView?.Navigate("about:blank");
+ 196 |         }
+ 197 | 
+ 198 |         private void UpdateAddressBar()
+ 199 |         {
+ 200 |             if (_webView == null || string.IsNullOrEmpty(_webView.Source)) return;
+ 201 | 
+ 202 |             int selStart = _addressBar.SelectionStart;
+ 203 |             int selLen   = _addressBar.SelectionLength;
+ 204 | 
+ 205 |             _addressBar.Text = _webView.Source;
+ 206 | 
+ 207 |             _addressBar.SelectionStart = selStart;
+ 208 |             _addressBar.SelectionLength = selLen;
+ 209 |         }
+ 210 |     }
+ 211 | }
+ 212 | 
+
+// -----------------------------------
+◈ End File: WebViewNavigationHandler.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: WebViewSecuritySettings.cs
+// -----------------------------------
+
+   1 | // WebViewSecuritySettings.cs
+   2 | using Microsoft.Web.WebView2.Core;
+   3 | 
+   4 | namespace WebView2Browser
+   5 | {
+   6 |     public static class WebViewSecuritySettings
+   7 |     {
+   8 |         public static void ApplySecureSettings(CoreWebView2Settings settings)
+   9 |         {
+  10 |             settings.AreDefaultContextMenusEnabled = false;
+  11 |             settings.AreDevToolsEnabled = false;
+  12 |             settings.IsStatusBarEnabled = false;
+  13 |             settings.AreBrowserAcceleratorKeysEnabled = true;
+  14 |             settings.IsWebMessageEnabled = true;  // ✅ CHANGED: Must be true for find feature
+  15 |             settings.AreHostObjectsAllowed = false;
+  16 |             settings.IsZoomControlEnabled = false;
+  17 |         }
+  18 |     }
+  19 | }
+  20 | 
+
+// -----------------------------------
+◈ End File: WebViewSecuritySettings.cs
+// ======================================================================
+

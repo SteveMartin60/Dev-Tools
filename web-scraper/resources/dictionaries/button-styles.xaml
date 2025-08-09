@@ -1,0 +1,742 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    >
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonBasicBorder                              -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonBasicBorder" TargetType="{x:Type Button}">
+        <Setter Property="Template" x:Name="TestProperty">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border x:Name="Border" CornerRadius="5" Background="Transparent" Width="120" Height="120" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,2,2,2" >
+                    </Border>
+                    <!--....................................................-->
+                    <ControlTemplate.Triggers>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Loaded">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="Home"  Storyboard.TargetProperty="(Label.Opacity)" From="0.0" To="1.0" Duration="0:0:0.2"  />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                    </ControlTemplate.Triggers>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#rendegion Begin Region ButtonBasicBorder                           -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonBase2"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBasicBorder}">
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonBasicBorder                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonBaseRound                                -->
+    <!--....................................................................-->
+    <Style TargetType="Button" x:Key="ButtonBaseRound">
+        <Style.Resources>
+            <Style TargetType="Border" x:Name="TestStyle">
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+        </Style.Resources>
+        <Setter Property="Width"           Value="72"            />
+        <Setter Property="BorderBrush"     Value="SteelBlue"   />
+        <Setter Property="Background"      Value="Transparent" />
+        <Setter Property="Foreground"      Value="White"       />
+        <Setter Property="FontSize"        Value="26"            />
+        <Setter Property="Margin"          Value="2,2,4,3"       />
+        <Setter Property="Padding"         Value="-2,-4,0,0"     />
+        <Setter Property="BorderThickness" Value="2,2,2,2"             />
+        
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonBaseRound                               -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonRoundLarge                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonRoundLarge"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBaseRound}">
+        <Setter Property="Width"       Value="Auto"/>
+        <Setter Property="BorderBrush" Value="SteelBlue"/>
+        <Setter Property="Foreground"  Value="DodgerBlue"/>
+        <Setter Property="Background"  Value="Transparent"/>
+        <Setter Property="FontSize"    Value="20"/>
+        <Setter Property="Margin"      Value="1"/>
+        <Setter Property="Padding"      Value="1,-3,1,1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonRoundLarge                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonRoundSmall                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonRoundSmall"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBaseRound}">
+        <Setter Property="Width"       Value="40"/>
+        <Setter Property="Height"      Value="40"/>
+        <Setter Property="BorderBrush" Value="LightSteelBlue"/>
+        <Setter Property="Foreground"  Value="White"/>
+        <Setter Property="Background"  Value="Transparent"/>
+        <Setter Property="FontSize"    Value="15"/>
+        <Setter Property="Margin"      Value="1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonRoundSmall                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonRoundBlue                                -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonRoundBlue"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundLarge}">
+        <Setter Property="Background"  Value="#441E90FF"/>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonRoundLarge                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonCrosshairs                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonStyleCrosshairs" TargetType="{x:Type Button}">
+        <Setter Property="Foreground"                 Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background"                 Value="Transparent"/>
+        <Setter Property="Padding"                    Value="5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment"   Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <StackPanel>
+                        <Image Source="/images/crosshairs-small.png"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonCrosshairs                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonHandStop                                 -->
+    <!--....................................................................-->
+    <Style TargetType="{x:Type Button}" x:Key="ButtonHandStop">
+        <!--................................................................-->
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <!--................................................-->
+                        <Border x:Name="Border" CornerRadius="5" Background="Transparent" Width="120" Height="120" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,2,2,2" >
+                            <!--............................................-->
+                            <Image x:Name="StopSign"  Margin="2,2,2,2" IsHitTestVisible="False" Source="/images/stop-sign-hand.png" />
+                            <!--............................................-->
+                        </Border>
+                        <!--................................................-->
+                    </Viewbox>
+                    <!--....................................................-->
+                    <ControlTemplate.Triggers>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Loaded">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="StopSign"  Storyboard.TargetProperty="(Label.Opacity)" From="0.0" To="1.0" Duration="0:0:0.2"  />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                    </ControlTemplate.Triggers>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonHandStop                                -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonExitWalkout                              -->
+    <!--....................................................................-->
+    <Style TargetType="{x:Type Button}" x:Key="ButtonExitWalkout">
+        <!--................................................................-->
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <!--................................................-->
+                        <Border x:Name="Border" CornerRadius="5" Background="Transparent" Width="120" Height="120" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,2,2,2" >
+                            <!--............................................-->
+                            <Image x:Name="ExitSign"  Margin="2,2,2,2" IsHitTestVisible="False" Source="/images/exit-icon.png"/>
+                            <!--............................................-->
+                        </Border>
+                        <!--................................................-->
+                    </Viewbox>
+                    <!--....................................................-->
+                    <ControlTemplate.Triggers>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Loaded">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="ExitSign"  Storyboard.TargetProperty="(Label.Opacity)" From="0.0" To="1.0" Duration="0:0:0.2"  />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                    </ControlTemplate.Triggers>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonExitWalkout                             -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonReturnHome                              -->
+    <!--....................................................................-->
+    <Style TargetType="{x:Type Button}" x:Key="ButtonReturnHome">
+        <!--................................................................-->
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <!--................................................-->
+                        <Border x:Name="Border" CornerRadius="5" Background="Transparent" Width="120" Height="120" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,2,2,2" >
+                            <!--............................................-->
+                            <Image x:Name="Home"  Margin="-2,0,-2,0" IsHitTestVisible="False" Source="/images/home-inspection.png"/>
+                            <!--............................................-->
+                        </Border>
+                        <!--................................................-->
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonReturnHome                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonFileOpen                                 -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonFileOpen"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <Border CornerRadius="5" Background="Transparent" Width="40" Height="40" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,1,2,1">
+                            <Image Source="/images/file-open.png"  Margin="2"/>
+                        </Border>
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonFileOpen                                -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonImageModeOptical                          -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonImageModeOptical"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundBlue}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <Border CornerRadius="5" Background="Transparent" Width="112" Height="48" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,1,2,1">
+                            <Image Source="/images/camera-optical.png"  Margin="2"/>
+                        </Border>
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonImageModeOptical                         -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonImageModeXRay                             -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonImageModeXRay" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundBlue}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <Border CornerRadius="5" Background="Transparent" Width="112" Height="48" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2,1,2,1">
+                            <Image IsHitTestVisible="False" Source="/images/camera-grayscale.png" Margin="0,-5,0,-6" />
+                        </Border>
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonImageModeXRay                            -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonSnapshotOptical                          -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonSnapshotOptical" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundBlue}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <Border CornerRadius="5" Background="Transparent" Width="112" Height="48" BorderBrush="LightSteelBlue" BorderThickness="2"  Margin="2,1,2,1">
+                            <Image IsHitTestVisible="False" Source="/images/pcb-inspection-color.png" />
+                        </Border>
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonSnapshotOptical                         -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonSnapshotXRay                             -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonSnapshotXRay" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundBlue}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <Border CornerRadius="5" Background="Transparent" Width="112" Height="48" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2">
+                            <Image IsHitTestVisible="False" Source="/images/pcb-inspection-grayscale.png" />
+                        </Border>
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonSnapshotXRay                            -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonGreenPCB                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonGreenPCB"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBaseRound}">
+        <Setter Property="Width" Value="112"/>
+        <Setter Property="Width" Value="112"/>
+        <Setter Property="BorderBrush" Value="LightSteelBlue"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonGreenPCB                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonImageModeTest                         -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonImageModeTest"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonRoundBlue}">
+        <Setter Property="Content" >
+            <Setter.Value >
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Viewbox>
+                        <Border CornerRadius="5" Background="Transparent" Width="112" Height="48" BorderBrush="LightSteelBlue" BorderThickness="2" Margin="2">
+                            <Image Source="/images/camera-optical.png"  Margin="2"/>
+                        </Border>
+                    </Viewbox>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <!--....................................................-->
+                    <ControlTemplate.Triggers>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Loaded">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border"  Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="Red" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Button.PreviewMouseUp">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Margin" To="15" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Button.PreviewMouseDown">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="Margin" To="5" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Button.MouseEnter">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="CornflowerBlue" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                        <EventTrigger RoutedEvent="Button.MouseLeave">
+                            <!--............................................-->
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="DodgerBlue" Duration="0:0:0.1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <!--............................................-->
+                        </EventTrigger>
+                        <!--................................................-->
+                    </ControlTemplate.Triggers>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonImageModeTest                        -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonScanQrCode                                   -->
+    <!--....................................................................-->
+    <Style TargetType="{x:Type Button}" x:Key="ButtonScanQrCode" BasedOn="{StaticResource ButtonBaseRound}">
+        <!--................................................................-->
+        <Setter Property="Width"  Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+            <!--............................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                <!--........................................................-->
+                    <Grid Width="40">
+                    <!--....................................................-->
+                        <Image Source="/images/qr-code-blue.png" Width="38.5" Height="38.5"/>
+                        <!--................................................-->
+                        <Border BorderBrush="LightSteelBlue" BorderThickness="2"/>
+                        <!--................................................-->
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Scan" Foreground="White" FontSize="16.6" Margin="2,0,3,5" HorizontalAlignment="Center" FontWeight="DemiBold"/>
+                        <!--................................................-->
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="White" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"></TextBlock>
+                        <!--................................................-->
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--................................................................-->
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonScanQrCode                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonLiveQrCode                               -->
+    <!--....................................................................-->
+    <Style TargetType="{x:Type Button}" x:Key="ButtonLiveQrCode" BasedOn="{StaticResource ButtonBaseRound}">
+        <!--................................................................-->
+        <Setter Property="Width"  Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+            <!--............................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                <!--........................................................-->
+                    <Grid Width="40">
+                    <!--....................................................-->
+                        <Image Source="/images/qr-code-blue.png" Width="38.5" Height="38.5"/>
+                        <!--................................................-->
+                        <Border BorderBrush="LightSteelBlue" BorderThickness="2"/>
+                        <!--................................................-->
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="Black" FontSize="16.3" Margin="2,0,3,5" HorizontalAlignment="Center"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Live" Foreground="White" FontSize="16.6" Margin="2,0,3,5" HorizontalAlignment="Center" FontWeight="DemiBold"/>
+                        <!--................................................-->
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="Black" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"> <TextBlock.Effect><BlurEffect KernelType="Box" Radius="2" /> </TextBlock.Effect> </TextBlock>
+                        <TextBlock Text="Code" Foreground="White" FontSize="16" Margin="0,16,0,0" HorizontalAlignment="Center" FontWeight="DemiBold"></TextBlock>
+                        <!--................................................-->
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--................................................................-->
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonLiveQrCode                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonQrTest                                   -->
+    <!--....................................................................-->
+    <Style TargetType="Button" x:Key="ButtonQrTest" BasedOn="{StaticResource ButtonScanQrCode}">
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonQrTest                                  -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonBorderSmall                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonBorderSmall"  TargetType="{x:Type Button}" >
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="Border.CornerRadius"    Value="3.5" />
+                <Setter Property="Border.BorderThickness" Value="1"/>
+                <Setter Property="Border.BorderBrush"     Value="LightSteelBlue"/>
+            </Style>
+            <Style TargetType="Image">
+                <Setter Property="Image.Margin" Value="2"/>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Width"           Value="34"            />
+        <Setter Property="Height"          Value="34"            />
+        <Setter Property="BorderThickness" Value="1"             />
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonBorderSmall                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonNorthSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonNorthSingle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-north.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonNorthSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonSouthSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonSouthSingle"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-south.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonSouthSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonEastSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonEastSingle"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-east.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonEastSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonWestSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonWestSingle"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-west.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonWestSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonNorthEastSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonNorthEastSingle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-north-east.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonNorthEastSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonNorthWestSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonNorthWestSingle"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-north-west.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonNorthWestSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonSouthEastSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonSouthEastSingle"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-south-east.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonSouthEastSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonSouthWestSingle                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonSouthWestSingle"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <Image Source="/images/arrow-no-bar-south-west.png"/>
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonSouthWestSingle                              -->
+    <!--....................................................................-->
+    <!--#region Begin Region ButtonBlueZero                               -->
+    <!--....................................................................-->
+    <Style x:Key="ButtonBlueZero"  TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBorderSmall}">
+        <Setter Property="Template">
+            <!--............................................................-->
+            <Setter.Value>
+                <!--........................................................-->
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <!--....................................................-->
+                    <Border>
+                        <TextBlock Text="0" FontSize="30" FontWeight="DemiBold" Margin="7,-5.4,0,0" Foreground="DodgerBlue" />
+                    </Border>
+                    <!--....................................................-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--....................................................................-->
+    <!--#endregion End Region ButtonBlueZero                              -->
+    <!--....................................................................-->
+</ResourceDictionary>
+    

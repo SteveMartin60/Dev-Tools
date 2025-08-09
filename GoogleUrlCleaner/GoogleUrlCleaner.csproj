@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="..\Resources\BlueButtonStyle.xaml" Link="BlueButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Dev-Test\pcb-imaging-automation-review\mesh-dotnet-lib\mesh-logger\mesh-logger.csproj" />
+    <ProjectReference Include="..\..\..\..\Dev-Test\pcb-imaging-automation-review\mesh-dotnet-lib\native-windows-api\native-windows-api.csproj" />
+  </ItemGroup>
+
+</Project>

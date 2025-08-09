@@ -1,0 +1,1945 @@
+"ly" Verbs		Length	|	Verbs	Length	|	Adjectives	Length	|	Nouns		Length	|	Superlatives	Length
+----------------------------------------------------------------------------------------------------------------------
+ably			4		|	writhe	6		|	an			2		|	go			2		|	best			4
+duly			4       |   wrench	6       |   my			2       |   if			2       |   most			4
+idly			4       |   worsen	6       |   no			2       |   it			2       |   most			4
+only			4       |   wonder	6       |   OK			2       |   act			3       |   worst			5
+amply			5       |   wobble	6       |   all			3       |   ads			3       |   least			5
+aptly			5       |   wither	6       |   any			3       |   age			3       |   ablest			6
+badly			5       |   wiggle	6       |   bad			3       |   aid			3       |   bluest			6
+coyly			5       |   whiten	6       |   big			3       |   air			3       |   cutest			6
+daily			5       |   weaken	6       |   coy			3       |   arm			3       |   driest			6
+dimly			5       |   wander	6       |   cut			3       |   art			3       |   fewest			6
+dooly			5       |   waddle	6       |   day			3       |   ask			3       |   finest			6
+drily			5       |   verify	6       |   dim			3       |   awe			3       |   freest			6
+dryly			5       |   vanish	6       |   dry			3       |   bad			3       |   iciest			6
+dully			5       |   vacate	6       |   due			3       |   bag			3       |   latest			6
+early			5       |   uproot	6       |   far			3       |   bar			3       |   lowest			6
+fully			5       |   uphold	6       |   fat			3       |   bat			3       |   newest			6
+gaily			5       |   update	6       |   few			3       |   bed			3       |   nicest			6
+haply			5       |   unwrap	6       |   fit			3       |   bee			3       |   oddest			6
+hotly			5       |   unwind	6       |   fun			3       |   bet			3       |   oldest			6
+icily			5       |   unveil	6       |   her			3       |   bid			3       |   palest			6
+laxly			5       |   unroll	6       |   his			3       |   big			3       |   purest			6
+madly			5       |   unpack	6       |   hot			3       |   bit			3       |   rarest			6
+newly			5       |   unlock	6       |   icy			3       |   box			3       |   rawest			6
+oddly			5       |   unload	6       |   ill			3       |   boy			3       |   ripest			6
+sadly			5       |   unfurl	6       |   its			3       |   bug			3       |   rudest			6
+shyly			5       |   unfold	6       |   key			3       |   bus			3       |   safest			6
+slyly			5       |   typify	6       |   lax			3       |   buy			3       |   sanest			6
+truly			5       |   twitch	6       |   low			3       |   can			3       |   shiest			6
+wetly			5       |   tumble	6       |   mad			3       |   cap			3       |   sliest			6
+wryly			5       |   trudge	6       |   new			3       |   car			3       |   sorest			6
+acidly			6       |   triple	6       |   odd			3       |   cat			3       |   surest			6
+airily			6       |   travel	6       |   old			3       |   cow			3       |   tamest			6
+aridly			6       |   totter	6       |   one			3       |   cry			3       |   truest			6
+avidly			6       |   topple	6       |   our			3       |   cub			3       |   vilest			6
+baldly			6       |   tiptoe	6       |   own			3       |   cup			3       |   widest			6
+barely			6       |   tingle	6       |   raw			3       |   cut			3       |   wisest			6
+bodily			6       |   tickle	6       |   red			3       |   dad			3       |   baldest			7
+boldly			6       |   thwart	6       |   sad			3       |   day			3       |   biggest			7
+busily			6       |   thrust	6       |   sea			3       |   dig			3       |   boldest			7
+cagily			6       |   thrive	6       |   shy			3       |   dog			3       |   bravest			7
+calmly			6       |   thrill	6       |   six			3       |   dot			3       |   busiest			7
+chicly			6       |   thread	6       |   sly			3       |   due			3       |   calmest			7
+coldly			6       |   thrash	6       |   tan			3       |   ear			3       |   closest			7
+comely			6       |   thatch	6       |   ten			3       |   eat			3       |   coldest			7
+coolly			6       |   tether	6       |   the			3       |   egg			3       |   coolest			7
+cozily			6       |   tender	6       |   top			3       |   end			3       |   coziest			7
+curtly			6       |   tatter	6       |   two			3       |   era			3       |   crudest			7
+cutely			6       |   target	6       |   wax			3       |   eye			3       |   dampest			7
+daftly			6       |   tangle	6       |   wee			3       |   fad			3       |   darkest			7
+damply			6       |   tamper	6       |   wet			3       |   fan			3       |   dearest			7
+dankly			6       |   tailor	6       |   wry			3       |   fat			3       |   deepest			7
+darkly			6       |   tackle	6       |   able		4       |   fee			3       |   densest			7
+deafly			6       |   swivel	6       |   acid		4       |   few			3       |   dullest			7
+dearly			6       |   switch	6       |   ajar		4       |   fix			3       |   easiest			7
+deeply			6       |   swerve	6       |   arid		4       |   fly			3       |   edgiest			7
+deftly			6       |   survey	6       |   avid		4       |   foe			3       |   eeriest			7
+direly			6       |   supply	6       |   away		4       |   fog			3       |   evilest			7
+doubly			6       |   summon	6       |   baby		4       |   fun			3       |   fairest			7
+dourly			6       |   suffer	6       |   bald		4       |   fur			3       |   falsest			7
+dozily			6       |   submit	6       |   bare		4       |   gap			3       |   fastest			7
+drably			6       |   sublet	6       |   base		4       |   gas			3       |   firmest			7
+drolly			6       |   subdue	6       |   bats		4       |   god			3       |   fondest			7
+dually			6       |   stroke	6       |   bent		4       |   gun			3       |   fullest			7
+easily			6       |   strive	6       |   best		4       |   guy			3       |   gravest			7
+eerily			6       |   string	6       |   blue		4       |   hat			3       |   hardest			7
+evenly			6       |   strike	6       |   bold		4       |   hit			3       |   haziest			7
+fairly			6       |   stride	6       |   born		4       |   hot			3       |   highest			7
+feebly			6       |   stress	6       |   both		4       |   ice			3       |   ickiest			7
+finely			6       |   stream	6       |   buff		4       |   ink			3       |   kindest			7
+firmly			6       |   streak	6       |   busy		4       |   ion			3       |   laciest			7
+flatly			6       |   strand	6       |   calm		4       |   jam			3       |   largest			7
+fondly			6       |   strain	6       |   cave		4       |   jar			3       |   laziest			7
+foully			6       |   stitch	6       |   chic		4       |   job			3       |   leanest			7
+foxily			6       |   stifle	6       |   cold		4       |   joy			3       |   longest			7
+freely			6       |   steady	6       |   cool		4       |   key			3       |   loosest			7
+gamely			6       |   starve	6       |   cove		4       |   kid			3       |   loudest			7
+gently			6       |   stable	6       |   cozy		4       |   lab			3       |   maddest			7
+gladly			6       |   squirt	6       |   curt		4       |   law			3       |   meanest			7
+glibly			6       |   squirm	6       |   cute		4       |   lay			3       |   meekest			7
+glumly			6       |   squint	6       |   daft		4       |   leg			3       |   mildest			7
+gorily			6       |   squeal	6       |   damn		4       |   let			3       |   nearest			7
+grimly			6       |   squeak	6       |   damp		4       |   lie			3       |   neatest			7
+hardly			6       |   squash	6       |   dank		4       |   lip			3       |   noblest			7
+hazily			6       |   square	6       |   dark		4       |   log			3       |   nosiest			7
+highly			6       |   sprout	6       |   dead		4       |   low			3       |   numbest			7
+hourly			6       |   sprint	6       |   deaf		4       |   man			3       |   oiliest			7
+hugely			6       |   spring	6       |   dear		4       |   map			3       |   pinkest			7
+humbly			6       |   spread	6       |   deep		4       |   men			3       |   poorest			7
+jingly			6       |   sprawl	6       |   deft		4       |   mix			3       |   puniest			7
+justly			6       |   splice	6       |   dire		4       |   mom			3       |   rashest			7
+keenly			6       |   splash	6       |   dour		4       |   mud			3       |   reddest			7
+kindly			6       |   spirit	6       |   down		4       |   nap			3       |   richest			7
+lamely			6       |   spiral	6       |   drab		4       |   net			3       |   rosiest			7
+lastly			6       |   soften	6       |   dual		4       |   nut			3       |   saddest			7
+lately			6       |   sneeze	6       |   dull		4       |   oil			3       |   sickest			7
+lazily			6       |   snatch	6       |   dumb		4       |   one			3       |   slowest			7
+likely			6       |   smudge	6       |   each		4       |   pan			3       |   softest			7
+limply			6       |   smooth	6       |   east		4       |   pay			3       |   sourest			7
+lordly			6       |   slouch	6       |   easy		4       |   pen			3       |   spriest			7
+loudly			6       |   sketch	6       |   echo		4       |   pet			3       |   stalest			7
+lushly			6       |   single	6       |   edgy		4       |   pie			3       |   tallest			7
+mainly			6       |   signal	6       |   epic		4       |   pig			3       |   tartest			7
+meanly			6       |   sicken	6       |   even		4       |   pin			3       |   tautest			7
+meekly			6       |   shroud	6       |   evil		4       |   pop			3       |   tersest			7
+merely			6       |   shrink	6       |   fair		4       |   pot			3       |   tidiest			7
+mildly			6       |   shriek	6       |   fake		4       |   put			3       |   tiniest			7
+mostly			6       |   shower	6       |   fast		4       |   sky			3       |   ugliest			7
+mutely			6       |   shiver	6       |   few,		4       |   war			3       |   vaguest			7
+namely			6       |   shield	6       |   fine		4       |   way			3       |   vainest			7
+nearly			6       |   shelve	6       |   firm		4       |   wit			3       |   warmest			7
+neatly			6       |   sheath	6       |   five		4       |   airs		4       |   wariest			7
+nicely			6       |   shadow	6       |   flat		4       |   ants		4       |   weakest			7
+nimbly			6       |   settle	6       |   fond		4       |   arch		4       |   wettest			7
+nosily			6       |   select	6       |   foul		4       |   area		4       |   whitest			7
+numbly			6       |   seethe	6       |   four		4       |   arms		4       |   wildest			7
+openly			6       |   seduce	6       |   foxy		4       |   army		4       |   zaniest			7
+orally			6       |   secure	6       |   free		4       |   arts		4       |   angriest		8
+overly			6       |   season	6       |   full		4       |   arty		4       |   battiest		8
+partly			6       |   search	6       |   game		4       |   atom		4       |   beadiest		8
+pertly			6       |   scurry	6       |   gamy		4       |   aunt		4       |   blackest		8
+poorly			6       |   sculpt	6       |   gape		4       |   baby		4       |   blandest		8
+primly			6       |   scroll	6       |   glad		4       |   back		4       |   blankest		8
+purely			6       |   screen	6       |   glib		4       |   bags		4       |   bleakest		8
+rankly			6       |   scream	6       |   glum		4       |   bait		4       |   blondest		8
+raptly			6       |   scrawl	6       |   gold		4       |   bake		4       |   bluntest		8
+rarely			6       |   scrape	6       |   good		4       |   ball		4       |   bossiest		8
+rashly			6       |   scorch	6       |   gory		4       |   band		4       |   brashest		8
+really			6       |   school	6       |   gray		4       |   bank		4       |   briefest		8
+richly			6       |   sample	6       |   grey		4       |   barn		4       |   briskest		8
+rosily			6       |   salute	6       |   grim		4       |   bars		4       |   broadest		8
+rudely			6       |   saddle	6       |   grot		4       |   base		4       |   brownest		8
+safely			6       |   sadden	6       |   half		4       |   bass		4       |   bulkiest		8
+sanely			6       |   rustle	6       |   hard		4       |   bath		4       |   bumpiest		8
+simply			6       |   rumple	6       |   hazy		4       |   bats		4       |   burliest		8
+slowly			6       |   rumble	6       |   head		4       |   bead		4       |   bushiest		8
+smugly			6       |   ruffle	6       |   high		4       |   beam		4       |   cheapest		8
+snugly			6       |   rotate	6       |   hold		4       |   bean		4       |   choicest		8
+softly			6       |   rocket	6       |   hole		4       |   bear		4       |   cleanest		8
+solely			6       |   ripple	6       |   holy		4       |   beat		4       |   clearest		8
+sorely			6       |   riddle	6       |   home		4       |   beds		4       |   coarsest		8
+sourly			6       |   rework	6       |   hope		4       |   beef		4       |   corniest		8
+steely			6       |   reward	6       |   huge		4       |   beer		4       |   craziest		8
+subtly			6       |   revolt	6       |   hurt		4       |   bees		4       |   crispest		8
+surely			6       |   revoke	6       |   icky		4       |   begs		4       |   cruelest		8
+tamely			6       |   revive	6       |   idle		4       |   bell		4       |   curliest		8
+tautly			6       |   revise	6       |   iron		4       |   belt		4       |   daffiest		8
+thinly			6       |   revile	6       |   just		4       |   bend		4       |   dandiest		8
+tidily			6       |   review	6       |   keen		4       |   bike		4       |   dingiest		8
+trimly			6       |   revert	6       |   kind		4       |   bill		4       |   dirtiest		8
+unduly			6       |   revere	6       |   knit		4       |   bird		4       |   dizziest		8
+vainly			6       |   reveal	6       |   lacy		4       |   bite		4       |   dustiest		8
+vastly			6       |   revamp	6       |   lair		4       |   blow		4       |   earliest		8
+verily			6       |   return	6       |   lake		4       |   blue		4       |   emptiest		8
+viably			6       |   retort	6       |   lame		4       |   boat		4       |   faintest		8
+warily			6       |   retire	6       |   last		4       |   body		4       |   fanciest		8
+warmly			6       |   retell	6       |   late		4       |   boil		4       |   farthest		8
+weakly			6       |   retake	6       |   lazy		4       |   bomb		4       |   furthest		8
+weekly			6       |   retain	6       |   lead		4       |   bond		4       |   feeblest		8
+wholly			6       |   resume	6       |   lean		4       |   bone		4       |   fiercest		8
+widely			6       |   result	6       |   left		4       |   book		4       |   fieriest		8
+wildly			6       |   resort	6       |   less		4       |   boot		4       |   filmiest		8
+wisely			6       |   resist	6       |   lewd		4       |   boss		4       |   flakiest		8
+yearly			6       |   resign	6       |   life		4       |   bowl		4       |   flattest		8
+zanily			6       |   reside	6       |   like		4       |   bows		4       |   foamiest		8
+acutely			7       |   resent	6       |   limp		4       |   boys		4       |   foggiest		8
+adeptly			7       |   resell	6       |   live		4       |   bulb		4       |   frailest		8
+affably			7       |   rescue	6       |   long		4       |   buns		4       |   frankest		8
+alertly			7       |   reread	6       |   lost		4       |   burn		4       |   freshest		8
+aloofly			7       |   repute	6       |   loud		4       |   bush		4       |   funniest		8
+amiably			7       |   report	6       |   lush		4       |   buss		4       |   furriest		8
+angrily			7       |   repeat	6       |   main		4       |   cake		4       |   fussiest		8
+audibly			7       |   repeal	6       |   male		4       |   call		4       |   fuzziest		8
+awfully			7       |   repair	6       |   many		4       |   calm		4       |   gabbiest		8
+baggily			7       |   reopen	6       |   maze		4       |   camp		4       |   gaudiest		8
+bawdily			7       |   renege	6       |   mean		4       |   cans		4       |   gauntest		8
+beadily			7       |   render	6       |   meek		4       |   cape		4       |   gawkiest		8
+beastly			7       |   rename	6       |   mere		4       |   caps		4       |   gentlest		8
+blandly			7       |   remove	6       |   mild		4       |   card		4       |   giddiest		8
+blankly			7       |   remind	6       |   mini		4       |   care		4       |   goofiest		8
+bleakly			7       |   remedy	6       |   more		4       |   cars		4       |   grandest		8
+blindly			7       |   remark	6       |   most		4       |   cart		4       |   greatest		8
+bluntly			7       |   remand	6       |   much		4       |   case		4       |   greenest		8
+bossily			7       |   remain	6       |   mute		4       |   cash		4       |   grimiest		8
+brashly			7       |   relish	6       |   near		4       |   cast		4       |   grossest		8
+bravely			7       |   relent	6       |   neat		4       |   cats		4       |   gruffest		8
+briefly			7       |   relate	6       |   next		4       |   cave		4       |   gustiest		8
+briskly			7       |   rejoin	6       |   nice		4       |   cell		4       |   gutsiest		8
+broadly			7       |   reject	6       |   nine		4       |   cent		4       |   hairiest		8
+bumpily			7       |   regret	6       |   nook		4       |   chef		4       |   handiest		8
+cannily			7       |   regard	6       |   nosy		4       |   chin		4       |   happiest		8
+capably			7       |   regain	6       |   null		4       |   chip		4       |   hardiest		8
+cattily			7       |   refute	6       |   numb		4       |   city		4       |   harshest		8
+cheaply			7       |   refuse	6       |   oily		4       |   clam		4       |   hastiest		8
+chiefly			7       |   refund	6       |   okay		4       |   clan		4       |   heaviest		8
+civilly			7       |   reform	6       |   only		4       |   claw		4       |   heftiest		8
+cleanly			7       |   refine	6       |   open		4       |   club		4       |   hoarsest		8
+clearly			7       |   refill	6       |   oral		4       |   clue		4       |   humblest		8
+clerkly			7       |   reduce	6       |   oval		4       |   coal		4       |   huskiest		8
+closely			7       |   redeem	6       |   pale		4       |   coat		4       |   itchiest		8
+cockily			7       |   redden	6       |   past		4       |   code		4       |   jazziest		8
+courtly			7       |   recoup	6       |   pert		4       |   coil		4       |   jerkiest		8
+crackly			7       |   record	6       |   pink		4       |   cold		4       |   jolliest		8
+crassly			7       |   recoil	6       |   plus		4       |   comb		4       |   juiciest		8
+crazily			7       |   reckon	6       |   pool		4       |   cook		4       |   lightest		8
+crisply			7       |   recite	6       |   poor		4       |   copy		4       |   littlest		8
+crossly			7       |   recess	6       |   prim		4       |   cord		4       |   lousiest		8
+crudely			7       |   recede	6       |   puny		4       |   cork		4       |   lowliest		8
+cruelly			7       |   recall	6       |   pure		4       |   corn		4       |   luckiest		8
+curably			7       |   rebuke	6       |   rank		4       |   cost		4       |   lumpiest		8
+dandily			7       |   rebuff	6       |   rare		4       |   cows		4       |   merriest		8
+dazedly			7       |   reason	6       |   rash		4       |   crew		4       |   messiest		8
+densely			7       |   ravage	6       |   real		4       |   crib		4       |   mistiest		8
+dingily			7       |   rattle	6       |   rich		4       |   crow		4       |   moistest		8
+dirtily			7       |   ration	6       |   ripe		4       |   cubs		4       |   moldiest		8
+dizzily			7       |   ratify	6       |   rock		4       |   cups		4       |   moodiest		8
+dowdily			7       |   quiver	6       |   rosy		4       |   dads		4       |   muddiest		8
+drizzly			7       |   quench	6       |   rude		4       |   dare		4       |   muggiest		8
+durably			7       |   puzzle	6       |   safe		4       |   dark		4       |   murkiest		8
+eagerly			7       |   pursue	6       |   salt		4       |   data		4       |   mushiest		8
+earthly			7       |   purify	6       |   same		4       |   date		4       |   neediest		8
+emptily			7       |   punish	6       |   sane		4       |   dawn		4       |   niftiest		8
+equably			7       |   pummel	6       |   shut		4       |   days		4       |   nimblest		8
+equally			7       |   pucker	6       |   sick		4       |   deal		4       |   noisiest		8
+erectly			7       |   propel	6       |   slim		4       |   dear		4       |   nuttiest		8
+exactly			7       |   prompt	6       |   slow		4       |   debt		4       |   perkiest		8
+faintly			7       |   profit	6       |   smug		4       |   deep		4       |   pettiest		8
+falsely			7       |   prefer	6       |   snug		4       |   deer		4       |   plainest		8
+fancily			7       |   preach	6       |   soft		4       |   desk		4       |   plumpest		8
+fatally			7       |   praise	6       |   sole		4       |   diet		4       |   plushest		8
+fierily			7       |   powder	6       |   sore		4       |   dime		4       |   politest		8
+fifthly			7       |   pounce	6       |   sour		4       |   dips		4       |   primmest		8
+finally			7       |   ponder	6       |   spry		4       |   dirt		4       |   proudest		8
+firstly			7       |   polish	6       |   such		4       |   dish		4       |   puffiest		8
+fishily			7       |   police	6       |   sure		4       |   disk		4       |   pushiest		8
+fixedly			7       |   poison	6       |   tall		4       |   dock		4       |   quickest		8
+flakily			7       |   pocket	6       |   tame		4       |   dogs		4       |   quietest		8
+fluidly			7       |   plunge	6       |   tart		4       |   doll		4       |   rainiest		8
+focally			7       |   pledge	6       |   taut		4       |   doom		4       |   raspiest		8
+foggily			7       |   please	6       |   that		4       |   door		4       |   rattiest		8
+frailly			7       |   plague	6       |   thin		4       |   dose		4       |   remotest		8
+frankly			7       |   pierce	6       |   this		4       |   dots		4       |   riskiest		8
+freckly			7       |   pickle	6       |   tidy		4       |   drag		4       |   ritziest		8
+freshly			7       |   phrase	6       |   tied		4       |   draw		4       |   roomiest		8
+fugally			7       |   pester	6       |   time		4       |   drop		4       |   roughest		8
+funnily			7       |   permit	6       |   tiny		4       |   drug		4       |   roundest		8
+fussily			7       |   perish	6       |   trim		4       |   drum		4       |   rustiest		8
+fuzzily			7       |   pepper	6       |   ugly		4       |   duck		4       |   saltiest		8
+gaudily			7       |   pencil	6       |   used		4       |   duke		4       |   sandiest		8
+gauntly			7       |   patrol	6       |   vain		4       |   dump		4       |   sappiest		8
+gawkily			7       |   patent	6       |   vast		4       |   dusk		4       |   sassiest		8
+ghostly			7       |   parrot	6       |   veil		4       |   dust		4       |   sauciest		8
+giddily			7       |   parody	6       |   very		4       |   duty		4       |   scaliest		8
+goofily			7       |   parley	6       |   vile		4       |   ears		4       |   scarcest		8
+grandly			7       |   pardon	6       |   warm		4       |   ease		4       |   scariest		8
+gravely			7       |   parade	6       |   wary		4       |   east		4       |   securest		8
+greatly			7       |   pamper	6       |   weak		4       |   edge		4       |   seediest		8
+grimily			7       |   paddle	6       |   well		4       |   eggs		4       |   serenest		8
+grossly			7       |   overdo	6       |   west		4       |   elfs		4       |   severest		8
+gruffly			7       |   outrun	6       |   what		4       |   elks		4       |   shadiest		8
+gustily			7       |   outlaw	6       |   wide		4       |   ends		4       |   shakiest		8
+handily			7       |   ordain	6       |   wild		4       |   envy		4       |   sharpest		8
+happily			7       |   oppose	6       |   wily		4       |   exam		4       |   shiniest		8
+hardily			7       |   offend	6       |   wiry		4       |   exit		4       |   shortest		8
+harshly			7       |   occupy	6       |   wise		4       |   eyes		4       |   showiest		8
+hastily			7       |   obtain	6       |   wood		4       |   face		4       |   silkiest		8
+heavily			7       |   obsess	6       |   wool		4       |   fact		4       |   silliest		8
+heftily			7       |   oblige	6       |   work		4       |   fail		4       |   simplest		8
+huffily			7       |   object	6       |   worn		4       |   fall		4       |   sleekest		8
+humanly			7       |   nuzzle	6       |   zany		4       |   fame		4       |   slickest		8
+humidly			7       |   number	6       |   acrid		5       |   fang		4       |   slimmest		8
+huskily			7       |   notify	6       |   adept		5       |   fans		4       |   slimiest		8
+ideally			7       |   notice	6       |   adult		5       |   farm		4       |   smallest		8
+ignobly			7       |   nibble	6       |   alert		5       |   fast		4       |   smartest		8
+inanely			7       |   nestle	6       |   alien		5       |   fate		4       |   snuggest		8
+inaptly			7       |   negate	6       |   alike		5       |   fear		4       |   soggiest		8
+inertly			7       |   needle	6       |   alive		5       |   feed		4       |   sorriest		8
+irately			7       |   narrow	6       |   alone		5       |   feel		4       |   sparsest		8
+jadedly			7       |   mutter	6       |   aloof		5       |   feet		4       |   spiciest		8
+jazzily			7       |   mutate	6       |   angry		5       |   fibs		4       |   spikiest		8
+jerkily			7       |   muster	6       |   antsy		5       |   file		4       |   squarest		8
+jointly			7       |   muscle	6       |   avian		5       |   fill		4       |   starkest		8
+jollily			7       |   murmur	6       |   awake		5       |   film		4       |   steepest		8
+largely			7       |   murder	6       |   aware		5       |   fire		4       |   sternest		8
+legally			7       |   mumble	6       |   awful		5       |   fish		4       |   stiffest		8
+legibly			7       |   muffle	6       |   balmy		5       |   fist		4       |   stillest		8
+levelly			7       |   muddle	6       |   basic		5       |   flag		4       |   subtlest		8
+lightly			7       |   motion	6       |   batty		5       |   flan		4       |   sulkiest		8
+lividly			7       |   modify	6       |   beady		5       |   flea		4       |   sunniest		8
+locally			7       |   misuse	6       |   beefy		5       |   flow		4       |   surliest		8
+loosely			7       |   mislay	6       |   black		5       |   fogs		4       |   sweetest		8
+lousily			7       |   mirror	6       |   bland		5       |   fold		4       |   swiftest		8
+lovably			7       |   mingle	6       |   blank		5       |   folk		4       |   tackiest		8
+loyally			7       |   mentor	6       |   bleak		5       |   food		4       |   tangiest		8
+lucidly			7       |   mellow	6       |   blind		5       |   fool		4       |   tardiest		8
+luckily			7       |   meddle	6       |   blunt		5       |   foot		4       |   tastiest		8
+luridly			7       |   mature	6       |   bored		5       |   fork		4       |   teeniest		8
+majorly			7       |   matter	6       |   bossy		5       |   form		4       |   testiest		8
+merrily			7       |   master	6       |   brash		5       |   fowl		4       |   thickest		8
+messily			7       |   marvel	6       |   brave		5       |   frog		4       |   thinnest		8
+moistly			7       |   maroon	6       |   brick		5       |   fuel		4       |   tightest		8
+monthly			7       |   market	6       |   brief		5       |   fund		4       |   toughest		8
+moodily			7       |   mangle	6       |   briny		5       |   furs		4       |   trimmest		8
+morally			7       |   manage	6       |   brisk		5       |   gain		4       |   wackiest		8
+muddily			7       |   lumber	6       |   broad		5       |   gait		4       |   weariest		8
+mushily			7       |   lounge	6       |   brown		5       |   game		4       |   weediest		8
+mutedly			7       |   loosen	6       |   bulky		5       |   gate		4       |   weirdest		8
+naively			7       |   locate	6       |   bumpy		5       |   gaze		4       |   windiest		8
+nasally			7       |   litter	6       |   burly		5       |   gear		4       |   wispiest		8
+nastily			7       |   listen	6       |   bushy		5       |   gene		4       |   wittiest		8
+nightly			7       |   linger	6       |   caged		5       |   gift		4       |   wooziest		8
+ninthly			7       |   lessen	6       |   cagey		5       |   girl		4       |   wordiest		8
+noisily			7       |   lavish	6       |   cheap		5       |   gist		4       |   youngest		8
+notably			7       |   launch	6       |   chewy		5       |   give		4       |   yummiest		8
+orderly			7       |   lament	6       |   chief		5       |   glad		4       |   zestiest		8
+overtly			7       |   knight	6       |   civil		5       |   glow		4       |
+perkily			7       |   jumble	6       |   clean		5       |   glue		4       |
+piously			7       |   juggle	6       |   clear		5       |   goal		4       |
+pithily			7       |   jostle	6       |   close		5       |   goat		4       |
+plainly			7       |   invoke	6       |   cocky		5       |   gold		4       |
+proudly			7       |   invite	6       |   corny		5       |   golf		4       |
+pushily			7       |   invest	6       |   crass		5       |   good		4       |
+quickly			7       |   invert	6       |   crazy		5       |   goon		4       |
+quietly			7       |   invent	6       |   crisp		5       |   grab		4       |
+rabidly			7       |   invade	6       |   cross		5       |   grip		4       |
+rapidly			7       |   intern	6       |   crude		5       |   guns		4       |
+readily			7       |   intend	6       |   cruel		5       |   guys		4       |
+regally			7       |   insure	6       |   curly		5       |   hair		4       |
+rightly			7       |   insult	6       |   curvy		5       |   half		4       |
+rigidly			7       |   insist	6       |   daffy		5       |   hall		4       |
+riskily			7       |   insert	6       |   daily		5       |   hand		4       |
+roughly			7       |   injure	6       |   dandy		5       |   hang		4       |
+roundly			7       |   inject	6       |   dazed		5       |   hare		4       |
+rowdily			7       |   inhale	6       |   dense		5       |   harm		4       |
+royally			7       |   ingest	6       |   dingy		5       |   hate		4       |
+rurally			7       |   infuse	6       |   dirty		5       |   hats		4       |
+sassily			7       |   inform	6       |   dizzy		5       |   head		4       |
+saucily			7       |   infest	6       |   domed		5       |   heat		4       |
+scantly			7       |   infect	6       |   dowdy		5       |   hell		4       |
+scarily			7       |   induce	6       |   dress		5       |   help		4       |
+seedily			7       |   indict	6       |   dried		5       |   hens		4       |
+shakily			7       |   indent	6       |   droll		5       |   hide		4       |
+sharply			7       |   indebt	6       |   drunk		5       |   high		4       |
+shortly			7       |   impute	6       |   dusty		5       |   hike		4       |
+shrilly			7       |   impose	6       |   eager		5       |   hill		4       |
+sixthly			7       |   import	6       |   early		5       |   hint		4       |
+sizably			7       |   impede	6       |   eerie		5       |   hire		4       |
+sleekly			7       |   impart	6       |   eight		5       |   hold		4       |
+slickly			7       |   impale	6       |   elite		5       |   hole		4       |
+smartly			7       |   impair	6       |   empty		5       |   home		4       |
+snidely			7       |   ignore	6       |   equal		5       |   hood		4       |
+solidly			7       |   ignite	6       |   erect		5       |   hook		4       |
+soundly			7       |   hustle	6       |   every		5       |   hope		4       |
+spicily			7       |   hurtle	6       |   exact		5       |   horn		4       |
+starkly			7       |   humble	6       |   extra		5       |   hose		4       |
+steeply			7       |   huddle	6       |   faded		5       |   host		4       |
+sternly			7       |   hollow	6       |   faint		5       |   hots		4       |
+stiffly			7       |   hobble	6       |   fancy		5       |   hour		4       |
+suavely			7       |   hinder	6       |   fatal		5       |   hubs		4       |
+sulkily			7       |   hijack	6       |   fetid		5       |   hunt		4       |
+sweetly			7       |   herald	6       |   fewer		5       |   hurt		4       |
+swiftly			7       |   heckle	6       |   fiery		5       |   ices		4       |
+tacitly			7       |   hasten	6       |   fifth		5       |   idea		4       |
+tackily			7       |   harden	6       |   filmy		5       |   inks		4       |
+tardily			7       |   harbor	6       |   final		5       |   ions		4       |
+tastily			7       |   harass	6       |   first		5       |   iron		4       |
+tenably			7       |   happen	6       |   fishy		5       |   itch		4       |
+tensely			7       |   handle	6       |   fixed		5       |   item		4       |
+tenthly			7       |   hamper	6       |   flaky		5       |   jack		4       |
+tepidly			7       |   hammer	6       |   foamy		5       |   jail		4       |
+tersely			7       |   ground	6       |   foggy		5       |   jams		4       |
+testily			7       |   grieve	6       |   frail		5       |   jars		4       |
+thickly			7       |   grease	6       |   frank		5       |   jeer		4       |
+thirdly			7       |   govern	6       |   fresh		5       |   jerk		4       |
+thistly			7       |   gossip	6       |   fried		5       |   jets		4       |
+tightly			7       |   gobble	6       |   front		5       |   jobs		4       |
+timidly			7       |   glance	6       |   funny		5       |   join		4       |
+tipsily			7       |   giggle	6       |   furry		5       |   joke		4       |
+tiredly			7       |   gather	6       |   fussy		5       |   jump		4       |
+tonally			7       |   garner	6       |   fuzzy		5       |   jury		4       |
+totally			7       |   gamble	6       |   gabby		5       |   keep		4       |
+toughly			7       |   gallop	6       |   gaudy		5       |   keys		4       |
+tritely			7       |   furrow	6       |   gaunt		5       |   kick		4       |
+usually			7       |   fumble	6       |   gauzy		5       |   kill		4       |
+utterly			7       |   freeze	6       |   gawky		5       |   kind		4       |
+vaguely			7       |   foster	6       |   giant		5       |   king		4       |
+validly			7       |   format	6       |   giddy		5       |   kiss		4       |
+vapidly			7       |   forget	6       |   glass		5       |   kite		4       |
+venally			7       |   forbid	6       |   gluey		5       |   knee		4       |
+virally			7       |   follow	6       |   gooey		5       |   knot		4       |
+visibly			7       |   flower	6       |   goofy		5       |   lace		4       |
+vitally			7       |   flinch	6       |   grand		5       |   lack		4       |
+vividly			7       |   flavor	6       |   great		5       |   lady		4       |
+vocally			7       |   flaunt	6       |   green		5       |   lake		4       |
+wearily			7       |   finish	6       |   grimy		5       |   lamb		4       |
+weirdly			7       |   finger	6       |   gross		5       |   lamp		4       |
+wispily			7       |   filter	6       |   gruff		5       |   land		4       |
+wittily			7       |   figure	6       |   gushy		5       |   lans		4       |
+woozily			7       |   fidget	6       |   gusty		5       |   laws		4       |
+wordily			7       |   fiddle	6       |   gutsy		5       |   lead		4       |
+wrongly			7       |   fathom	6       |   hairy		5       |   leaf		4       |
+						|   fasten	6       |   handy		5       |   leap		4       |
+						|   falter	6       |   happy		5       |   legs		4       |
+						|   factor	6       |   hardy		5       |   life		4       |
+						|   extend	6       |   harsh		5       |   lift		4       |
+						|   expose	6       |   hasty		5       |   lily		4       |
+						|   export	6       |   hated		5       |   line		4       |
+						|   expire	6       |   heady		5       |   link		4       |
+						|   expend	6       |   heavy		5       |   lips		4       |
+						|   expect	6       |   hefty		5       |   list		4       |
+						|   expand	6       |   homey		5       |   load		4       |
+						|   exhort	6       |   house		5       |   loaf		4       |
+						|   exhale	6       |   huffy		5       |   loan		4       |
+						|   exempt	6       |   human		5       |   lock		4       |
+						|   excuse	6       |   humid		5       |   long		4       |
+						|   excite	6       |   husky		5       |   look		4       |
+						|   excise	6       |   ideal		5       |   lord		4       |
+						|   exceed	6       |   inane		5       |   loss		4       |
+						|   evolve	6       |   inapt		5       |   love		4       |
+						|   evince	6       |   inert		5       |   lows		4       |
+						|   esteem	6       |   inner		5       |   luck		4       |
+						|   escort	6       |   irate		5       |   maid		4       |
+						|   eschew	6       |   itchy		5       |   mail		4       |
+						|   escape	6       |   jaded		5       |   main		4       |
+						|   equate	6       |   jazzy		5       |   make		4       |
+						|   entice	6       |   jerky		5       |   male		4       |
+						|   entail	6       |   joint		5       |   mall		4       |
+						|   ensure	6       |   jolly		5       |   mane		4       |
+						|   enroll	6       |   juicy		5       |   mans		4       |
+						|   enrich	6       |   jumpy		5       |   many		4       |
+						|   enrage	6       |   kaput		5       |   maps		4       |
+						|   enmesh	6       |   known		5       |   mark		4       |
+						|   enlist	6       |   lanky		5       |   mask		4       |
+						|   engulf	6       |   large		5       |   mass		4       |
+						|   engage	6       |   later		5       |   mate		4       |
+						|   endure	6       |   least		5       |   math		4       |
+						|   endear	6       |   legal		5       |   meal		4       |
+						|   encode	6       |   level		5       |   meat		4       |
+						|   encase	6       |   light		5       |   meet		4       |
+						|   enable	6       |   lined		5       |   mens		4       |
+						|   employ	6       |   lithe		5       |   menu		4       |
+						|   emerge	6       |   livid		5       |   mess		4       |
+						|   emboss	6       |   local		5       |   mice		4       |
+						|   embody	6       |   lofty		5       |   milk		4       |
+						|   embark	6       |   loose		5       |   mind		4       |
+						|   elicit	6       |   lousy		5       |   mine		4       |
+						|   elapse	6       |   lower		5       |   mint		4       |
+						|   effect	6       |   lowly		5       |   miss		4       |
+						|   efface	6       |   loyal		5       |   mist		4       |
+						|   drench	6       |   lucid		5       |   mode		4       |
+						|   dredge	6       |   lucky		5       |   moms		4       |
+						|   double	6       |   lumpy		5       |   monk		4       |
+						|   donate	6       |   lurid		5       |   mood		4       |
+						|   divide	6       |   lying		5       |   moon		4       |
+						|   divest	6       |   macho		5       |   most		4       |
+						|   divert	6       |   magic		5       |   move		4       |
+						|   dispel	6       |   major		5       |   mugs		4       |
+						|   disown	6       |   mangy		5       |   nail		4       |
+						|   dismay	6       |   manic		5       |   name		4       |
+						|   disarm	6       |   many,		5       |   neat		4       |
+						|   direct	6       |   meaty		5       |   neck		4       |
+						|   dilute	6       |   merry		5       |   need		4       |
+						|   dilate	6       |   messy		5       |   nest		4       |
+						|   digest	6       |   milky		5       |   nets		4       |
+						|   differ	6       |   minor		5       |   news		4       |
+						|   devour	6       |   misty		5       |   newt		4       |
+						|   devote	6       |   mixed		5       |   nine		4       |
+						|   devise	6       |   moist		5       |   norm		4       |
+						|   detest	6       |   moldy		5       |   nose		4       |
+						|   detect	6       |   moody		5       |   note		4       |
+						|   detain	6       |   moral		5       |   nuts		4       |
+						|   detail	6       |   motor		5       |   odor		4       |
+						|   detach	6       |   moved		5       |   oils		4       |
+						|   desire	6       |   muddy		5       |   oven		4       |
+						|   design	6       |   muggy		5       |   owls		4       |
+						|   desert	6       |   murky		5       |   pace		4       |
+						|   derive	6       |   mushy		5       |   pack		4       |
+						|   deride	6       |   musky		5       |   page		4       |
+						|   depose	6       |   musty		5       |   pail		4       |
+						|   deport	6       |   muted		5       |   pain		4       |
+						|   deploy	6       |   naive		5       |   pair		4       |
+						|   depict	6       |   nasal		5       |   pane		4       |
+						|   depend	6       |   nasty		5       |   pans		4       |
+						|   depart	6       |   needy		5       |   park		4       |
+						|   denote	6       |   nifty		5       |   part		4       |
+						|   demote	6       |   ninth		5       |   pass		4       |
+						|   demand	6       |   nippy		5       |   past		4       |
+						|   delude	6       |   noble		5       |   path		4       |
+						|   delete	6       |   noisy		5       |   peak		4       |
+						|   defuse	6       |   north		5       |   pear		4       |
+						|   defray	6       |   novel		5       |   pegs		4       |
+						|   deform	6       |   nutty		5       |   pens		4       |
+						|   define	6       |   obese		5       |   pest		4       |
+						|   defend	6       |   older		5       |   pets		4       |
+						|   defect	6       |   other		5       |   pick		4       |
+						|   defeat	6       |   outer		5       |   pies		4       |
+						|   deface	6       |   overt		5       |   pigs		4       |
+						|   deepen	6       |   party		5       |   pile		4       |
+						|   deduct	6       |   perky		5       |   pink		4       |
+						|   deduce	6       |   petty		5       |   pins		4       |
+						|   decree	6       |   pious		5       |   pipe		4       |
+						|   decide	6       |   pithy		5       |   pity		4       |
+						|   debate	6       |   plaid		5       |   plan		4       |
+						|   dazzle	6       |   plain		5       |   play		4       |
+						|   darken	6       |   plane		5       |   plot		4       |
+						|   dangle	6       |   plump		5       |   poem		4       |
+						|   dampen	6       |   plush		5       |   poet		4       |
+						|   damage	6       |   prior		5       |   pole		4       |
+						|   dabble	6       |   prize		5       |   pool		4       |
+						|   cuddle	6       |   proof		5       |   poop		4       |
+						|   crunch	6       |   proud		5       |   port		4       |
+						|   cruise	6       |   puffy		5       |   post		4       |
+						|   crouch	6       |   pushy		5       |   pots		4       |
+						|   cringe	6       |   quick		5       |   pray		4       |
+						|   credit	6       |   quiet		5       |   pull		4       |
+						|   create	6       |   rabid		5       |   pump		4       |
+						|   crease	6       |   rainy		5       |   punk		4       |
+						|   cradle	6       |   rapid		5       |   push		4       |
+						|   corner	6       |   raspy		5       |   quit		4       |
+						|   convey	6       |   ratty		5       |   rant		4       |
+						|   confer	6       |   ready		5       |   rest		4       |
+						|   concur	6       |   rebel		5       |   rule		4       |
+						|   comply	6       |   regal		5       |   size		4       |
+						|   compel	6       |   right		5       |   soul		4       |
+						|   commit	6       |   rigid		5       |   star		4       |
+						|   coerce	6       |   risky		5       |   step		4       |
+						|   codify	6       |   ritzy		5       |   tact		4       |
+						|   cobble	6       |   roomy		5       |   tale		4       |
+						|   clutch	6       |   rough		5       |   talk		4       |
+						|   clinch	6       |   round		5       |   task		4       |
+						|   clench	6       |   rowdy		5       |   term		4       |
+						|   circle	6       |   royal		5       |   time		4       |
+						|   choose	6       |   ruddy		5       |   tone		4       |
+						|   charge	6       |   rural		5       |   tour		4       |
+						|   change	6       |   rusty		5       |   type		4       |
+						|   chance	6       |   salty		5       |   view		4       |
+						|   center	6       |   sandy		5       |   wail		4       |
+						|   censor	6       |   sappy		5       |   wait		4       |
+						|   cement	6       |   sassy		5       |   whim		4       |
+						|   carpet	6       |   satin		5       |   word		4       |
+						|   caress	6       |   saucy		5       |   zeal		4       |
+						|   cancel	6       |   savvy		5       |   zest		4       |
+						|   cajole	6       |   scaly		5       |   abyss		5       |
+						|   cackle	6       |   scant		5       |   actor		5       |
+						|   bypass	6       |   scary		5       |   agent		5       |
+						|   button	6       |   seedy		5       |   agony		5       |
+						|   butter	6       |   seven		5       |   anger		5       |
+						|   bustle	6       |   shady		5       |   ardor		5       |
+						|   burrow	6       |   shaky		5       |   boxer		5       |
+						|   burgle	6       |   sharp		5       |   buyer		5       |
+						|   burden	6       |   sheer		5       |   chant		5       |
+						|   bundle	6       |   shiny		5       |   chaos		5       |
+						|   buffer	6       |   short		5       |   charm		5       |
+						|   budget	6       |   showy		5       |   coder		5       |
+						|   buckle	6       |   silky		5       |   color		5       |
+						|   bubble	6       |   silly		5       |   craft		5       |
+						|   bruise	6       |   sixth		5       |   creed		5       |
+						|   bronze	6       |   sleek		5       |   dance		5       |
+						|   broach	6       |   slick		5       |   donor		5       |
+						|   bridge	6       |   slimy		5       |   doubt		5       |
+						|   breath	6       |   small		5       |   drama		5       |
+						|   breach	6       |   smart		5       |   dread		5       |
+						|   branch	6       |   smoky		5       |   elder		5       |
+						|   bounce	6       |   snide		5       |   enemy		5       |
+						|   bottle	6       |   sober		5       |   error		5       |
+						|   bother	6       |   soggy		5       |   essay		5       |
+						|   borrow	6       |   solar		5       |   event		5       |
+						|   border	6       |   solid		5       |   faith		5       |
+						|   bloody	6       |   some,		5       |   fancy		5       |
+						|   bleach	6       |   sonic		5       |   fault		5       |
+						|   billow	6       |   sonly		5       |   favor		5       |
+						|   better	6       |   sorry		5       |   fears		5       |
+						|   betray	6       |   south		5       |   folly		5       |
+						|   bestow	6       |   spare		5       |   force		5       |
+						|   berate	6       |   spicy		5       |   furor		5       |
+						|   bemuse	6       |   spiky		5       |   gloom		5       |
+						|   bemoan	6       |   stale		5       |   glory		5       |
+						|   belong	6       |   stark		5       |   grace		5       |
+						|   bellow	6       |   steel		5       |   grasp		5       |
+						|   behold	6       |   steep		5       |   guide		5       |
+						|   behave	6       |   stern		5       |   honor		5       |
+						|   become	6       |   stiff		5       |   horde		5       |
+						|   beckon	6       |   still		5       |   humor		5       |
+						|   battle	6       |   stock		5       |   ideas		5       |
+						|   batter	6       |   stoic		5       |   joker		5       |
+						|   barter	6       |   stony		5       |   juror		5       |
+						|   banter	6       |   stout		5       |   lapse		5       |
+						|   banish	6       |   suave		5       |   laugh		5       |
+						|   baffle	6       |   sulky		5       |   light		5       |
+						|   badger	6       |   sunny		5       |   looks		5       |
+						|   babble	6       |   super		5       |   merit		5       |
+						|   awaken	6       |   surly		5       |   minor		5       |
+						|   aviate	6       |   sweet		5       |   mirth		5       |
+						|   avenge	6       |   swift		5       |   miser		5       |
+						|   author	6       |   taboo		5       |   music		5       |
+						|   attest	6       |   tacit		5       |   needs		5       |
+						|   attend	6       |   tacky		5       |   owner		5       |
+						|   attain	6       |   tamed		5       |   paper		5       |
+						|   attack	6       |   tangy		5       |   place		5       |
+						|   attach	6       |   tardy		5       |   point		5       |
+						|   assure	6       |   tasty		5       |   power		5       |
+						|   assume	6       |   teeny		5       |   pride		5       |
+						|   assort	6       |   tense		5       |   proof		5       |
+						|   assist	6       |   tenth		5       |   quest		5       |
+						|   assign	6       |   tepid		5       |   ruler		5       |
+						|   assess	6       |   terse		5       |   rumor		5       |
+						|   assert	6       |   testy		5       |   scope		5       |
+						|   assent	6       |   their		5       |   scorn		5       |
+						|   assail	6       |   these		5       |   scowl		5       |
+						|   aspire	6       |   thick		5       |   sense		5       |
+						|   ascend	6       |   third		5       |   sheen		5       |
+						|   arrive	6       |   those		5       |   skill		5       |
+						|   arrest	6       |   three		5       |   smile		5       |
+						|   arouse	6       |   tidal		5       |   sneer		5       |
+						|   appear	6       |   tight		5       |   space		5       |
+						|   appeal	6       |   timid		5       |   stare		5       |
+						|   appall	6       |   tipsy		5       |   state		5       |
+						|   answer	6       |   tired		5       |   stoic		5       |
+						|   anoint	6       |   tonal		5       |   story		5       |
+						|   anchor	6       |   total		5       |   style		5       |
+						|   amount	6       |   tough		5       |   taste		5       |
+						|   ambush	6       |   toxic		5       |   terms		5       |
+						|   allure	6       |   trick		5       |   times		5       |
+						|   allude	6       |   trite		5       |   touch		5       |
+						|   allege	6       |   upper		5       |   trait		5       |
+						|   afford	6       |   upset		5       |   trick		5       |
+						|   affirm	6       |   usual		5       |   truce		5       |
+						|   affect	6       |   utter		5       |   truth		5       |
+						|   advise	6       |   vague		5       |   tutor		5       |
+						|   adsorb	6       |   valid		5       |   types		5       |
+						|   admire	6       |   vapid		5       |   union		5       |
+						|   adjust	6       |   venal		5       |   unity		5       |
+						|   adjoin	6       |   vexed		5       |   valor		5       |
+						|   adhere	6       |   viral		5       |   value		5       |
+						|   acquit	6       |   vital		5       |   vapor		5       |
+						|   accuse	6       |   vivid		5       |   views		5       |
+						|   accrue	6       |   vocal		5       |   vigor		5       |
+						|   accost	6       |   wacky		5       |   voice		5       |
+						|   accord	6       |   waste		5       |   waste		5       |
+						|   access	6       |   waxen		5       |   wrath		5       |
+						|   accept	6       |   weary		5       |   years		5       |
+						|   accent	6       |   weedy		5       |   youth		5       |
+						|   absorb	6       |   weird		5       |   access		6       |
+						|   abound	6       |   which		5       |   action		6       |
+						|   abduct	6       |   white		5       |   acuity		6       |
+						|   yield	5       |   whole		5       |   answer		6       |
+						|   yearn	5       |   whose		5       |   apathy		6       |
+						|   x-ray	5       |   windy		5       |   appeal		6       |
+						|   write	5       |   wispy		5       |   artist		6       |
+						|   wring	5       |   witty		5       |   aspect		6       |
+						|   wreck	5       |   woozy		5       |   assent		6       |
+						|   wound	5       |   wordy		5       |   attack		6       |
+						|   worry	5       |   worse		5       |   author		6       |
+						|   wince	5       |   worst		5       |   babble		6       |
+						|   wield	5       |   worth		5       |   beauty		6       |
+						|   widen	5       |   wrong		5       |   broker		6       |
+						|   whisk	5       |   young		5       |   burden		6       |
+						|   whirl	5       |   yummy		5       |   candor		6       |
+						|   whine	5       |   zesty		5       |   career		6       |
+						|   wheel	5       |   zippy		5       |   cavity		6       |
+						|   whack	5       |   abject		6       |   chance		6       |
+						|   weigh	5       |   abrupt		6       |   comedy		6       |
+						|   wedge	5       |   absent		6       |   curves		6       |
+						|   weave	5       |   absurd		6       |   damage		6       |
+						|   waver	5       |   aching		6       |   dancer		6       |
+						|   water	5       |   acidic		6       |   danger		6       |
+						|   watch	5       |   active		6       |   denial		6       |
+						|   waste	5       |   actual		6       |   desire		6       |
+						|   waken	5       |   ad hoc		6       |   dismay		6       |
+						|   waive	5       |   adored		6       |   disuse		6       |
+						|   vomit	5       |   adroit		6       |   doctor		6       |
+						|   voice	5       |   aerial		6       |   duties		6       |
+						|   visit	5       |   afraid		6       |   echoes		6       |
+						|   vault	5       |   amazed		6       |   editor		6       |
+						|   value	5       |   amused		6       |   effect		6       |
+						|   utter	5       |   anemic		6       |   effort		6       |
+						|   usurp	5       |   animal		6       |   energy		6       |
+						|   usher	5       |   annual		6       |   equity		6       |
+						|   upset	5       |   ardent		6       |   fandom		6       |
+						|   unzip	5       |   artful		6       |   faults		6       |
+						|   untie	5       |   astute		6       |   fervor		6       |
+						|   unite	5       |   atomic		6       |   figure		6       |
+						|   unify	5       |   banned		6       |   flavor		6       |
+						|   unarm	5       |   barren		6       |   flight		6       |
+						|   twist	5       |   benign		6       |   frenzy		6       |
+						|   twirl	5       |   better		6       |   genius		6       |
+						|   tutor	5       |   biased		6       |   glance		6       |
+						|   trust	5       |   bigger		6       |   gossip		6       |
+						|   truss	5       |   binary		6       |   growth		6       |
+						|   trick	5       |   biting		6       |   habits		6       |
+						|   treat	5       |   bitter		6       |   health		6       |
+						|   tread	5       |   bleary		6       |   height		6       |
+						|   tramp	5       |   blonde		6       |   helper		6       |
+						|   train	5       |   bloody		6       |   horror		6       |
+						|   trail	5       |   blurry		6       |   ideals		6       |
+						|   trade	5       |   boring		6       |   jailor		6       |
+						|   track	5       |   bouncy		6       |   jargon		6       |
+						|   trace	5       |   boyish		6       |   junior		6       |
+						|   tower	5       |   brainy		6       |   jurist		6       |
+						|   touch	5       |   brassy		6       |   lament		6       |
+						|   total	5       |   brawny		6       |   legacy		6       |
+						|   toast	5       |   brazen		6       |   levity		6       |
+						|   title	5       |   breezy		6       |   loafer		6       |
+						|   tinge	5       |   bright		6       |   lunacy		6       |
+						|   thump	5       |   broken		6       |   luster		6       |
+						|   thumb	5       |   bronze		6       |   luxury		6       |
+						|   throw	5       |   brutal		6       |   malice		6       |
+						|   throb	5       |   bubbly		6       |   mammal		6       |
+						|   think	5       |   budget		6       |   manner		6       |
+						|   thank	5       |   candid		6       |   memory		6       |
+						|   tense	5       |   caring		6       |   mentor		6       |
+						|   tempt	5       |   casual		6       |   method		6       |
+						|   tease	5       |   chance		6       |   misery		6       |
+						|   teach	5       |   chatty		6       |   moment		6       |
+						|   taunt	5       |   cheeky		6       |   morals		6       |
+						|   taste	5       |   cheery		6       |   motion		6       |
+						|   taper	5       |   chilly		6       |   motive		6       |
+						|   taint	5       |   choice		6       |   murmur		6       |
+						|   table	5       |   choppy		6       |   mutant		6       |
+						|   swoop	5       |   chubby		6       |   nation		6       |
+						|   swirl	5       |   chunky		6       |   nature		6       |
+						|   swing	5       |   clammy		6       |   notion		6       |
+						|   swell	5       |   classy		6       |   nuance		6       |
+						|   sweep	5       |   clever		6       |   oddity		6       |
+						|   sweat	5       |   clingy		6       |   option		6       |
+						|   swear	5       |   closed		6       |   orator		6       |
+						|   swarm	5       |   cloudy		6       |   outcry		6       |
+						|   swamp	5       |   clumsy		6       |   papacy		6       |
+						|   surge	5       |   coarse		6       |   parent		6       |
+						|   style	5       |   common		6       |   parity		6       |
+						|   stunt	5       |   cooing		6       |   parody		6       |
+						|   stump	5       |   cooked		6       |   pastor		6       |
+						|   stuff	5       |   corner		6       |   pathos		6       |
+						|   study	5       |   cosmic		6       |   pencil		6       |
+						|   strut	5       |   costly		6       |   period		6       |
+						|   strip	5       |   covert		6       |   piracy		6       |
+						|   stray	5       |   crabby		6       |   player		6       |
+						|   strap	5       |   crafty		6       |   plight		6       |
+						|   storm	5       |   craggy		6       |   potion		6       |
+						|   store	5       |   cranky		6       |   praise		6       |
+						|   stoop	5       |   craven		6       |   purist		6       |
+						|   stone	5       |   creaky		6       |   purity		6       |
+						|   stomp	5       |   creamy		6       |   rarity		6       |
+						|   stock	5       |   creepy		6       |   ration		6       |
+						|   stink	5       |   crispy		6       |   reader		6       |
+						|   sting	5       |   crusty		6       |   reason		6       |
+						|   stick	5       |   crying		6       |   rebuke		6       |
+						|   steer	5       |   cuddly		6       |   recess		6       |
+						|   steam	5       |   cursed		6       |   regard		6       |
+                        |   steal	5       |   curved		6       |   regent		6       |
+                        |   state	5       |   dainty		6       |   regret		6       |
+                        |   stash	5       |   dapper		6       |   remark		6       |
+                        |   start	5       |   daring		6       |   renter		6       |
+                        |   stare	5       |   deadly		6       |   result		6       |
+                        |   stand	5       |   decent		6       |   reward		6       |
+                        |   stamp	5       |   demure		6       |   riches		6       |
+                        |   stall	5       |   devout		6       |   rights		6       |
+                        |   stalk	5       |   direct		6       |   runner		6       |
+                        |   stake	5       |   dismal		6       |   sailor		6       |
+                        |   stain	5       |   divine		6       |   sanity		6       |
+                        |   stage	5       |   doable		6       |   satire		6       |
+                        |   staff	5       |   dogged		6       |   savant		6       |
+                        |   stack	5       |   dorsal		6       |   savior		6       |
+                        |   squat	5       |   doting		6       |   saying		6       |
+                        |   spurt	5       |   double		6       |   secret		6       |
+                        |   spurn	5       |   dovish		6       |   seller		6       |
+                        |   spray	5       |   dozing		6       |   senior		6       |
+                        |   sport	5       |   dreamy		6       |   series		6       |
+                        |   spoon	5       |   dreary		6       |   server		6       |
+                        |   spoil	5       |   dressy		6       |   singer		6       |
+                        |   split	5       |   driven		6       |   sorrow		6       |
+                        |   spite	5       |   droopy		6       |   source		6       |
+                        |   spill	5       |   drowsy		6       |   speech		6       |
+                        |   spike	5       |   dulcet		6       |   spirit		6       |
+                        |   spice	5       |   earthy		6       |   spring		6       |
+                        |   spend	5       |   eighth		6       |   stance		6       |
+                        |   spell	5       |   either		6       |   stress		6       |
+                        |   speed	5       |   elated		6       |   suitor		6       |
+                        |   spear	5       |   elfish		6       |   supply		6       |
+                        |   speak	5       |   enough		6       |   survey		6       |
+                        |   spawn	5       |   entire		6       |   symbol		6       |
+                        |   spark	5       |   errant		6       |   tailor		6       |
+                        |   spare	5       |   ethnic		6       |   talent		6       |
+                        |   space	5       |   exotic		6       |   temper		6       |
+                        |   sound	5       |   expert		6       |   tenant		6       |
+                        |   sooth	5       |   fabled		6       |   tenure		6       |
+                        |   solve	5       |   facial		6       |   terror		6       |
+                        |   snuff	5       |   fading		6       |   thanks		6       |
+                        |   snort	5       |   failed		6       |   theory		6       |
+                        |   snore	5       |   famous		6       |   thrill		6       |
+                        |   snoop	5       |   faulty		6       |   throng		6       |
+                        |   sniff	5       |   feared		6       |   trance		6       |
+                        |   sneer	5       |   feeble		6       |   typist		6       |
+                        |   sneak	5       |   female		6       |   values		6       |
+                        |   snarl	5       |   fervid		6       |   vanity		6       |
+                        |   snare	5       |   feudal		6       |   vendor		6       |
+                        |   snake	5       |   fierce		6       |   victor		6       |
+                        |   smoke	5       |   filthy		6       |   virtue		6       |
+                        |   smirk	5       |   finite		6       |   vision		6       |
+                        |   smile	5       |   fiscal		6       |   warmth		6       |
+                        |   smell	5       |   fitted		6       |   wisdom		6       |
+                        |   smear	5       |   flabby		6       |   wonder		6       |
+                        |   smash	5       |   flashy		6       |   worker		6       |
+                        |   smack	5       |   flawed		6       |   writer		6       |
+                        |   slump	5       |   flimsy		6       | 				       |
+                        |   slope	5       |   floppy		6       | 				       |
+                        |   slink	5       |   floral		6       | 				       |
+                        |   sling	5       |   fluent		6       | 				       |
+                        |   slide	5       |   fluffy		6       | 				       |
+                        |   slice	5       |   flying		6       | 				       |
+                        |   sleep	5       |   folded		6       | 				       |
+                        |   slate	5       |   forged		6       | 				       |
+                        |   slash	5       |   forked		6       | 				       |
+                        |   slant	5       |   formal		6       | 				       |
+                        |   skirt	5       |   former		6       | 				       |
+                        |   singe	5       |   fourth		6       | 				       |
+                        |   sight	5       |   frayed		6       | 				       |
+                        |   sidle	5       |   freaky		6       | 				       |
+                        |   shunt	5       |   frigid		6       | 				       |
+                        |   shrug	5       |   frilly		6       | 				       |
+                        |   shred	5       |   frisky		6       | 				       |
+                        |   shove	5       |   frosty		6       | 				       |
+                        |   shout	5       |   frothy		6       | 				       |
+                        |   shoot	5       |   frozen		6       | 				       |
+                        |   shock	5       |   frugal		6       | 				       |
+                        |   shine	5       |   fruity		6       | 				       |
+                        |   shift	5       |   frumpy		6       | 				       |
+                        |   shell	5       |   fuming		6       | 				       |
+                        |   shear	5       |   futile		6       | 				       |
+                        |   shave	5       |   future		6       | 				       |
+                        |   share	5       |   gangly		6       | 				       |
+                        |   shape	5       |   gaping		6       | 				       |
+                        |   shame	5       |   garish		6       | 				       |
+                        |   shake	5       |   genial		6       | 				       |
+                        |   shade	5       |   gentle		6       | 				       |
+                        |   sever	5       |   gifted		6       | 				       |
+                        |   serve	5       |   gilded		6       | 				       |
+                        |   sense	5       |   giving		6       | 				       |
+                        |   seize	5       |   glassy		6       | 				       |
+                        |   scrub	5       |   global		6       | 				       |
+                        |   screw	5       |   gloomy		6       | 				       |
+                        |   scrap	5       |   glossy		6       | 				       |
+                        |   scowl	5       |   gnarly		6       | 				       |
+                        |   scour	5       |   golden		6       | 				       |
+                        |   scorn	5       |   grainy		6       | 				       |
+                        |   score	5       |   gratis		6       | 				       |
+                        |   scoop	5       |   greasy		6       | 				       |
+                        |   scold	5       |   greedy		6       | 				       |
+                        |   scoff	5       |   gritty		6       | 				       |
+                        |   scent	5       |   groggy		6       | 				       |
+                        |   scare	5       |   groovy		6       | 				       |
+                        |   scale	5       |   grubby		6       | 				       |
+                        |   scald	5       |   grumpy		6       | 				       |
+                        |   savor	5       |   guilty		6       | 				       |
+                        |   route	5       |   hearty		6       | 				       |
+                        |   rouse	5       |   heated		6       | 				       |
+                        |   round	5       |   hectic		6       | 				       |
+                        |   roast	5       |   heroic		6       | 				       |
+                        |   rivet	5       |   hoarse		6       | 				       |
+                        |   rival	5       |   hollow		6       | 				       |
+                        |   rinse	5       |   homely		6       | 				       |
+                        |   right	5       |   honest		6       | 				       |
+                        |   rhyme	5       |   horned		6       | 				       |
+                        |   revel	5       |   horrid		6       | 				       |
+                        |   reuse	5       |   humble		6       | 				       |
+                        |   reset	5       |   hungry		6       | 				       |
+                        |   reply	5       |   hushed		6       | 				       |
+                        |   repel	5       |   impish		6       | 				       |
+                        |   repay	5       |   impure		6       | 				       |
+                        |   renew	5       |   innate		6       | 				       |
+                        |   remit	5       |   insane		6       | 				       |
+                        |   relay	5       |   inside		6       | 				       |
+                        |   relax	5       |   inward		6       | 				       |
+                        |   reign	5       |   ironic		6       | 				       |
+                        |   refer	5       |   jagged		6       | 				       |
+                        |   rebel	5       |   jovial		6       | 				       |
+                        |   react	5       |   joyful		6       | 				       |
+                        |   reach	5       |   joyous		6       | 				       |
+                        |   range	5       |   junior		6       | 				       |
+                        |   rally	5       |   kindly		6       | 				       |
+                        |   raise	5       |   kingly		6       | 				       |
+                        |   quote	5       |   knobby		6       | 				       |
+                        |   queue	5       |   knotty		6       | 				       |
+                        |   query	5       |   larger		6       | 				       |
+                        |   quell	5       |   latent		6       | 				       |
+                        |   quash	5       |   latest		6       | 				       |
+                        |   purse	5       |   latter		6       | 				       |
+                        |   purge	5       |   lavish		6       | 				       |
+                        |   punch	5       |   lawful		6       | 				       |
+                        |   prune	5       |   leased		6       | 				       |
+                        |   prowl	5       |   lesser		6       | 				       |
+                        |   prove	5       |   lethal		6       | 				       |
+                        |   probe	5       |   liable		6       | 				       |
+                        |   prize	5       |   likely		6       | 				       |
+                        |   print	5       |   limber		6       | 				       |
+                        |   primp	5       |   linear		6       | 				       |
+                        |   prime	5       |   liquid		6       | 				       |
+                        |   pride	5       |   little		6       | 				       |
+                        |   prick	5       |   lively		6       | 				       |
+                        |   price	5       |   living		6       | 				       |
+                        |   press	5       |   locked		6       | 				       |
+                        |   preen	5       |   lonely		6       | 				       |
+                        |   power	5       |   longer		6       | 				       |
+                        |   pound	5       |   lordly		6       | 				       |
+                        |   poise	5       |   lovely		6       | 				       |
+                        |   point	5       |   loving		6       | 				       |
+                        |   poach	5       |   lucent		6       | 				       |
+                        |   plump	5       |   maiden		6       | 				       |
+                        |   pluck	5       |   manual		6       | 				       |
+                        |   plead	5       |   marked		6       | 				       |
+                        |   plant	5       |   masked		6       | 				       |
+                        |   place	5       |   master		6       | 				       |
+                        |   pitch	5       |   matted		6       | 				       |
+                        |   pinch	5       |   mature		6       | 				       |
+                        |   pilot	5       |   meager		6       | 				       |
+                        |   phone	5       |   measly		6       | 				       |
+                        |   phase	5       |   medium		6       | 				       |
+                        |   perch	5       |   mellow		6       | 				       |
+                        |   pedal	5       |   melted		6       | 				       |
+                        |   pause	5       |   menial		6       | 				       |
+                        |   patch	5       |   mental		6       | 				       |
+                        |   paste	5       |   middle		6       | 				       |
+                        |   panic	5       |   mighty		6       | 				       |
+                        |   panel	5       |   minute		6       | 				       |
+                        |   paint	5       |   mobile		6       | 				       |
+                        |   order	5       |   modern		6       | 				       |
+                        |   offer	5       |   modest		6       | 				       |
+                        |   occur	5       |   morbid		6       | 				       |
+                        |   nurse	5       |   morose		6       | 				       |
+                        |   nudge	5       |   mortal		6       | 				       |
+                        |   mouth	5       |   mother		6       | 				       |
+                        |   mourn	5       |   moving		6       | 				       |
+                        |   mount	5       |   mutual		6       | 				       |
+                        |   model	5       |   myopic		6       | 				       |
+                        |   mince	5       |   mystic		6       | 				       |
+                        |   mimic	5       |   narrow		6       | 				       |
+                        |   merit	5       |   native		6       | 				       |
+                        |   merge	5       |   nearby		6       | 				       |
+                        |   match	5       |   newest		6       | 				       |
+                        |   marry	5       |   nimble		6       | 				       |
+                        |   march	5       |   normal		6       | 				       |
+                        |   lurch	5       |   oafish		6       | 				       |
+                        |   lunge	5       |   oblong		6       | 				       |
+                        |   lunch	5       |   obtuse		6       | 				       |
+                        |   lower	5       |   odious		6       | 				       |
+                        |   lodge	5       |   oldest		6       | 				       |
+                        |   lobby	5       |   opaque		6       | 				       |
+                        |   loath	5       |   opened		6       | 				       |
+                        |   limit	5       |   orange		6       | 				       |
+                        |   liken	5       |   ornate		6       | 				       |
+                        |   light	5       |   ornery		6       | 				       |
+                        |   level	5       |   padded		6       | 				       |
+                        |   leave	5       |   pallid		6       | 				       |
+                        |   lease	5       |   paltry		6       | 				       |
+                        |   learn	5       |   patchy		6       | 				       |
+                        |   leach	5       |   peeved		6       | 				       |
+                        |   layer	5       |   period		6       | 				       |
+                        |   laugh	5       |   petite		6       | 				       |
+                        |   latch	5       |   phobic		6       | 				       |
+                        |   lapse	5       |   placid		6       | 				       |
+                        |   labor	5       |   plucky		6       | 				       |
+                        |   label	5       |   poetic		6       | 				       |
+                        |   knock	5       |   poised		6       | 				       |
+                        |   kneel	5       |   polite		6       | 				       |
+                        |   judge	5       |   poorer		6       | 				       |
+                        |   issue	5       |   porous		6       | 				       |
+                        |   inlay	5       |   portly		6       | 				       |
+                        |   infer	5       |   potent		6       | 				       |
+                        |   index	5       |   pretty		6       | 				       |
+                        |   incur	5       |   pricey		6       | 				       |
+                        |   imply	5       |   prissy		6       | 				       |
+                        |   impel	5       |   prized		6       | 				       |
+                        |   hurry	5       |   prompt		6       | 				       |
+                        |   hunch	5       |   proper		6       | 				       |
+                        |   hover	5       |   prying		6       | 				       |
+                        |   house	5       |   public		6       | 				       |
+                        |   hound	5       |   pumped		6       | 				       |
+                        |   honor	5       |   purple		6       | 				       |
+                        |   hoist	5       |   putrid		6       | 				       |
+                        |   hitch	5       |   quacky		6       | 				       |
+                        |   hinge	5       |   quaint		6       | 				       |
+                        |   hedge	5       |   queasy		6       | 				       |
+                        |   heave	5       |   quirky		6       | 				       |
+                        |   haunt	5       |   racial		6       | 				       |
+                        |   hatch	5       |   racist		6       | 				       |
+                        |   halve	5       |   ragged		6       | 				       |
+                        |   guide	5       |   raging		6       | 				       |
+                        |   guess	5       |   rakish		6       | 				       |
+                        |   guard	5       |   rancid		6       | 				       |
+                        |   grunt	5       |   random		6       | 				       |
+                        |   growl	5       |   raving		6       | 				       |
+                        |   group	5       |   recent		6       | 				       |
+                        |   grope	5       |   remote		6       | 				       |
+                        |   groom	5       |   rented		6       | 				       |
+                        |   groan	5       |   rested		6       | 				       |
+                        |   gripe	5       |   richer		6       | 				       |
+                        |   grind	5       |   robust		6       | 				       |
+                        |   grill	5       |   rotten		6       | 				       |
+                        |   greet	5       |   rotund		6       | 				       |
+                        |   graze	5       |   rueful		6       | 				       |
+                        |   grate	5       |   rugged		6       | 				       |
+                        |   grasp	5       |   ruined		6       | 				       |
+                        |   grant	5       |   rusted		6       | 				       |
+                        |   graft	5       |   rustic		6       | 				       |
+                        |   grade	5       |   rutted		6       | 				       |
+                        |   grace	5       |   sacred		6       | 				       |
+                        |   gouge	5       |   salted		6       | 				       |
+                        |   gloss	5       |   satiny		6       | 				       |
+                        |   glide	5       |   savage		6       | 				       |
+                        |   glean	5       |   savory		6       | 				       |
+                        |   gleam	5       |   scanty		6       | 				       |
+                        |   glaze	5       |   scarce		6       | 				       |
+                        |   glare	5       |   scared		6       | 				       |
+                        |   gauge	5       |   scenic		6       | 				       |
+                        |   frown	5       |   scummy		6       | 				       |
+                        |   frost	5       |   sealed		6       | 				       |
+                        |   front	5       |   second		6       | 				       |
+                        |   frame	5       |   secret		6       | 				       |
+                        |   found	5       |   secure		6       | 				       |
+                        |   forgo	5       |   sedate		6       | 				       |
+                        |   forge	5       |   seemly		6       | 				       |
+                        |   force	5       |   select		6       | 				       |
+                        |   focus	5       |   senior		6       | 				       |
+                        |   flush	5       |   serene		6       | 				       |
+                        |   flout	5       |   serial		6       | 				       |
+                        |   floor	5       |   severe		6       | 				       |
+                        |   flood	5       |   shabby		6       | 				       |
+                        |   flock	5       |   shaded		6       | 				       |
+                        |   float	5       |   shaggy		6       | 				       |
+                        |   flirt	5       |   shifty		6       | 				       |
+                        |   fling	5       |   shoddy		6       | 				       |
+                        |   flick	5       |   shrewd		6       | 				       |
+                        |   flash	5       |   shrill		6       | 				       |
+                        |   flare	5       |   sickly		6       | 				       |
+                        |   flank	5       |   signed		6       | 				       |
+                        |   flame	5       |   silent		6       | 				       |
+                        |   fight	5       |   silver		6       | 				       |
+                        |   field	5       |   simian		6       | 				       |
+                        |   fetch	5       |   simple		6       | 				       |
+                        |   ferry	5       |   sinful		6       | 				       |
+                        |   fence	5       |   single		6       | 				       |
+                        |   feign	5       |   skimpy		6       | 				       |
+                        |   favor	5       |   skinny		6       | 				       |
+                        |   fault	5       |   sleepy		6       | 				       |
+                        |   fancy	5       |   slight		6       | 				       |
+                        |   faint	5       |   sloped		6       | 				       |
+                        |   expel	5       |   sloppy		6       | 				       |
+                        |   exist	5       |   slushy		6       | 				       |
+                        |   exile	5       |   smarmy		6       | 				       |
+                        |   exert	5       |   smelly		6       | 				       |
+                        |   excel	5       |   smoggy		6       | 				       |
+                        |   exalt	5       |   smoked		6       | 				       |
+                        |   exact	5       |   smooth		6       | 				       |
+                        |   evoke	5       |   snappy		6       | 				       |
+                        |   evict	5       |   sneaky		6       | 				       |
+                        |   evade	5       |   snippy		6       | 				       |
+                        |   erupt	5       |   snoopy		6       | 				       |
+                        |   erode	5       |   snooty		6       | 				       |
+                        |   erect	5       |   snotty		6       | 				       |
+                        |   erase	5       |   soaked		6       | 				       |
+                        |   equip	5       |   social		6       | 				       |
+                        |   equal	5       |   solemn		6       | 				       |
+                        |   enter	5       |   somber		6       | 				       |
+                        |   ensue	5       |   sordid		6       | 				       |
+                        |   enjoy	5       |   sparse		6       | 				       |
+                        |   endow	5       |   speedy		6       | 				       |
+                        |   enact	5       |   spiffy		6       | 				       |
+                        |   empty	5       |   spinal		6       | 				       |
+                        |   emend	5       |   spiral		6       | 				       |
+                        |   embed	5       |   spoken		6       | 				       |
+                        |   elude	5       |   spongy		6       | 				       |
+                        |   elect	5       |   spooky		6       | 				       |
+                        |   elbow	5       |   spotty		6       | 				       |
+                        |   elate	5       |   sprite		6       | 				       |
+                        |   eject	5       |   square		6       | 				       |
+                        |   dwell	5       |   stable		6       | 				       |
+                        |   dwarf	5       |   stanch		6       | 				       |
+                        |   drown	5       |   static		6       | 				       |
+                        |   droop	5       |   status		6       | 				       |
+                        |   drone	5       |   steady		6       | 				       |
+                        |   drive	5       |   steamy		6       | 				       |
+                        |   drink	5       |   steely		6       | 				       |
+                        |   drill	5       |   sticky		6       | 				       |
+                        |   drift	5       |   stingy		6       | 				       |
+                        |   dress	5       |   stinky		6       | 				       |
+                        |   dream	5       |   stodgy		6       | 				       |
+                        |   dread	5       |   stormy		6       | 				       |
+                        |   drawl	5       |   street		6       | 				       |
+                        |   drape	5       |   strict		6       | 				       |
+                        |   drain	5       |   strong		6       | 				       |
+                        |   draft	5       |   stubby		6       | 				       |
+                        |   douse	5       |   stuffy		6       | 				       |
+                        |   doubt	5       |   sturdy		6       | 				       |
+                        |   dodge	5       |   subtle		6       | 				       |
+                        |   ditch	5       |   sudden		6       | 				       |
+                        |   deter	5       |   sugary		6       | 				       |
+                        |   delve	5       |   sullen		6       | 				       |
+                        |   delay	5       |   superb		6       | 				       |
+                        |   defer	5       |   supple		6       | 				       |
+                        |   decay	5       |   swanky		6       | 				       |
+                        |   debit	5       |   sweaty		6       | 				       |
+                        |   dance	5       |   taller		6       | 				       |
+                        |   cycle	5       |   tanned		6       | 				       |
+                        |   curve	5       |   taxing		6       | 				       |
+                        |   curse	5       |   teensy		6       | 				       |
+                        |   crush	5       |   tender		6       | 				       |
+                        |   crown	5       |   tested		6       | 				       |
+                        |   crowd	5       |   tetchy		6       | 				       |
+                        |   cross	5       |   thorny		6       | 				       |
+                        |   croak	5       |   timely		6       | 				       |
+                        |   crest	5       |   tiring		6       | 				       |
+                        |   creep	5       |   toothy		6       | 				       |
+                        |   creak	5       |   torpid		6       | 				       |
+                        |   crawl	5       |   torrid		6       | 				       |
+                        |   crave	5       |   touchy		6       | 				       |
+                        |   crash	5       |   tragic		6       | 				       |
+                        |   crane	5       |   trashy		6       | 				       |
+                        |   cramp	5       |   trendy		6       | 				       |
+                        |   craft	5       |   tribal		6       | 				       |
+                        |   crack	5       |   tricky		6       | 				       |
+                        |   covet	5       |   trusty		6       | 				       |
+                        |   cover	5       |   trying		6       | 				       |
+                        |   court	5       |   unable		6       | 				       |
+                        |   count	5       |   uneasy		6       | 				       |
+                        |   cough	5       |   uneven		6       | 				       |
+                        |   couch	5       |   unfair		6       | 				       |
+                        |   color	5       |   unique		6       | 				       |
+                        |   coach	5       |   united		6       | 				       |
+                        |   cloud	5       |   unjust		6       | 				       |
+                        |   cloth	5       |   unkind		6       | 				       |
+                        |   close	5       |   unripe		6       | 				       |
+                        |   clone	5       |   unruly		6       | 				       |
+                        |   clock	5       |   unsafe		6       | 				       |
+                        |   cloak	5       |   unsure		6       | 				       |
+                        |   cling	5       |   untidy		6       | 				       |
+                        |   climb	5       |   unused		6       | 				       |
+                        |   click	5       |   unwary		6       | 				       |
+                        |   clear	5       |   unwise		6       | 				       |
+                        |   clean	5       |   upbeat		6       | 				       |
+                        |   clasp	5       |   upmost		6       | 				       |
+                        |   clash	5       |   uppity		6       | 				       |
+                        |   clamp	5       |   upward		6       | 				       |
+                        |   claim	5       |   urbane		6       | 				       |
+                        |   churn	5       |   urgent		6       | 				       |
+                        |   chuck	5       |   usable		6       | 				       |
+                        |   choke	5       |   useful		6       | 				       |
+                        |   chirp	5       |   vacant		6       | 				       |
+                        |   chime	5       |   varied		6       | 				       |
+                        |   chill	5       |   verbal		6       | 				       |
+                        |   chide	5       |   versed		6       | 				       |
+                        |   cheer	5       |   vexing		6       | 				       |
+                        |   check	5       |   viable		6       | 				       |
+                        |   cheat	5       |   violet		6       | 				       |
+                        |   chase	5       |   visual		6       | 				       |
+                        |   chart	5       |   vulgar		6       | 				       |
+                        |   charm	5       |   wanton		6       | 				       |
+                        |   chant	5       |   wasted		6       | 				       |
+                        |   chair	5       |   watery		6       | 				       |
+                        |   chain	5       |   weekly		6       | 				       |
+                        |   cease	5       |   wicked		6       | 				       |
+                        |   cause	5       |   wiggly		6       | 				       |
+                        |   cater	5       |   winter		6       | 				       |
+                        |   catch	5       |   wobbly		6       | 				       |
+                        |   carve	5       |   woeful		6       | 				       |
+                        |   carry	5       |   wonted		6       | 				       |
+                        |   burst	5       |   wooden		6       | 				       |
+                        |   bunch	5       |   wooing		6       | 				       |
+                        |   bully	5       |   woolen		6       | 				       |
+                        |   bulge	5       |   worthy		6       | 				       |
+                        |   build	5       |   yearly		6       | 				       |
+                        |   brush	5       |   yellow		6       | 				       |
+                        |   brood	5       |   zonked		6       | 				       |
+                        |   bring	5       |                         				       |
+                        |   brief	5       |                         				       |
+                        |   bribe	5       |                         				       |
+                        |   breed	5       |                         				       |
+                        |   break	5       |                         				       |
+                        |   brave	5       |                         				       |
+                        |   brand	5       |                         				       |
+                        |   brake	5       |                         				       |
+                        |   braid	5       |                         				       |
+                        |   brace	5       |                         				       |
+                        |   bound	5       |                         				       |
+                        |   boost	5       |                         				       |
+                        |   boast	5       |                         				       |
+                        |   board	5       |                         				       |
+                        |   blush	5       |                         				       |
+                        |   blurt	5       |                         				       |
+                        |   bloom	5       |                         				       |
+                        |   block	5       |                         				       |
+                        |   bloat	5       |                         				       |
+                        |   blink	5       |                         				       |
+                        |   blind	5       |                         				       |
+                        |   bless	5       |                         				       |
+                        |   blend	5       |                         				       |
+                        |   bleed	5       |                         				       |
+                        |   blaze	5       |                         				       |
+                        |   blast	5       |                         				       |
+                        |   blame	5       |                         				       |
+                        |   beset	5       |                         				       |
+                        |   belch	5       |                         				       |
+                        |   begin	5       |                         				       |
+                        |   beach	5       |                         				       |
+                        |   batch	5       |                         				       |
+                        |   baste	5       |                         				       |
+                        |   barge	5       |                         				       |
+                        |   award	5       |                         				       |
+                        |   awake	5       |                         				       |
+                        |   await	5       |                         				       |
+                        |   avoid	5       |                         				       |
+                        |   avert	5       |                         				       |
+                        |   avail	5       |                         				       |
+                        |   audit	5       |                         				       |
+                        |   atone	5       |                         				       |
+                        |   assay	5       |                         				       |
+                        |   armor	5       |                         				       |
+                        |   arise	5       |                         				       |
+                        |   argue	5       |                         				       |
+                        |   apply	5       |                         				       |
+                        |   annul	5       |                         				       |
+                        |   annoy	5       |                         				       |
+                        |   annex	5       |                         				       |
+                        |   anger	5       |                         				       |
+                        |   amuse	5       |                         				       |
+                        |   amend	5       |                         				       |
+                        |   amaze	5       |                         				       |
+                        |   amass	5       |                         				       |
+                        |   alter	5       |                         				       |
+                        |   allow	5       |                         				       |
+                        |   allot	5       |                         				       |
+                        |   align	5       |                         				       |
+                        |   alert	5       |                         				       |
+                        |   alarm	5       |                         				       |
+                        |   agree	5       |                         				       |
+                        |   affix	5       |                         				       |
+                        |   adorn	5       |                         				       |
+                        |   adore	5       |                         				       |
+                        |   adopt	5       |                         				       |
+                        |   admit	5       |                         				       |
+                        |   adapt	5       |                         				       |
+                        |   abuse	5       |                         				       |
+                        |   abort	5       |                         				       |
+                        |   abide	5       |                         				       |
+                        |   abhor	5       |                         				       |
+                        |   abate	5       |                         				       |
+                        |   zoom	4       |                         				       |
+                        |   yelp	4       |                         				       |
+                        |   yell	4       |                         				       |
+                        |   yawn	4       |                         				       |
+                        |   yank	4       |                         				       |
+                        |   wrap	4       |                         				       |
+                        |   work	4       |                         				       |
+                        |   word	4       |                         				       |
+                        |   wish	4       |                         				       |
+                        |   wire	4       |                         				       |
+                        |   wipe	4       |                         				       |
+                        |   wink	4       |                         				       |
+                        |   wind	4       |                         				       |
+                        |   will	4       |                         				       |
+                        |   whip	4       |                         				       |
+                        |   weld	4       |                         				       |
+                        |   weep	4       |                         				       |
+                        |   wear	4       |                         				       |
+                        |   wean	4       |                         				       |
+                        |   wave	4       |                         				       |
+                        |   wash	4       |                         				       |
+                        |   warp	4       |                         				       |
+                        |   warn	4       |                         				       |
+                        |   warm	4       |                         				       |
+                        |   want	4       |                         				       |
+                        |   wane	4       |                         				       |
+                        |   wall	4       |                         				       |
+                        |   walk	4       |                         				       |
+                        |   wake	4       |                         				       |
+                        |   wait	4       |                         				       |
+                        |   wail	4       |                         				       |
+                        |   wage	4       |                         				       |
+                        |   wade	4       |                         				       |
+                        |   vote	4       |                         				       |
+                        |   void	4       |                         				       |
+                        |   view	4       |                         				       |
+                        |   veto	4       |                         				       |
+                        |   vest	4       |                         				       |
+                        |   vent	4       |                         				       |
+                        |   veer	4       |                         				       |
+                        |   vary	4       |                         				       |
+                        |   urge	4       |                         				       |
+                        |   undo	4       |                         				       |
+                        |   type	4       |                         				       |
+                        |   turn	4       |                         				       |
+                        |   tune	4       |                         				       |
+                        |   tuck	4       |                         				       |
+                        |   trot	4       |                         				       |
+                        |   trip	4       |                         				       |
+                        |   trim	4       |                         				       |
+                        |   trap	4       |                         				       |
+                        |   tout	4       |                         				       |
+                        |   tour	4       |                         				       |
+                        |   toss	4       |                         				       |
+                        |   tone	4       |                         				       |
+                        |   toil	4       |                         				       |
+                        |   tire	4       |                         				       |
+                        |   tint	4       |                         				       |
+                        |   time	4       |                         				       |
+                        |   tilt	4       |                         				       |
+                        |   till	4       |                         				       |
+                        |   tile	4       |                         				       |
+                        |   tick	4       |                         				       |
+                        |   thud	4       |                         				       |
+                        |   thin	4       |                         				       |
+                        |   thaw	4       |                         				       |
+                        |   test	4       |                         				       |
+                        |   term	4       |                         				       |
+                        |   tend	4       |                         				       |
+                        |   tell	4       |                         				       |
+                        |   tear	4       |                         				       |
+                        |   team	4       |                         				       |
+                        |   tape	4       |                         				       |
+                        |   tame	4       |                         				       |
+                        |   talk	4       |                         				       |
+                        |   take	4       |                         				       |
+                        |   tail	4       |                         				       |
+                        |   tack	4       |                         				       |
+                        |   swim	4       |                         				       |
+                        |   sway	4       |                         				       |
+                        |   swap	4       |                         				       |
+                        |   suit	4       |                         				       |
+                        |   suck	4       |                         				       |
+                        |   stun	4       |                         				       |
+                        |   stub	4       |                         				       |
+                        |   stow	4       |                         				       |
+                        |   stop	4       |                         				       |
+                        |   stir	4       |                         				       |
+                        |   step	4       |                         				       |
+                        |   stem	4       |                         				       |
+                        |   stay	4       |                         				       |
+                        |   stab	4       |                         				       |
+                        |   spur	4       |                         				       |
+                        |   spot	4       |                         				       |
+                        |   spit	4       |                         				       |
+                        |   spin	4       |                         				       |
+                        |   span	4       |                         				       |
+                        |   sour	4       |                         				       |
+                        |   sort	4       |                         				       |
+                        |   soil	4       |                         				       |
+                        |   soar	4       |                         				       |
+                        |   soak	4       |                         				       |
+                        |   snub	4       |                         				       |
+                        |   snow	4       |                         				       |
+                        |   snap	4       |                         				       |
+                        |   slur	4       |                         				       |
+                        |   slug	4       |                         				       |
+                        |   slow	4       |                         				       |
+                        |   slit	4       |                         				       |
+                        |   slip	4       |                         				       |
+                        |   slay	4       |                         				       |
+                        |   slap	4       |                         				       |
+                        |   slam	4       |                         				       |
+                        |   skip	4       |                         				       |
+                        |   skin	4       |                         				       |
+                        |   skim	4       |                         				       |
+                        |   skid	4       |                         				       |
+                        |   skew	4       |                         				       |
+                        |   size	4       |                         				       |
+                        |   sire	4       |                         				       |
+                        |   sink	4       |                         				       |
+                        |   sing	4       |                         				       |
+                        |   sign	4       |                         				       |
+                        |   sigh	4       |                         				       |
+                        |   sift	4       |                         				       |
+                        |   side	4       |                         				       |
+                        |   shut	4       |                         				       |
+                        |   shun	4       |                         				       |
+                        |   show	4       |                         				       |
+                        |   shop	4       |                         				       |
+                        |   ship	4       |                         				       |
+                        |   shed	4       |                         				       |
+                        |   send	4       |                         				       |
+                        |   sell	4       |                         				       |
+                        |   seep	4       |                         				       |
+                        |   seem	4       |                         				       |
+                        |   seek	4       |                         				       |
+                        |   seed	4       |                         				       |
+                        |   seat	4       |                         				       |
+                        |   seal	4       |                         				       |
+                        |   scar	4       |                         				       |
+                        |   scan	4       |                         				       |
+                        |   save	4       |                         				       |
+                        |   sass	4       |                         				       |
+                        |   salt	4       |                         				       |
+                        |   sail	4       |                         				       |
+                        |   sack	4       |                         				       |
+                        |   rust	4       |                         				       |
+                        |   rush	4       |                         				       |
+                        |   rule	4       |                         				       |
+                        |   ruin	4       |                         				       |
+                        |   rope	4       |                         				       |
+                        |   root	4       |                         				       |
+                        |   romp	4       |                         				       |
+                        |   roll	4       |                         				       |
+                        |   rock	4       |                         				       |
+                        |   roar	4       |                         				       |
+                        |   roam	4       |                         				       |
+                        |   risk	4       |                         				       |
+                        |   rise	4       |                         				       |
+                        |   ring	4       |                         				       |
+                        |   ride	4       |                         				       |
+                        |   rest	4       |                         				       |
+                        |   rent	4       |                         				       |
+                        |   rely	4       |                         				       |
+                        |   rein	4       |                         				       |
+                        |   reel	4       |                         				       |
+                        |   rear	4       |                         				       |
+                        |   reap	4       |                         				       |
+                        |   read	4       |                         				       |
+                        |   raze	4       |                         				       |
+                        |   rave	4       |                         				       |
+                        |   rate	4       |                         				       |
+                        |   rant	4       |                         				       |
+                        |   rank	4       |                         				       |
+                        |   rake	4       |                         				       |
+                        |   rain	4       |                         				       |
+                        |   raid	4       |                         				       |
+                        |   rage	4       |                         				       |
+                        |   rack	4       |                         				       |
+                        |   race	4       |                         				       |
+                        |   quiz	4       |                         				       |
+                        |   quit	4       |                         				       |
+                        |   quip	4       |                         				       |
+                        |   push	4       |                         				       |
+                        |   purr	4       |                         				       |
+                        |   pump	4       |                         				       |
+                        |   pull	4       |                         				       |
+                        |   puff	4       |                         				       |
+                        |   prop	4       |                         				       |
+                        |   prod	4       |                         				       |
+                        |   pray	4       |                         				       |
+                        |   pout	4       |                         				       |
+                        |   pour	4       |                         				       |
+                        |   post	4       |                         				       |
+                        |   pose	4       |                         				       |
+                        |   pool	4       |                         				       |
+                        |   poll	4       |                         				       |
+                        |   poke	4       |                         				       |
+                        |   plug	4       |                         				       |
+                        |   plow	4       |                         				       |
+                        |   plot	4       |                         				       |
+                        |   plod	4       |                         				       |
+                        |   play	4       |                         				       |
+                        |   plan	4       |                         				       |
+                        |   pity	4       |                         				       |
+                        |   pipe	4       |                         				       |
+                        |   pine	4       |                         				       |
+                        |   pile	4       |                         				       |
+                        |   pick	4       |                         				       |
+                        |   pelt	4       |                         				       |
+                        |   peer	4       |                         				       |
+                        |   peep	4       |                         				       |
+                        |   peel	4       |                         				       |
+                        |   peck	4       |                         				       |
+                        |   peak	4       |                         				       |
+                        |   pave	4       |                         				       |
+                        |   pass	4       |                         				       |
+                        |   part	4       |                         				       |
+                        |   park	4       |                         				       |
+                        |   pare	4       |                         				       |
+                        |   pant	4       |                         				       |
+                        |   pair	4       |                         				       |
+                        |   page	4       |                         				       |
+                        |   pack	4       |                         				       |
+                        |   pace	4       |                         				       |
+                        |   oust	4       |                         				       |
+                        |   open	4       |                         				       |
+                        |   ooze	4       |                         				       |
+                        |   omit	4       |                         				       |
+                        |   obey	4       |                         				       |
+                        |   numb	4       |                         				       |
+                        |   note	4       |                         				       |
+                        |   nose	4       |                         				       |
+                        |   nick	4       |                         				       |
+                        |   nest	4       |                         				       |
+                        |   need	4       |                         				       |
+                        |   near	4       |                           					       |
+                        |   name	4       |                           					       |
+                        |   nail	4       |                           					       |
+                        |   mute	4       |                           					       |
+                        |   muse	4       |                           					       |
+                        |   move	4       |                           					       |
+                        |   mope	4       |                           					       |
+                        |   moor	4       |                           					       |
+                        |   mold	4       |                           					       |
+                        |   mock	4       |                           					       |
+                        |   moan	4       |                           					       |
+                        |   miss	4       |                           					       |
+                        |   mint	4       |                           					       |
+                        |   mine	4       |                           					       |
+                        |   mind	4       |                           					       |
+                        |   mill	4       |                           					       |
+                        |   milk	4       |                           					       |
+                        |   mess	4       |                           					       |
+                        |   mend	4       |                           					       |
+                        |   melt	4       |                           					       |
+                        |   meet	4       |                           					       |
+                        |   mean	4       |                           					       |
+                        |   maul	4       |                           					       |
+                        |   mass	4       |                           					       |
+                        |   mask	4       |                           					       |
+                        |   mash	4       |                           					       |
+                        |   mark	4       |                           					       |
+                        |   make	4       |                           					       |
+                        |   maim	4       |                           					       |
+                        |   mail	4       |                           					       |
+                        |   lurk	4       |                           					       |
+                        |   lump	4       |                           					       |
+                        |   lull	4       |                           					       |
+                        |   love	4       |                           					       |
+                        |   lose	4       |                           					       |
+                        |   loot	4       |                           					       |
+                        |   loop	4       |                           					       |
+                        |   loom	4       |                           					       |
+                        |   look	4       |                           					       |
+                        |   long	4       |                           					       |
+                        |   lock	4       |                           					       |
+                        |   loan	4       |                           					       |
+                        |   load	4       |
+                        |   live	4       |
+                        |   list	4       |
+                        |   link	4       |
+                        |   line	4       |
+                        |   limp	4       |
+                        |   like	4       |
+                        |   lift	4       |
+                        |   lick	4       |
+                        |   levy	4       |
+                        |   lend	4       |
+                        |   leer	4       |
+                        |   leap	4       |
+                        |   lean	4       |
+                        |   leak	4       |
+                        |   lead	4       |
+                        |   laud	4       |
+                        |   last	4       |
+                        |   lash	4       |
+                        |   land	4       |
+                        |   lack	4       |
+                        |   lace	4       |
+                        |   know	4       |
+                        |   knot	4       |
+                        |   knit	4       |
+                        |   kiss	4       |
+                        |   kill	4       |
+                        |   kick	4       |
+                        |   keep	4       |
+                        |   jump	4       |
+                        |   jolt	4       |
+                        |   joke	4       |
+                        |   join	4       |
+                        |   jerk	4       |
+                        |   jeer	4       |
+                        |   jail	4       |
+                        |   itch	4       |
+                        |   iron	4       |
+                        |   inch	4       |
+                        |   hush	4       |
+                        |   hurt	4       |
+                        |   hurl	4       |
+                        |   hunt	4       |
+                        |   howl	4       |
+                        |   host	4       |
+                        |   hope	4       |
+                        |   hoot	4       |
+                        |   hook	4       |
+                        |   hone	4       |
+                        |   hole	4       |
+                        |   hold	4       |
+                        |   hiss	4       |
+                        |   hire	4       |
+                        |   hint	4       |
+                        |   hide	4       |
+                        |   herd	4       |
+                        |   help	4       |
+                        |   heed	4       |
+                        |   heat	4       |
+                        |   hear	4       |
+                        |   heap	4       |
+                        |   heal	4       |
+                        |   head	4       |
+                        |   haul	4       |
+                        |   hate	4       |
+                        |   harm	4       |
+                        |   hang	4       |
+                        |   hand	4       |
+                        |   halt	4       |
+                        |   hail	4       |
+                        |   hack	4       |
+                        |   gush	4       |
+                        |   gulp	4       |
+                        |   grow	4       |
+                        |   grit	4       |
+                        |   grip	4       |
+                        |   grin	4       |
+                        |   grab	4       |
+                        |   goad	4       |
+                        |   gnaw	4       |
+                        |   glue	4       |
+                        |   glow	4       |
+                        |   give	4       |
+                        |   gild	4       |
+                        |   gift	4       |
+                        |   gear	4       |
+                        |   gaze	4       |
+                        |   gasp	4       |
+                        |   gain	4       |
+                        |   fuss	4       |
+                        |   fund	4       |
+                        |   fume	4       |
+                        |   fuel	4       |
+                        |   fret	4       |
+                        |   free	4       |
+                        |   foul	4       |
+                        |   form	4       |
+                        |   fork	4       |
+                        |   ford	4       |
+                        |   fool	4       |
+                        |   fold	4       |
+                        |   foil	4       |
+                        |   flow	4       |
+                        |   flop	4       |
+                        |   flog	4       |
+                        |   flit	4       |
+                        |   flip	4       |
+                        |   flex	4       |
+                        |   flee	4       |
+                        |   flaw	4       |
+                        |   flap	4       |
+                        |   flag	4       |
+                        |   fish	4       |
+                        |   firm	4       |
+                        |   fire	4       |
+                        |   fine	4       |
+                        |   find	4       |
+                        |   film	4       |
+                        |   fill	4       |
+                        |   file	4       |
+                        |   fell	4       |
+                        |   feel	4       |
+                        |   feed	4       |
+                        |   fear	4       |
+                        |   farm	4       |
+                        |   fare	4       |
+                        |   fall	4       |
+                        |   fake	4       |
+                        |   fail	4       |
+                        |   fade	4       |
+                        |   face	4       |
+                        |   exit	4       |
+                        |   etch	4       |
+                        |   envy	4       |
+                        |   emit	4       |
+                        |   edit	4       |
+                        |   edge	4       |
+                        |   echo	4       |
+                        |   ease	4       |
+                        |   earn	4       |
+                        |   dust	4       |
+                        |   dupe	4       |
+                        |   dump	4       |
+                        |   dull	4       |
+                        |   duck	4       |
+                        |   drum	4       |
+                        |   drop	4       |
+                        |   drip	4       |
+                        |   draw	4       |
+                        |   drag	4       |
+                        |   doze	4       |
+                        |   down	4       |
+                        |   dote	4       |
+                        |   doom	4       |
+                        |   dock	4       |
+                        |   dive	4       |
+                        |   dine	4       |
+                        |   dice	4       |
+                        |   dial	4       |
+                        |   deny	4       |
+                        |   dent	4       |
+                        |   defy	4       |
+                        |   deem	4       |
+                        |   deed	4       |
+                        |   deck	4       |
+                        |   deal	4       |
+                        |   daze	4       |
+                        |   dawn	4       |
+                        |   date	4       |
+                        |   dash	4       |
+                        |   dart	4       |
+                        |   dare	4       |
+                        |   curl	4       |
+                        |   cure	4       |
+                        |   curb	4       |
+                        |   cull	4       |
+                        |   crow	4       |
+                        |   crop	4       |
+                        |   cram	4       |
+                        |   cost	4       |
+                        |   copy	4       |
+                        |   cope	4       |
+                        |   cool	4       |
+                        |   cook	4       |
+                        |   come	4       |
+                        |   comb	4       |
+                        |   coin	4       |
+                        |   coil	4       |
+                        |   code	4       |
+                        |   cock	4       |
+                        |   coax	4       |
+                        |   coat	4       |
+                        |   club	4       |
+                        |   clog	4       |
+                        |   clip	4       |
+                        |   claw	4       |
+                        |   clap	4       |
+                        |   cite	4       |
+                        |   chop	4       |
+                        |   chip	4       |
+                        |   chew	4       |
+                        |   chat	4       |
+                        |   char	4       |
+                        |   cave	4       |
+                        |   cast	4       |
+                        |   cash	4       |
+                        |   cart	4       |
+                        |   care	4       |
+                        |   camp	4       |
+                        |   calm	4       |
+                        |   call	4       |
+                        |   cake	4       |
+                        |   cage	4       |
+                        |   buzz	4       |
+                        |   busy	4       |
+                        |   bust	4       |
+                        |   bury	4       |
+                        |   burp	4       |
+                        |   burn	4       |
+                        |   bump	4       |
+                        |   buck	4       |
+                        |   brew	4       |
+                        |   brag	4       |
+                        |   bowl	4       |
+                        |   bore	4       |
+                        |   boot	4       |
+                        |   boom	4       |
+                        |   book	4       |
+                        |   bond	4       |
+                        |   bomb	4       |
+                        |   bolt	4       |
+                        |   boil	4       |
+                        |   blur	4       |
+                        |   blow	4       |
+                        |   blot	4       |
+                        |   blab	4       |
+                        |   bite	4       |
+                        |   bind	4       |
+                        |   bill	4       |
+                        |   bide	4       |
+                        |   bend	4       |
+                        |   belt	4       |
+                        |   beep	4       |
+                        |   beat	4       |
+                        |   bear	4       |
+                        |   beam	4       |
+                        |   bawl	4       |
+                        |   bath	4       |
+                        |   bask	4       |
+                        |   bash	4       |
+                        |   base	4       |
+                        |   bark	4       |
+                        |   bare	4       |
+                        |   bank	4       |
+                        |   bang	4       |
+                        |   band	4       |
+                        |   balk	4       |
+                        |   bale	4       |
+                        |   bake	4       |
+                        |   bait	4       |
+                        |   bail	4       |
+                        |   back	4       |
+                        |   baby	4       |
+                        |   avow	4       |
+                        |   ally	4       |
+                        |   ache	4       |
+                        |   zip		3       |
+                        |   zap		3       |
+                        |   yak		3       |
+                        |   woo		3       |
+                        |   win		3       |
+                        |   wed		3       |
+                        |   wax		3       |
+                        |   wag		3       |
+                        |   wad		3       |
+                        |   vow		3       |
+                        |   vet		3       |
+                        |   use		3       |
+                        |   tug		3       |
+                        |   try		3       |
+                        |   toy		3       |
+                        |   tow		3       |
+                        |   top		3       |
+                        |   tip		3       |
+                        |   tie		3       |
+                        |   tax		3       |
+                        |   tap		3       |
+                        |   tan		3       |
+                        |   tag		3       |
+                        |   sue		3       |
+                        |   spy		3       |
+                        |   sow		3       |
+                        |   sob		3       |
+                        |   ski		3       |
+                        |   sit		3       |
+                        |   sip		3       |
+                        |   sew		3       |
+                        |   set		3       |
+                        |   see		3       |
+                        |   say		3       |
+                        |   saw		3       |
+                        |   sap		3       |
+                        |   sag		3       |
+                        |   run		3       |
+                        |   rub		3       |
+                        |   row		3       |
+                        |   rot		3       |
+                        |   rob		3       |
+                        |   rip		3       |
+                        |   rig		3       |
+                        |   rid		3       |
+                        |   rib		3       |
+                        |   rev		3       |
+                        |   rat		3       |
+                        |   ram		3       |
+                        |   put		3       |
+                        |   pry		3       |
+                        |   pot		3       |
+                        |   pop		3       |
+                        |   ply		3       |
+                        |   pit		3       |
+                        |   pin		3       |
+                        |   peg		3       |
+                        |   pay		3       |
+                        |   paw		3       |
+                        |   pat		3       |
+                        |   pan		3       |
+                        |   pad		3       |
+                        |   own		3       |
+                        |   owe		3       |
+                        |   opt		3       |
+                        |   oil		3       |
+                        |   nod		3       |
+                        |   nip		3       |
+                        |   net		3       |
+                        |   nag		3       |
+                        |   nab		3       |
+                        |   mug		3       |
+                        |   mow		3       |
+                        |   mop		3       |
+                        |   mob		3       |
+                        |   mix		3       |
+                        |   map		3       |
+                        |   man		3       |
+                        |   log		3       |
+                        |   lob		3       |
+                        |   lie		3       |
+                        |   let		3       |
+                        |   lay		3       |
+                        |   lap		3       |
+                        |   lag		3       |
+                        |   kid		3       |
+                        |   jog		3       |
+                        |   jar		3       |
+                        |   jam		3       |
+                        |   jab		3       |
+                        |   irk		3       |
+                        |   ice		3       |
+                        |   hum		3       |
+                        |   hug		3       |
+                        |   hop		3       |
+                        |   hit		3       |
+                        |   hem		3       |
+                        |   gut		3       |
+                        |   get		3       |
+                        |   gag		3       |
+                        |   fry		3       |
+                        |   fly		3       |
+                        |   fix		3       |
+                        |   fit		3       |
+                        |   fax		3       |
+                        |   fan		3       |
+                        |   eye		3       |
+                        |   err		3       |
+                        |   end		3       |
+                        |   ebb		3       |
+                        |   eat		3       |
+                        |   dye		3       |
+                        |   dub		3       |
+                        |   dry		3       |
+                        |   dot		3       |
+                        |   don		3       |
+                        |   dog		3       |
+                        |   dip		3       |
+                        |   dim		3       |
+                        |   dig		3       |
+                        |   die		3       |
+                        |   dab		3       |
+                        |   cut		3       |
+                        |   cup		3       |
+                        |   cry		3       |
+                        |   con		3       |
+                        |   cap		3       |
+                        |   can		3       |
+                        |   buy		3       |
+                        |   bus		3       |
+                        |   bug		3       |
+                        |   box		3       |
+                        |   bow		3       |
+                        |   bob		3       |
+                        |   bid		3       |
+                        |   bet		3       |
+                        |   beg		3       |
+                        |   bat		3       |
+                        |   bar		3       |
+                        |   ban		3       |
+                        |   bag		3       |
+                        |   ask		3       |
+                        |   arm		3       |
+                        |   aim		3       |
+                        |   ail		3       |
+                        |   aid		3       |
+                        |   age		3       |
+                        |   add		3       |
+                        |   act		3       |
+                        |   up		2       |
+                        |   go		2       |
+                        |   do		2       |
+                        |   be		2       |
+                        |   ax		2       |

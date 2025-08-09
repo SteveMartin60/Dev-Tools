@@ -1,0 +1,33 @@
+﻿<Application x:Class="WebScraper.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WebScraper"
+             StartupUri="web-scraper.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="resources\dictionaries\listbox-styles.xaml"      />
+                <ResourceDictionary Source="resources\dictionaries\button-styles.xaml"         />
+                <!-- 
+                <ResourceDictionary Source="resources\dictionaries\base-styles-button.xaml"    />
+                <ResourceDictionary Source="resources\dictionaries\textbox-styles.xaml"        />
+                <ResourceDictionary Source="resources\dictionaries\colors.xaml"                />
+                <ResourceDictionary Source="resources\dictionaries\metro-colors.xaml"                />
+                <ResourceDictionary Source="resources\dictionaries\combobox-styles.xaml"       />
+                <ResourceDictionary Source="resources\dictionaries\border-styles.xaml"         />
+                <ResourceDictionary Source="resources\dictionaries\separators-styles.xaml"     />
+                <ResourceDictionary Source="resources\dictionaries\label-styles.xaml"          />
+                <ResourceDictionary Source="resources\dictionaries\textblock-styles.xaml"      />
+                <ResourceDictionary Source="resources\dictionaries\animated-button-styles.xaml"/>
+                <ResourceDictionary Source="resources\dictionaries\toolbar-styles.xaml"        />
+                <ResourceDictionary Source="resources\dictionaries\testing-only.xaml"          />
+                <ResourceDictionary Source="resources\dictionaries\toggle-button-styles.xaml"/>
+
+                <ResourceDictionary Source="resources\dictionaries\grid-styles.xaml"         />
+                <ResourceDictionary Source="resources\dictionaries\stackpanel-styles.xaml"   />
+                -->
+                <ResourceDictionary Source="resources\dictionaries\textbox-styles.xaml"      />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

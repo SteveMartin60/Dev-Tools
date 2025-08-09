@@ -1,0 +1,440 @@
+// ======================================================================
+◇ Begin File: App.xaml
+// -----------------------------------
+
+   1 | <Application x:Class="WpfGeneratorApp.App"<Application x:Class="WpfGeneratorApp.App"
+   2 |              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |              xmlns:local="clr-namespace:WpfGeneratorApp"
+   5 |              StartupUri="MainWindow.xaml">
+   6 |     <Application.Resources>
+   7 |          
+   8 |     </Application.Resources>
+   9 | </Application>
+  10 | 
+
+// -----------------------------------
+◇ End File: App.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: App.xaml.cs
+// -----------------------------------
+
+   1 | using System.Configuration;
+   2 | using System.Data;
+   3 | using System.Windows;
+   4 | 
+   5 | namespace WpfGeneratorApp
+   6 | {
+   7 |     /// <summary>
+   8 |     /// Interaction logic for App.xaml
+   9 |     /// </summary>
+  10 |     public partial class App : Application
+  11 |     {
+  12 |     }
+  13 | 
+  14 | }
+  15 | 
+
+// -----------------------------------
+◈ End File: App.xaml.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: AssemblyInfo.cs
+// -----------------------------------
+
+   1 | using System.Windows;
+   2 | 
+   3 | [assembly: ThemeInfo(
+   4 |     ResourceDictionaryLocation.None,            //where theme specific resource dictionaries are located
+   5 |                                                 //(used if a resource is not found in the page,
+   6 |                                                 // or application resource dictionaries)
+   7 |     ResourceDictionaryLocation.SourceAssembly   //where the generic resource dictionary is located
+   8 |                                                 //(used if a resource is not found in the page,
+   9 |                                                 // app, or any theme specific resource dictionaries)
+  10 | )]
+  11 | 
+
+// -----------------------------------
+◈ End File: AssemblyInfo.cs
+// ======================================================================
+
+// ======================================================================
+◇ Begin File: MainWindow.xaml
+// -----------------------------------
+
+   1 | <Window x:Class="WpfGeneratorApp.MainWindow"<Window x:Class="WpfGeneratorApp.MainWindow"
+   2 |         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |         WindowStartupLocation="CenterScreen"
+   5 |         Title="WPF Project Generator" Height="400" Width="600">
+   6 |     <Grid Margin="10">
+   7 |         <Grid.RowDefinitions>
+   8 |             <RowDefinition Height="Auto"/>
+   9 |             <RowDefinition Height="Auto"/>
+  10 |             <RowDefinition Height="Auto"/>
+  11 |             <RowDefinition Height="Auto"/>
+  12 |             <RowDefinition Height="Auto"/>
+  13 |             <RowDefinition Height="*"/>
+  14 |         </Grid.RowDefinitions>
+  15 | 
+  16 |         <!-- JSON File -->
+  17 |         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+  18 |             <TextBlock Text="JSON File:" VerticalAlignment="Center" Width="100"/>
+  19 |             <TextBox x:Name="txtJsonFile" Width="300" Margin="10,0,0,0" IsReadOnly="True" Text="D:\dev-test\pcb-imaging-automation-review\files\element-trees\iDetector_UIElements.json"/>
+  20 |             <Button Content="Browse" Width="80" Margin="10,0,0,0" Click="BrowseJsonFile_Click"/>
+  21 |         </StackPanel>
+  22 | 
+  23 |         <!-- Project Name -->
+  24 |         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+  25 |             <TextBlock Text="Project Name:" VerticalAlignment="Center" Width="100"/>
+  26 |             <TextBox x:Name="txtProjectName" Width="300" Margin="10,0,0,0" Text="TextWpfGen"/>
+  27 |         </StackPanel>
+  28 | 
+  29 |         <!-- Root Namespace -->
+  30 |         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+  31 |             <TextBlock Text="Root Namespace:" VerticalAlignment="Center" Width="100"/>
+  32 |             <TextBox x:Name="txtRootNamespace" Width="300" Margin="10,0,0,0" Text="Mesh.App.GenWPF"/>
+  33 |         </StackPanel>
+  34 | 
+  35 |         <!-- Output Folder -->
+  36 |         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
+  37 |             <TextBlock Text="Output Folder:" VerticalAlignment="Center" Width="100"/>
+  38 |             <TextBox x:Name="txtOutputFolder" Width="300" Margin="10,0,0,0" IsReadOnly="True" Text="D:\dev-test\TestTextApp"/>
+  39 |             <Button Content="Browse" Width="80" Margin="10,0,0,0" Click="BrowseOutputFolder_Click"/>
+  40 |         </StackPanel>
+  41 | 
+  42 |         <!-- Generate Button -->
+  43 |         <Button Grid.Row="4" Content="Generate" Width="100" HorizontalAlignment="Center" Click="GenerateWpfApp_Click"/>
+  44 | 
+  45 |         <!-- Status Message -->
+  46 |         <TextBlock Grid.Row="5" x:Name="txtStatus" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Foreground="Green"/>
+  47 |     </Grid>
+  48 | </Window>
+  49 |     
+
+// -----------------------------------
+◇ End File: MainWindow.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: MainWindow.xaml.cs
+// -----------------------------------
+
+   1 | using System;
+   2 | using System.Collections.Generic;
+   3 | using System.IO;
+   4 | using System.Linq;
+   5 | using System.Text.Json;
+   6 | using System.Text.Json.Serialization;
+   7 | using System.Windows;
+   8 | 
+   9 | namespace WpfGeneratorApp
+  10 | {
+  11 |     public partial class MainWindow : Window
+  12 |     {
+  13 |         private void GenerateWpfApp_Click(object sender, RoutedEventArgs e)
+  14 |         {
+  15 |             try
+  16 |             {
+  17 |                 // Get user inputs
+  18 |                 string jsonFilePath = txtJsonFile.Text;
+  19 |                 string projectName = txtProjectName.Text;
+  20 |                 string rootNamespace = txtRootNamespace.Text;
+  21 |                 string outputFolder = txtOutputFolder.Text;
+  22 | 
+  23 |                 if (string.IsNullOrEmpty(jsonFilePath) || string.IsNullOrEmpty(projectName) ||
+  24 |                     string.IsNullOrEmpty(rootNamespace) || string.IsNullOrEmpty(outputFolder))
+  25 |                 {
+  26 |                     MessageBox.Show("Please fill in all fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+  27 |                     return;
+  28 |                 }
+  29 | 
+  30 |                 // Read JSON file
+  31 |                 string jsonContent = File.ReadAllText(jsonFilePath);
+  32 | 
+  33 |                 // Deserialize JSON
+  34 |                 var options = new JsonSerializerOptions
+  35 |                 {
+  36 |                     PropertyNameCaseInsensitive = true
+  37 |                 };
+  38 | 
+  39 |                 // Root is an array containing a single object with Metadata and Nodes
+  40 |                 var rootObjects = JsonSerializer.Deserialize<List<RootObject>>(jsonContent, options);
+  41 | 
+  42 |                 if (rootObjects == null || rootObjects.Count == 0)
+  43 |                 {
+  44 |                     MessageBox.Show("Invalid JSON structure: No root objects found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+  45 |                     return;
+  46 |                 }
+  47 | 
+  48 |                 // Extract the first object's Nodes property
+  49 |                 var nodes = rootObjects[0].Nodes;
+  50 | 
+  51 |                 if (nodes == null || nodes.Count == 0)
+  52 |                 {
+  53 |                     MessageBox.Show("No UI elements found in the JSON.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+  54 |                     return;
+  55 |                 }
+  56 | 
+  57 |                 // Filter visible elements
+  58 |                 var visibleElements = nodes.Where(element => element.Visibility).ToList();
+  59 | 
+  60 |                 // Generate WPF project
+  61 |                 GenerateWpfProject(visibleElements, projectName, rootNamespace, outputFolder);
+  62 | 
+  63 |                 MessageBox.Show("WPF project generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+  64 |             }
+  65 |             catch (Exception ex)
+  66 |             {
+  67 |                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+  68 |             }
+  69 |         }
+  70 | 
+  71 |         private void GenerateWpfProject(List<UiElement> uiElements, string projectName, string rootNamespace, string outputFolder)
+  72 |         {
+  73 |             // Create project directory
+  74 |             string projectPath = Path.Combine(outputFolder, projectName);
+  75 |             Directory.CreateDirectory(projectPath);
+  76 | 
+  77 |             // Generate XAML file
+  78 |             string xamlContent = GenerateXaml(uiElements, rootNamespace);
+  79 |             File.WriteAllText(Path.Combine(projectPath, "MainWindow.xaml"), xamlContent);
+  80 | 
+  81 |             // Generate C# code-behind file
+  82 |             string csContent = GenerateCodeBehind(uiElements, rootNamespace);
+  83 |             File.WriteAllText(Path.Combine(projectPath, "MainWindow.xaml.cs"), csContent);
+  84 | 
+  85 |             // Generate .csproj file
+  86 |             string csprojContent = GenerateCsproj(projectName, rootNamespace);
+  87 |             File.WriteAllText(Path.Combine(projectPath, $"{projectName}.csproj"), csprojContent);
+  88 |         }
+  89 | 
+  90 |         private string GenerateXaml(List<UiElement> uiElements, string rootNamespace)
+  91 |         {
+  92 |             var xamlBuilder = new System.Text.StringBuilder();
+  93 |             xamlBuilder.AppendLine($"<Window x:Class=\"{rootNamespace}.MainWindow\"");
+  94 |             xamlBuilder.AppendLine("        xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"");
+  95 |             xamlBuilder.AppendLine("        xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"");
+  96 |             xamlBuilder.AppendLine("        Title=\"MainWindow\" Height=\"800\" Width=\"1200\">");
+  97 |             xamlBuilder.AppendLine("    <Grid>");
+  98 | 
+  99 |             foreach (var element in uiElements)
+ 100 |             {
+ 101 |                 switch (element.Type.ToLower())
+ 102 |                 {
+ 103 |                     case "button":
+ 104 |                         xamlBuilder.AppendLine($"        <Button Content=\"{SanitizeName(element.Name)}\" Width=\"{element.Width}\" Height=\"{element.Height}\" Margin=\"{element.Margin}\" Click=\"{SanitizeName(element.Name)}_Click\"/>");
+ 105 |                         break;
+ 106 |                     case "textbox":
+ 107 |                         xamlBuilder.AppendLine($"        <TextBox Name=\"{SanitizeName(element.Name)}\" Width=\"{element.Width}\" Height=\"{element.Height}\" Margin=\"{element.Margin}\"/>");
+ 108 |                         break;
+ 109 |                     case "label":
+ 110 |                         xamlBuilder.AppendLine($"        <Label Content=\"{SanitizeName(element.Name)}\" Width=\"{element.Width}\" Height=\"{element.Height}\" Margin=\"{element.Margin}\"/>");
+ 111 |                         break;
+ 112 |                         // Add more cases for other UI elements as needed
+ 113 |                 }
+ 114 |             }
+ 115 | 
+ 116 |             xamlBuilder.AppendLine("    </Grid>");
+ 117 |             xamlBuilder.AppendLine("</Window>");
+ 118 |             return xamlBuilder.ToString();
+ 119 |         }
+ 120 |         private string GenerateCodeBehind(List<UiElement> uiElements, string rootNamespace)
+ 121 |         {
+ 122 |             var csBuilder = new System.Text.StringBuilder();
+ 123 |             csBuilder.AppendLine("using System;");
+ 124 |             csBuilder.AppendLine("using System.Windows;");
+ 125 |             csBuilder.AppendLine();
+ 126 |             csBuilder.AppendLine($"namespace {rootNamespace}");
+ 127 |             csBuilder.AppendLine("{");
+ 128 |             csBuilder.AppendLine("    public partial class MainWindow : Window");
+ 129 |             csBuilder.AppendLine("    {");
+ 130 |             csBuilder.AppendLine("        public MainWindow()");
+ 131 |             csBuilder.AppendLine("        {");
+ 132 |             csBuilder.AppendLine("            InitializeComponent();");
+ 133 |             csBuilder.AppendLine("        }");
+ 134 | 
+ 135 |             foreach (var element in uiElements)
+ 136 |             {
+ 137 |                 if (element.Type.ToLower() == "button")
+ 138 |                 {
+ 139 |                     csBuilder.AppendLine();
+ 140 |                     csBuilder.AppendLine($"        private void {element.Name}_Click(object sender, RoutedEventArgs e)");
+ 141 |                     csBuilder.AppendLine("        {");
+ 142 |                     csBuilder.AppendLine($"            MessageBox.Show(\"{element.Name} clicked!\");");
+ 143 |                     csBuilder.AppendLine("        }");
+ 144 |                 }
+ 145 |             }
+ 146 | 
+ 147 |             csBuilder.AppendLine("    }");
+ 148 |             csBuilder.AppendLine("}");
+ 149 |             return csBuilder.ToString();
+ 150 |         }
+ 151 | 
+ 152 |         private string GenerateCsproj(string projectName, string rootNamespace)
+ 153 |         {
+ 154 |             return $@"<Project Sdk=""Microsoft.NET.Sdk"">
+ 155 |   <PropertyGroup>
+ 156 |     <OutputType>WinExe</OutputType>
+ 157 |     <TargetFramework>net8.0-windows</TargetFramework>
+ 158 |     <UseWPF>true</UseWPF>
+ 159 |     <RootNamespace>{rootNamespace}</RootNamespace>
+ 160 |     <AssemblyName>{projectName}</AssemblyName>
+ 161 |   </PropertyGroup>
+ 162 | </Project>";
+ 163 |         }
+ 164 | 
+ 165 |         //.....................................................................
+ 166 | 
+ 167 |         //.....................................................................
+ 168 |         private string SanitizeName(string name)
+ 169 |         {
+ 170 |             if (string.IsNullOrEmpty(name))
+ 171 |                 return "Unnamed"; // Provide a default value if the name is null or empty
+ 172 | 
+ 173 |             // Remove invalid characters (e.g., spaces, special characters)
+ 174 |             var sanitized = new System.Text.StringBuilder();
+ 175 |             foreach (char c in name)
+ 176 |             {
+ 177 |                 if (char.IsLetterOrDigit(c) || c == '_')
+ 178 |                 {
+ 179 |                     sanitized.Append(c);
+ 180 |                 }
+ 181 |                 else
+ 182 |                 {
+ 183 |                     sanitized.Append('_'); // Replace invalid characters with an underscore
+ 184 |                 }
+ 185 |             }
+ 186 | 
+ 187 |             // Ensure the sanitized name starts with a letter or underscore (C# naming rules)
+ 188 |             if (!char.IsLetter(sanitized[0]) && sanitized[0] != '_')
+ 189 |             {
+ 190 |                 sanitized.Insert(0, '_');
+ 191 |             }
+ 192 | 
+ 193 |             return sanitized.ToString();
+ 194 |         }
+ 195 |         //.....................................................................
+ 196 | 
+ 197 |         //.....................................................................
+ 198 |         private void BrowseJsonFile_Click(object sender, RoutedEventArgs e)
+ 199 |         {
+ 200 |             var openFileDialog = new Microsoft.Win32.OpenFileDialog
+ 201 |             {
+ 202 |                 Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*",
+ 203 |                 Title = "Select JSON File"
+ 204 |             };
+ 205 | 
+ 206 |             if (openFileDialog.ShowDialog() == true)
+ 207 |             {
+ 208 |                 txtJsonFile.Text = openFileDialog.FileName; // Update the TextBox with the selected file path
+ 209 |             }
+ 210 |         }
+ 211 |         //.....................................................................
+ 212 | 
+ 213 |         //.....................................................................
+ 214 |         private void BrowseOutputFolder_Click(object sender, RoutedEventArgs e)
+ 215 |         {
+ 216 |             var folderDialog = new Microsoft.Win32.OpenFolderDialog
+ 217 |             {
+ 218 |                 Title = "Select Output Folder",
+ 219 |                 Multiselect = false
+ 220 |             };
+ 221 | 
+ 222 |             if (folderDialog.ShowDialog() == true)
+ 223 |             {
+ 224 |                 txtOutputFolder.Text = folderDialog.FolderName;
+ 225 |             }
+ 226 |         }
+ 227 | 
+ 228 |     }
+ 229 | 
+ 230 |     // Root object representing the JSON structure
+ 231 |     public class RootObject
+ 232 |     {
+ 233 |         public Metadata Metadata { get; set; }
+ 234 |         public List<UiElement> Nodes { get; set; }
+ 235 |     }
+ 236 | 
+ 237 |     public class Metadata
+ 238 |     {
+ 239 |         public string ExecutablePath { get; set; }
+ 240 |         public string ProcessName { get; set; }
+ 241 |         public int ProcessId { get; set; }
+ 242 |         public int MainWindowHandle { get; set; }
+ 243 |         public DateTime Timestamp { get; set; }
+ 244 |     }
+ 245 | 
+ 246 |     public class UiElement
+ 247 |     {
+ 248 |         [JsonPropertyName("ControlType")]
+ 249 |         public string Type { get; set; }
+ 250 | 
+ 251 |         [JsonPropertyName("Name")]
+ 252 |         public string Name { get; set; }
+ 253 | 
+ 254 |         [JsonPropertyName("IsOffscreen")]
+ 255 |         public bool IsOffscreen { get; set; }
+ 256 | 
+ 257 |         [JsonPropertyName("BoundingRectangleText")]
+ 258 |         public string BoundingRectangle { get; set; }
+ 259 | 
+ 260 |         // Derived properties
+ 261 |         public bool Visibility => !IsOffscreen;
+ 262 | 
+ 263 |         public double Width => ParseBoundingRectangle()[2];
+ 264 | 
+ 265 |         public double Height => ParseBoundingRectangle()[3];
+ 266 | 
+ 267 |         public string Margin => $"{ParseBoundingRectangle()[0]},{ParseBoundingRectangle()[1]},0,0";
+ 268 | 
+ 269 |         private double[] ParseBoundingRectangle()
+ 270 |         {
+ 271 |             if (string.IsNullOrEmpty(BoundingRectangle) || BoundingRectangle.Equals("Empty", StringComparison.OrdinalIgnoreCase))
+ 272 |                 return new double[] { 0, 0, 0, 0 };
+ 273 | 
+ 274 |             var parts = BoundingRectangle.Split(',');
+ 275 |             return new double[]
+ 276 |             {
+ 277 |                 double.Parse(parts[0]),
+ 278 |                 double.Parse(parts[1]),
+ 279 |                 double.Parse(parts[2]),
+ 280 |                 double.Parse(parts[3])
+ 281 |             };
+ 282 |         }
+ 283 |     }
+ 284 | }
+ 285 | 
+
+// -----------------------------------
+◈ End File: MainWindow.xaml.cs
+// ======================================================================
+
+// ======================================================================
+⚙ Begin File: WpfGeneratorApp.csproj
+// -----------------------------------
+
+   1 | <Project Sdk="Microsoft.NET.Sdk">
+   2 | 
+   3 |   <PropertyGroup>
+   4 |     <OutputType>WinExe</OutputType>
+   5 |     <TargetFramework>net8.0-windows</TargetFramework>
+   6 |     <Nullable>enable</Nullable>
+   7 |     <ImplicitUsings>enable</ImplicitUsings>
+   8 |     <UseWPF>true</UseWPF>
+   9 |   </PropertyGroup>
+  10 | 
+  11 |   <ItemGroup>
+  12 |     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  13 |   </ItemGroup>
+  14 | 
+  15 | </Project>
+  16 | 
+
+// -----------------------------------
+⚙ End File: WpfGeneratorApp.csproj
+// ======================================================================
+

@@ -1,0 +1,124 @@
+﻿<Window x:Class="IconExtractor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IconExtractor"
+        mc:Ignorable="d"
+        Title="IconExtractor" Height="600" Width="1000"
+        MinHeight="500" MinWidth="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" MinWidth="250"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel -->
+        <Border Grid.Column="0" Background="{StaticResource PanelBackground}" 
+                CornerRadius="4" BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+                Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Windows Icon Libraries" 
+                           Foreground="{StaticResource TextForeground}"
+                           FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+
+                <ListBox x:Name="ListBox_Dlls" Grid.Row="1" Margin="0,0,0,20">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" 
+                                       Foreground="{StaticResource TextForeground}"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Button x:Name="btnBrowse" Content="Browse for more libraries..." 
+                        Style="{StaticResource SecondaryButton}"
+                        Grid.Row="2" Margin="0,0,0,10"/>
+
+                <StackPanel Grid.Row="3" Orientation="Vertical">
+                    <TextBlock Text="Output Folder" 
+                               Foreground="{StaticResource TextForeground}"
+                               FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <TextBox x:Name="txtOutputFolder"/>
+                    <Button x:Name="btnBrowseOutput" Content="Select Output Folder" 
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="0,8,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Splitter -->
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="{StaticResource BorderColor}"/>
+
+        <!-- Right Panel -->
+        <Border Grid.Column="2" Background="{StaticResource PanelBackground}" 
+                CornerRadius="4" BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+                Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Available Icons" 
+                           Foreground="{StaticResource TextForeground}"
+                           FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+
+                <ListView x:Name="lvIcons" Grid.Row="1" Style="{x:Null}" ItemContainerStyle="{x:Null}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Index" Width="80">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Index}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Preview" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Preview}" 
+                               Width="32" 
+                               Height="32"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Size" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Size}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Format" Width="100">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Format}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button x:Name="btnExportHtml" Content=" Export to HTML " Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="BtnExportHtml_Click"/>
+                    <Button x:Name="btnExtractSelected" Content=" Extract Selected " Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="BtnExtractSelected_Click"/>
+                    <Button x:Name="btnExtractAll"      Content=" Extract All "      Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="BtnExtractAll_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+    

@@ -1,0 +1,61 @@
+﻿<Window x:Class="LLMApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="LLM Chat" Height="600" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Message Display -->
+        <ListView ItemsSource="{Binding Messages}" 
+                  Background="Transparent" 
+                  BorderThickness="0"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="10,5">
+                        <TextBlock Text="{Binding Sender}" 
+                                   FontWeight="Bold"
+                                   Foreground="{Binding IsUserMessage, Converter={StaticResource BoolToColorConverter}}"/>
+                        <TextBlock Text="{Binding Content}" 
+                                   TextWrapping="Wrap"
+                                   Margin="20,0,0,0"/>
+                        <TextBlock Text="{Binding Timestamp, StringFormat='hh:mm tt'}" 
+                                   FontStyle="Italic"
+                                   Foreground="Gray"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Input Area -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Text="{Binding UserInput, UpdateSourceTrigger=PropertyChanged}" 
+                     VerticalContentAlignment="Center"
+                     Padding="10"
+                     FontSize="14"
+                     AcceptsReturn="True"
+                     MinHeight="50"
+                     MaxHeight="150"
+                     VerticalScrollBarVisibility="Auto"/>
+
+            <Button Grid.Column="1" 
+                    Content="Send" 
+                    Command="{Binding SendCommand}"
+                    Margin="10,0,0,0"
+                    Padding="20,10"
+                    FontWeight="Bold"/>
+        </Grid>
+    </Grid>
+</Window>
+    

@@ -1,0 +1,58 @@
+﻿<Window x:Class="FastFileCopier.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NVMe Optimized File Copier" Height="400" Width="800">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Source/Destination -->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Source File:" FontWeight="Bold"/>
+            <TextBlock x:Name="SourcePathText" Text="E:\AI\Uncensored\Stuff\DeepSeek\DeepSeek-R1-Distill-Qwen-32B-Uncensored\DeepSeek-R1-Distill-Qwen-32B-Uncensored-Q4_k_m.gguf" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Destination Folder:" FontWeight="Bold"/>
+            <TextBlock x:Name="DestPathText" Text="M:\AI\Uncensored\Stuff\DeepSeek\DeepSeek-R1-Distill-Qwen-32B-Uncensored\" Margin="0,0,0,20"/>
+        </StackPanel>
+
+        <!-- Progress -->
+        <StackPanel Grid.Row="1">
+            <ProgressBar x:Name="ProgressBar" Height="20" Margin="0,0,0,5"/>
+            <TextBlock x:Name="ProgressText" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Real-time Stats -->
+        <GroupBox Grid.Row="2" Header="Performance Metrics" Margin="0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Current Speed:" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="SpeedText" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Data Copied:" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="CopiedText"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Cache Status:" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="CacheText" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Time Remaining:" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="TimeRemainingText"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <!-- Controls -->
+        <Button Grid.Row="3" x:Name="CopyButton" Content="Start Copy" 
+                Click="CopyButton_Click" Height="30" Margin="0,10"/>
+    </Grid>
+</Window>

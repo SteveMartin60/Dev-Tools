@@ -1,0 +1,10 @@
+﻿<Application x:Class="IconsRestorer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:props="clr-namespace:IconsRestorer.Properties"
+             StartupUri="Views/icons-restorer.xaml">
+    <Application.Resources>
+        <props:Resources x:Key="localResources"/>
+    </Application.Resources>
+</Application>
+    

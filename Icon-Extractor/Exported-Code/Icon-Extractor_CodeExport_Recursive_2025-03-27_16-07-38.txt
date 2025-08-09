@@ -1,0 +1,902 @@
+// ======================================================================
+◇ Begin File: App.xaml
+// -----------------------------------
+
+   1 | <Application x:Class="IconExtractor.App"<Application x:Class="IconExtractor.App"
+   2 |              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |              StartupUri="MainWindow.xaml">
+   5 |     <Application.Resources>
+   6 |         <Style TargetType="Window">
+   7 |             <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+   8 |             <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+   9 |             <Setter Property="FontFamily" Value="Segoe UI"/>
+  10 |             <Setter Property="FontSize" Value="14"/>
+  11 |         </Style>
+  12 | 
+  13 |         <!-- Color Resources -->
+  14 |         <SolidColorBrush x:Key="WindowBackground" Color="#FFF5F5F5"/>
+  15 |         <SolidColorBrush x:Key="PanelBackground" Color="#FFFFFFFF"/>
+  16 |         <SolidColorBrush x:Key="AccentColor" Color="#FF0066CC"/>
+  17 |         <SolidColorBrush x:Key="AccentHoverColor" Color="#FF0080F0"/>
+  18 |         <SolidColorBrush x:Key="TextForeground" Color="#FF333333"/>
+  19 |         <!-- Dark gray for normal text -->
+  20 |         <SolidColorBrush x:Key="TextOnAccent" Color="White"/>
+  21 |         <!-- White for text on colored buttons -->
+  22 |         <SolidColorBrush x:Key="SubtleTextColor" Color="#FF666666"/>
+  23 |         <SolidColorBrush x:Key="BorderColor" Color="#FFDDDDDD"/>
+  24 |         <SolidColorBrush x:Key="ListViewHover" Color="#FFF0F7FF"/>
+  25 |         <SolidColorBrush x:Key="ListViewSelected" Color="#FFD6ECFF"/>
+  26 | 
+  27 |         <!-- Base Button Style -->
+  28 |         <Style TargetType="Button">
+  29 |             <Setter Property="Padding" Value="12,8"/>
+  30 |             <Setter Property="Margin" Value="4"/>
+  31 |             <Setter Property="HorizontalAlignment" Value="Left"/>
+  32 |             <Setter Property="Cursor" Value="Hand"/>
+  33 |             <Setter Property="FontWeight" Value="SemiBold"/>
+  34 |             <Setter Property="BorderThickness" Value="1"/>
+  35 |             <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+  36 |             <Setter Property="Foreground" Value="{StaticResource TextOnAccent}"/>
+  37 |             <Setter Property="Background" Value="{StaticResource AccentColor}"/>
+  38 |             <Setter Property="Template">
+  39 |                 <Setter.Value>
+  40 |                     <ControlTemplate TargetType="Button">
+  41 |                         <Border x:Name="border" <Border x:Name="border" 
+  42 |                         Background="{TemplateBinding Background}"
+  43 |                         BorderBrush="{TemplateBinding BorderBrush}"
+  44 |                         BorderThickness="{TemplateBinding BorderThickness}"
+  45 |                         CornerRadius="4">
+  46 |                             <ContentPresenter HorizontalAlignment="Center" <ContentPresenter HorizontalAlignment="Center" 
+  47 |                                     VerticalAlignment="Center"
+  48 |                                     TextBlock.Foreground="{TemplateBinding Foreground}"/>
+  49 |                         </Border>
+  50 |                         <ControlTemplate.Triggers>
+  51 |                             <Trigger Property="IsMouseOver" Value="True">
+  52 |                                 <Setter Property="Background" Value="{StaticResource AccentHoverColor}"/>
+  53 |                                 <Setter Property="BorderBrush" Value="{StaticResource AccentHoverColor}"/>
+  54 |                             </Trigger>
+  55 |                             <Trigger Property="IsPressed" Value="True">
+  56 |                                 <Setter Property="Background" Value="#FF005A9E"/>
+  57 |                                 <Setter Property="BorderBrush" Value="#FF005A9E"/>
+  58 |                             </Trigger>
+  59 |                         </ControlTemplate.Triggers>
+  60 |                     </ControlTemplate>
+  61 |                 </Setter.Value>
+  62 |             </Setter>
+  63 |         </Style>
+  64 | 
+  65 |         <!-- Secondary Button Style -->
+  66 |         <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+  67 |             <Setter Property="Background" Value="White"/>
+  68 |             <Setter Property="Foreground" Value="{StaticResource AccentColor}"/>
+  69 |             <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+  70 |             <Style.Triggers>
+  71 |                 <Trigger Property="IsMouseOver" Value="True">
+  72 |                     <Setter Property="Background" Value="#FFF0F7FF"/>
+  73 |                 </Trigger>
+  74 |                 <Trigger Property="IsPressed" Value="True">
+  75 |                     <Setter Property="Background" Value="#FFD6ECFF"/>
+  76 |                 </Trigger>
+  77 |             </Style.Triggers>
+  78 |         </Style>
+  79 | 
+  80 |         <!-- TextBlock Style -->
+  81 |         <Style TargetType="TextBlock">
+  82 |             <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
+  83 |             <Setter Property="Margin" Value="0,0,0,4"/>
+  84 |         </Style>
+  85 | 
+  86 |         <!-- TextBox Style -->
+  87 |         <Style TargetType="TextBox">
+  88 |             <Setter Property="Background" Value="White"/>
+  89 |             <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+  90 |             <Setter Property="BorderThickness" Value="1"/>
+  91 |             <Setter Property="Padding" Value="6"/>
+  92 |             <Setter Property="Margin" Value="0,0,0,8"/>
+  93 |             <Setter Property="VerticalContentAlignment" Value="Center"/>
+  94 |         </Style>
+  95 | 
+  96 |         <DataTemplate x:Key="IconInfoTemplate">
+  97 |             <StackPanel Orientation="Horizontal">
+  98 |                 <TextBlock Text="{Binding Index}" Width="80"/>
+  99 |                 <Image Source="{Binding Preview}" Width="32" Height="32"/>
+ 100 |                 <TextBlock Text="{Binding Size}" Width="100"/>
+ 101 |                 <TextBlock Text="{Binding Format}" Width="100"/>
+ 102 |             </StackPanel>
+ 103 |         </DataTemplate>
+ 104 |         
+ 105 |         <!-- ListBox Style -->
+ 106 |         <Style x:Key="CustomListBoxStyle" TargetType="ListBox">
+ 107 |             <Setter Property="Background" Value="White"/>
+ 108 |             <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+ 109 |             <Setter Property="BorderThickness" Value="1"/>
+ 110 |             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+ 111 |             <Setter Property="ItemContainerStyle">
+ 112 |                 <Setter.Value>
+ 113 |                     <Style TargetType="ListBoxItem">
+ 114 |                         <Setter Property="Padding" Value="8,6"/>
+ 115 |                         <Setter Property="Template">
+ 116 |                             <Setter.Value>
+ 117 |                                 <ControlTemplate TargetType="ListBoxItem">
+ 118 |                                     <Border x:Name="border" Background="Transparent" CornerRadius="2">
+ 119 |                                         <ContentPresenter/>
+ 120 |                                     </Border>
+ 121 |                                     <ControlTemplate.Triggers>
+ 122 |                                         <Trigger Property="IsMouseOver" Value="True">
+ 123 |                                             <Setter TargetName="border" Property="Background" Value="{StaticResource ListViewHover}"/>
+ 124 |                                         </Trigger>
+ 125 |                                         <Trigger Property="IsSelected" Value="True">
+ 126 |                                             <Setter TargetName="border" Property="Background" Value="{StaticResource ListViewSelected}"/>
+ 127 |                                             <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+ 128 |                                             <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+ 129 |                                         </Trigger>
+ 130 |                                     </ControlTemplate.Triggers>
+ 131 |                                 </ControlTemplate>
+ 132 |                             </Setter.Value>
+ 133 |                         </Setter>
+ 134 |                     </Style>
+ 135 |                 </Setter.Value>
+ 136 |             </Setter>
+ 137 |         </Style>
+ 138 |         
+ 139 |         <!-- ListView Style -->
+ 140 |         <Style TargetType="ListView">
+ 141 |             <Setter Property="Background" Value="White"/>
+ 142 |             <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+ 143 |             <Setter Property="BorderThickness" Value="1"/>
+ 144 |             <Setter Property="ItemContainerStyle">
+ 145 |                 <Setter.Value>
+ 146 |                     <Style TargetType="ListViewItem">
+ 147 |                         <Setter Property="Padding" Value="8"/>
+ 148 |                         <Setter Property="Template">
+ 149 |                             <Setter.Value>
+ 150 |                                 <ControlTemplate TargetType="ListViewItem">
+ 151 |                                     <Border x:Name="border" Background="Transparent">
+ 152 |                                         <ContentPresenter/>
+ 153 |                                     </Border>
+ 154 |                                     <ControlTemplate.Triggers>
+ 155 |                                         <Trigger Property="IsMouseOver" Value="True">
+ 156 |                                             <Setter TargetName="border" Property="Background" Value="{StaticResource ListViewHover}"/>
+ 157 |                                         </Trigger>
+ 158 |                                         <Trigger Property="IsSelected" Value="True">
+ 159 |                                             <Setter TargetName="border" Property="Background" Value="{StaticResource ListViewSelected}"/>
+ 160 |                                         </Trigger>
+ 161 |                                     </ControlTemplate.Triggers>
+ 162 |                                 </ControlTemplate>
+ 163 |                             </Setter.Value>
+ 164 |                         </Setter>
+ 165 |                     </Style>
+ 166 |                 </Setter.Value>
+ 167 |             </Setter>
+ 168 |         </Style>
+ 169 | 
+ 170 |         <!-- GridSplitter Style -->
+ 171 |         <Style TargetType="GridSplitter">
+ 172 |             <Setter Property="Background" Value="{StaticResource BorderColor}"/>
+ 173 |             <Setter Property="Width" Value="6"/>
+ 174 |             <Setter Property="HorizontalAlignment" Value="Stretch"/>
+ 175 |         </Style>
+ 176 |     </Application.Resources>
+ 177 | </Application>
+ 178 |     
+
+// -----------------------------------
+◇ End File: App.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: App.xaml.cs
+// -----------------------------------
+
+   1 | using System.Configuration;
+   2 | using System.Data;
+   3 | using System.Windows;
+   4 | 
+   5 | namespace IconExtractor
+   6 | {
+   7 |     /// <summary>
+   8 |     /// Interaction logic for App.xaml
+   9 |     /// </summary>
+  10 |     public partial class App : Application
+  11 |     {
+  12 |     }
+  13 | 
+  14 | }
+  15 | 
+
+// -----------------------------------
+◈ End File: App.xaml.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: AssemblyInfo.cs
+// -----------------------------------
+
+   1 | using System.Windows;
+   2 | 
+   3 | [assembly: ThemeInfo(
+   4 |     ResourceDictionaryLocation.None,            //where theme specific resource dictionaries are located
+   5 |                                                 //(used if a resource is not found in the page,
+   6 |                                                 // or application resource dictionaries)
+   7 |     ResourceDictionaryLocation.SourceAssembly   //where the generic resource dictionary is located
+   8 |                                                 //(used if a resource is not found in the page,
+   9 |                                                 // app, or any theme specific resource dictionaries)
+  10 | )]
+  11 | 
+
+// -----------------------------------
+◈ End File: AssemblyInfo.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: icons-to-composite.cs
+// -----------------------------------
+
+   1 | using System.Drawing.Imaging;
+   2 | using System.Drawing;
+   3 | using System.IO;
+   4 | using System.Runtime.InteropServices;
+   5 | using System.Drawing.Drawing2D;
+   6 | 
+   7 | public static class IconsToHtml
+   8 | {
+   9 |     [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+  10 |     private static extern int ExtractIconEx(
+  11 |         string lpszFile,
+  12 |         int nIconIndex,
+  13 |         out IntPtr phiconLarge,
+  14 |         out IntPtr phiconSmall,
+  15 |         uint nIcons);
+  16 | 
+  17 |     [DllImport("user32.dll")]
+  18 |     private static extern bool DestroyIcon(IntPtr hIcon);
+  19 | 
+  20 | 
+  21 |     public static void ExtractHighQualityIconFromDll(string dllPath, int iconIndex, string outputPath)
+  22 |     {
+  23 |         IntPtr largeIcon;
+  24 |         IntPtr smallIcon;
+  25 | 
+  26 |         int extractedCount = ExtractIconEx(dllPath, iconIndex, out largeIcon, out smallIcon, 1);
+  27 |         if (extractedCount == 0 || largeIcon == IntPtr.Zero)
+  28 |         {
+  29 |             throw new Exception("Failed to extract icon. Check DLL path and icon index.");
+  30 |         }
+  31 | 
+  32 |         try
+  33 |         {
+  34 |             using (Icon icon = Icon.FromHandle(largeIcon))
+  35 |             {
+  36 |                 // Save as .ico
+  37 |                 using (FileStream fs = new FileStream(outputPath + ".ico", FileMode.Create))
+  38 |                 {
+  39 |                     icon.Save(fs);
+  40 |                 }
+  41 | 
+  42 |                 // Convert to bitmap and save as .png
+  43 |                 Bitmap bitmap = icon.ToBitmap();
+  44 |                 bitmap.Save(outputPath + ".png", System.Drawing.Imaging.ImageFormat.Png);
+  45 |             }
+  46 |         }
+  47 |         finally
+  48 |         {
+  49 |             if (largeIcon != IntPtr.Zero) DestroyIcon(largeIcon);
+  50 |             if (smallIcon != IntPtr.Zero) DestroyIcon(smallIcon);
+  51 |         }
+  52 |     }
+  53 | 
+  54 | 
+  55 | 
+  56 |     public static void ExtractIconsToCompositeImage(string dllPath, string outputDirectory)
+  57 |     {
+  58 |         // Validate input
+  59 |         if (string.IsNullOrWhiteSpace(dllPath))
+  60 |         {
+  61 |             throw new ArgumentException("DLL path must be specified");
+  62 |         }
+  63 | 
+  64 |         if (!File.Exists(dllPath))
+  65 |         {
+  66 |             throw new FileNotFoundException($"File not found: {dllPath}");
+  67 |         }
+  68 | 
+  69 |         // Count icons in the DLL
+  70 |         int totalIcons = ExtractIconEx(dllPath, -1, out IntPtr _, out IntPtr _, 0);
+  71 |         if (totalIcons <= 0)
+  72 |         {
+  73 |             throw new InvalidOperationException("No icons found in the DLL");
+  74 |         }
+  75 | 
+  76 |         string filenameWithoutExtension = Path.GetFileNameWithoutExtension(dllPath);
+  77 |         Directory.CreateDirectory(outputDirectory);
+  78 | 
+  79 |         // Lists to store extracted icons
+  80 |         List<Bitmap> iconBitmaps = new List<Bitmap>();
+  81 |         List<Icon> icons = new List<Icon>();
+  82 | 
+  83 |         // Extract all icons with proper color depth
+  84 |         for (int iconIndex = 0; iconIndex < totalIcons; iconIndex++)
+  85 |         {
+  86 |             ExtractIconEx(dllPath, iconIndex, out IntPtr largeIconHandle, out IntPtr smallIconHandle, 1);
+  87 | 
+  88 |             try
+  89 |             {
+  90 |                 if (largeIconHandle != IntPtr.Zero)
+  91 |                 {
+  92 |                     // Create icon preserving original color depth
+  93 |                     using (Icon originalIcon = Icon.FromHandle(largeIconHandle))
+  94 |                     {
+  95 |                         // Store the original icon with full color depth
+  96 |                         icons.Add(new Icon(originalIcon, originalIcon.Size));
+  97 | 
+  98 |                         // Create high-quality bitmap with alpha channel
+  99 |                         Bitmap bitmap = new Bitmap(
+ 100 |                             originalIcon.Width * 2,
+ 101 |                             originalIcon.Height * 2,
+ 102 |                             PixelFormat.Format32bppArgb);
+ 103 | 
+ 104 |                         using (Graphics g = Graphics.FromImage(bitmap))
+ 105 |                         {
+ 106 |                             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+ 107 |                             g.SmoothingMode = SmoothingMode.HighQuality;
+ 108 |                             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+ 109 |                             g.CompositingQuality = CompositingQuality.HighQuality;
+ 110 |                             g.Clear(Color.Transparent);
+ 111 |                             g.DrawIcon(originalIcon, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+ 112 |                         }
+ 113 |                         iconBitmaps.Add(bitmap);
+ 114 |                     }
+ 115 |                 }
+ 116 |             }
+ 117 |             finally
+ 118 |             {
+ 119 |                 if (largeIconHandle != IntPtr.Zero) DestroyIcon(largeIconHandle);
+ 120 |                 if (smallIconHandle != IntPtr.Zero) DestroyIcon(smallIconHandle);
+ 121 |             }
+ 122 |         }
+ 123 | 
+ 124 |         // Create composite image (existing code remains the same)
+ 125 |         // ...
+ 126 | 
+ 127 |         // Save individual icons with full color depth
+ 128 |         string individualIconsDir = Path.Combine(outputDirectory, "individual_icons");
+ 129 |         Directory.CreateDirectory(individualIconsDir);
+ 130 | 
+ 131 |         for (int i = 0; i < icons.Count; i++)
+ 132 |         {
+ 133 |             // Save as PNG (already preserves color depth)
+ 134 |             string pngPath = Path.Combine(individualIconsDir, $"icon_{i}.png");
+ 135 |             using (Bitmap bmp = new Bitmap(icons[i].ToBitmap()))
+ 136 |             {
+ 137 |                 bmp.Save(pngPath, ImageFormat.Png);
+ 138 |             }
+ 139 | 
+ 140 |             // Save as ICO with proper color depth
+ 141 |             string icoPath = Path.Combine(individualIconsDir, $"icon_{i}.ico");
+ 142 |             using (FileStream fs = new FileStream(icoPath, FileMode.Create))
+ 143 |             {
+ 144 |                 // This preserves the original color depth
+ 145 |                 icons[i].Save(fs);
+ 146 |             }
+ 147 |         }
+ 148 | 
+ 149 |         // Cleanup
+ 150 |         foreach (var bmp in iconBitmaps) bmp.Dispose();
+ 151 |         foreach (var icon in icons) icon.Dispose();
+ 152 |     }
+ 153 | 
+ 154 |     private static ImageCodecInfo GetEncoder(ImageFormat format)
+ 155 |     {
+ 156 |         ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+ 157 |         foreach (ImageCodecInfo codec in codecs)
+ 158 |         {
+ 159 |             if (codec.FormatID == format.Guid)
+ 160 |             {
+ 161 |                 return codec;
+ 162 |             }
+ 163 |         }
+ 164 |         return null;
+ 165 |     }
+ 166 | }
+
+// -----------------------------------
+◈ End File: icons-to-composite.cs
+// ======================================================================
+
+// ======================================================================
+◇ Begin File: MainWindow.xaml
+// -----------------------------------
+
+   1 | <Window x:Class="IconExtractor.MainWindow"<Window x:Class="IconExtractor.MainWindow"
+   2 |         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+   5 |         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+   6 |         xmlns:local="clr-namespace:IconExtractor"
+   7 |         mc:Ignorable="d"
+   8 |         Title="IconExtractor" Height="600" Width="1000"
+   9 |         MinHeight="500" MinWidth="800">
+  10 |     <Grid Margin="10">
+  11 |         <Grid.ColumnDefinitions>
+  12 |             <ColumnDefinition Width="300" MinWidth="250"/>
+  13 |             <ColumnDefinition Width="Auto"/>
+  14 |             <ColumnDefinition Width="*"/>
+  15 |         </Grid.ColumnDefinitions>
+  16 | 
+  17 |         <!-- Left Panel -->
+  18 |         <Border Grid.Column="0" Background="{StaticResource PanelBackground}" <Border Grid.Column="0" Background="{StaticResource PanelBackground}" 
+  19 |                 CornerRadius="4" BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+  20 |                 Padding="10">
+  21 |             <Grid>
+  22 |                 <Grid.RowDefinitions>
+  23 |                     <RowDefinition Height="Auto"/>
+  24 |                     <RowDefinition Height="*"/>
+  25 |                     <RowDefinition Height="Auto"/>
+  26 |                     <RowDefinition Height="Auto"/>
+  27 |                 </Grid.RowDefinitions>
+  28 | 
+  29 |                 <TextBlock Text="Windows Icon Libraries" <TextBlock Text="Windows Icon Libraries" 
+  30 |                            Foreground="{StaticResource TextForeground}"
+  31 |                            FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+  32 | 
+  33 |                 <ListBox x:Name="ListBox_Dlls" Grid.Row="1" Margin="0,0,0,20">
+  34 |                     <ListBox.ItemTemplate>
+  35 |                         <DataTemplate>
+  36 |                             <TextBlock Text="{Binding}" <TextBlock Text="{Binding}" 
+  37 |                                        Foreground="{StaticResource TextForeground}"
+  38 |                                        TextTrimming="CharacterEllipsis"/>
+  39 |                         </DataTemplate>
+  40 |                     </ListBox.ItemTemplate>
+  41 |                 </ListBox>
+  42 | 
+  43 |                 <Button x:Name="btnBrowse" Content="Browse for more libraries..." <Button x:Name="btnBrowse" Content="Browse for more libraries..." 
+  44 |                         Style="{StaticResource SecondaryButton}"
+  45 |                         Grid.Row="2" Margin="0,0,0,10"/>
+  46 | 
+  47 |                 <StackPanel Grid.Row="3" Orientation="Vertical">
+  48 |                     <TextBlock Text="Output Folder" <TextBlock Text="Output Folder" 
+  49 |                                Foreground="{StaticResource TextForeground}"
+  50 |                                FontWeight="SemiBold" Margin="0,0,0,4"/>
+  51 |                     <TextBox x:Name="txtOutputFolder"/>
+  52 |                     <Button x:Name="btnBrowseOutput" Content="Select Output Folder" <Button x:Name="btnBrowseOutput" Content="Select Output Folder" 
+  53 |                             Style="{StaticResource SecondaryButton}"
+  54 |                             Margin="0,8,0,0"/>
+  55 |                 </StackPanel>
+  56 |             </Grid>
+  57 |         </Border>
+  58 | 
+  59 |         <!-- Splitter -->
+  60 |         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="{StaticResource BorderColor}"/>
+  61 | 
+  62 |         <!-- Right Panel -->
+  63 |         <Border Grid.Column="2" Background="{StaticResource PanelBackground}" <Border Grid.Column="2" Background="{StaticResource PanelBackground}" 
+  64 |                 CornerRadius="4" BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+  65 |                 Padding="10">
+  66 |             <Grid>
+  67 |                 <Grid.RowDefinitions>
+  68 |                     <RowDefinition Height="Auto"/>
+  69 |                     <RowDefinition Height="*"/>
+  70 |                     <RowDefinition Height="Auto"/>
+  71 |                 </Grid.RowDefinitions>
+  72 | 
+  73 |                 <TextBlock Text="Available Icons" <TextBlock Text="Available Icons" 
+  74 |                            Foreground="{StaticResource TextForeground}"
+  75 |                            FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+  76 | 
+  77 |                 <ListView x:Name="lvIcons" Grid.Row="1" Style="{x:Null}" ItemContainerStyle="{x:Null}">
+  78 |                     <ListView.View>
+  79 |                         <GridView>
+  80 |                             <GridViewColumn Header="Index" Width="80">
+  81 |                                 <GridViewColumn.CellTemplate>
+  82 |                                     <DataTemplate>
+  83 |                                         <TextBlock Text="{Binding Index}"/>
+  84 |                                     </DataTemplate>
+  85 |                                 </GridViewColumn.CellTemplate>
+  86 |                             </GridViewColumn>
+  87 |                             <GridViewColumn Header="Preview" Width="100">
+  88 |                                 <GridViewColumn.CellTemplate>
+  89 |                                     <DataTemplate>
+  90 |                                         <Image Source="{Binding Preview}" <Image Source="{Binding Preview}" 
+  91 |                                Width="32" 
+  92 |                                Height="32"
+  93 |                                Stretch="Uniform"
+  94 |                                RenderOptions.BitmapScalingMode="HighQuality"/>
+  95 |                                     </DataTemplate>
+  96 |                                 </GridViewColumn.CellTemplate>
+  97 |                             </GridViewColumn>
+  98 |                             <GridViewColumn Header="Size" Width="100">
+  99 |                                 <GridViewColumn.CellTemplate>
+ 100 |                                     <DataTemplate>
+ 101 |                                         <TextBlock Text="{Binding Size}"/>
+ 102 |                                     </DataTemplate>
+ 103 |                                 </GridViewColumn.CellTemplate>
+ 104 |                             </GridViewColumn>
+ 105 |                             <GridViewColumn Header="Format" Width="100">
+ 106 |                                 <GridViewColumn.CellTemplate>
+ 107 |                                     <DataTemplate>
+ 108 |                                         <TextBlock Text="{Binding Format}"/>
+ 109 |                                     </DataTemplate>
+ 110 |                                 </GridViewColumn.CellTemplate>
+ 111 |                             </GridViewColumn>
+ 112 |                         </GridView>
+ 113 |                     </ListView.View>
+ 114 |                 </ListView>
+ 115 |                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+ 116 |                     <Button x:Name="btnExportHtml" Content=" Export to HTML " Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="BtnExportHtml_Click"/>
+ 117 |                     <Button x:Name="btnExtractSelected" Content=" Extract Selected " Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="BtnExtractSelected_Click"/>
+ 118 |                     <Button x:Name="btnExtractAll"      Content=" Extract All "      Style="{StaticResource SecondaryButton}" Margin="0,0,10,0" Click="BtnExtractAll_Click"/>
+ 119 |                 </StackPanel>
+ 120 |             </Grid>
+ 121 |         </Border>
+ 122 |     </Grid>
+ 123 | </Window>
+ 124 |     
+
+// -----------------------------------
+◇ End File: MainWindow.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: MainWindow.xaml.cs
+// -----------------------------------
+
+   1 | using Microsoft.Win32;
+   2 | using System;
+   3 | using System.Collections.Generic;
+   4 | using System.Drawing;
+   5 | using System.Drawing.Imaging;
+   6 | using System.IO;
+   7 | using System.Runtime.InteropServices;
+   8 | using System.Windows;
+   9 | using System.Windows.Interop;
+  10 | using System.Windows.Media.Imaging;
+  11 | 
+  12 | namespace IconExtractor
+  13 | {
+  14 |     public partial class MainWindow : Window
+  15 |     {
+  16 |         public class IconInfo
+  17 |         {
+  18 |             public int Index { get; set; }
+  19 |             public BitmapSource Preview { get; set; }
+  20 |             public string Size { get; set; }
+  21 |             public string Format { get; set; }
+  22 |             public Icon Icon { get; set; }
+  23 |         }
+  24 | 
+  25 |         [DllImport("shell32.dll", CharSet = CharSet.Auto)]        static extern uint ExtractIconEx(string szFileName, int nIconIndex,            IntPtr[] phiconLarge, IntPtr[] phiconSmall, uint nIcons);
+  26 | 
+  27 |         [DllImport("user32.dll", SetLastError = true)]        static extern bool DestroyIcon(IntPtr hIcon);
+  28 |         private List<IconInfo> icons = new List<IconInfo>();
+  29 | 
+  30 |         public MainWindow()
+  31 |         {
+  32 |             InitializeComponent();
+  33 | 
+  34 |             // Set window title
+  35 |             this.Title = "IconExtractor";
+  36 | 
+  37 |             // Set default output folder
+  38 |             txtOutputFolder.Text = Path.Combine(
+  39 |                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+  40 |                 "ExtractedIcons");
+  41 | 
+  42 |             // Load common DLLs with icons
+  43 |             LoadCommonDlls();
+  44 | 
+  45 |             // Set up event handler for DLL selection
+  46 |             ListBox_Dlls.SelectionChanged += ListBox_Dlls_SelectionChanged;
+  47 |         }
+  48 | 
+  49 |         private void LoadCommonDlls()
+  50 |         {
+  51 |             var system32 = Environment.GetFolderPath(Environment.SpecialFolder.System);
+  52 | 
+  53 |             var commonDlls = new List<string>    
+  54 |             {
+  55 |                 // Shell and UI related
+  56 |                 Path.Combine(system32, "shell32.dll"),
+  57 |                 Path.Combine(system32, "imageres.dll"),
+  58 |                 Path.Combine(system32, "pifmgr.dll"),
+  59 |                 Path.Combine(system32, "compstui.dll"),
+  60 |                 Path.Combine(system32, "moricons.dll"),
+  61 |                 Path.Combine(system32, "mmres.dll"),
+  62 |                 Path.Combine(system32, "netshell.dll"),
+  63 |                 Path.Combine(system32, "setupapi.dll"),
+  64 |                 Path.Combine(system32, "wmploc.dll"),
+  65 |                 Path.Combine(system32, "ddores.dll"),
+  66 |         
+  67 |                 // Network related
+  68 |                 Path.Combine(system32, "netcenter.dll"),
+  69 |                 Path.Combine(system32, "netcfgx.dll"),
+  70 |                 Path.Combine(system32, "netman.dll"),
+  71 |         
+  72 |                 // Hardware and devices
+  73 |                 Path.Combine(system32, "devicecenter.dll"),
+  74 |                 Path.Combine(system32, "devmgr.dll"),
+  75 |                 Path.Combine(system32, "hdwwiz.cpl"),
+  76 |                 Path.Combine(system32, "stobject.dll"),
+  77 |         
+  78 |                 // System utilities
+  79 |                 Path.Combine(system32, "appwiz.cpl"),
+  80 |                 Path.Combine(system32, "bthprops.cpl"),
+  81 |                 Path.Combine(system32, "desk.cpl"),
+  82 |                 Path.Combine(system32, "firewallcontrolpanel.dll"),
+  83 |                 Path.Combine(system32, "main.cpl"),
+  84 |                 Path.Combine(system32, "mmsys.cpl"),
+  85 |                 Path.Combine(system32, "ncpa.cpl"),
+  86 |                 Path.Combine(system32, "powercfg.cpl"),
+  87 |                 Path.Combine(system32, "sysdm.cpl"),
+  88 |                 Path.Combine(system32, "telephon.cpl"),
+  89 |                 Path.Combine(system32, "timedate.cpl"),
+  90 |         
+  91 |                 // Windows components
+  92 |                 Path.Combine(system32, "comdlg32.dll"),
+  93 |                 Path.Combine(system32, "explorerframe.dll"),
+  94 |                 Path.Combine(system32, "ieframe.dll"),
+  95 |                 Path.Combine(system32, "mshtml.dll"),
+  96 |                 Path.Combine(system32, "msi.dll"),
+  97 |                 Path.Combine(system32, "ole32.dll"),
+  98 |                 Path.Combine(system32, "olepro32.dll"),
+  99 |                 Path.Combine(system32, "sensorsutilsv2.dll"),
+ 100 |                 Path.Combine(system32, "shdocvw.dll"),
+ 101 |                 Path.Combine(system32, "urlmon.dll"),
+ 102 |                 Path.Combine(system32, "zipfldr.dll"),
+ 103 |         
+ 104 |                 // Multimedia
+ 105 |                 Path.Combine(system32, "audiodev.dll"),
+ 106 |                 Path.Combine(system32, "dsound.dll"),
+ 107 |                 Path.Combine(system32, "msacm32.dll"),
+ 108 |                 Path.Combine(system32, "msvidc32.dll"),
+ 109 |                 Path.Combine(system32, "wiashext.dll"),
+ 110 |         
+ 111 |                 // Security
+ 112 |                 Path.Combine(system32, "authui.dll"),
+ 113 |                 Path.Combine(system32, "credui.dll"),
+ 114 |                 Path.Combine(system32, "cryptui.dll"),
+ 115 |                 Path.Combine(system32, "wucltux.dll"),
+ 116 |         
+ 117 |                 // Windows 10/11 specific
+ 118 |                 Path.Combine(system32, "actioncenter.dll"),
+ 119 |                 Path.Combine(system32, "bcastdvr.exe"),
+ 120 |                 Path.Combine(system32, "cloudstoragewizard.exe"),
+ 121 |                 Path.Combine(system32, "filemanager.dll"),
+ 122 |                 Path.Combine(system32, "gameux.dll"),
+ 123 |                 Path.Combine(system32, "msdt.exe"),
+ 124 |                 Path.Combine(system32, "twinui.dll"),
+ 125 |                 Path.Combine(system32, "windows.ui.xaml.dll"),
+ 126 |         
+ 127 |                 // Control Panel items
+ 128 |                 Path.Combine(system32, "accessibilitycpl.dll"),
+ 129 |                 Path.Combine(system32, "inetcpl.cpl"),
+ 130 |                 Path.Combine(system32, "intl.cpl"),
+ 131 |                 Path.Combine(system32, "irprops.cpl"),
+ 132 |                 Path.Combine(system32, "joy.cpl"),
+ 133 |                 Path.Combine(system32, "odbccp32.cpl"),
+ 134 |                 Path.Combine(system32, "wscui.cpl"),
+ 135 |         
+ 136 |                 // System tools
+ 137 |                 Path.Combine(system32, "cleanmgr.exe"),
+ 138 |                 Path.Combine(system32, "dfrgui.exe"),
+ 139 |                 Path.Combine(system32, "diskmgmt.msc"),
+ 140 |                 Path.Combine(system32, "eventvwr.exe"),
+ 141 |                 Path.Combine(system32, "perfmon.exe"),
+ 142 |                 Path.Combine(system32, "taskmgr.exe"),
+ 143 |                 Path.Combine(system32, "verifier.exe")
+ 144 |             };
+ 145 | 
+ 146 |             // Add only DLLs that exist
+ 147 |             foreach (var dll in commonDlls)
+ 148 |             {
+ 149 |                 if (File.Exists(dll))
+ 150 |                 {
+ 151 |                     ListBox_Dlls.Items.Add(dll);
+ 152 |                 }
+ 153 |             }
+ 154 |         }
+ 155 |         
+ 156 |         private void LoadIcons(string dllPath)
+ 157 |         {
+ 158 |             lvIcons.ItemsSource = null;
+ 159 |             icons.Clear();
+ 160 | 
+ 161 |             if (!File.Exists(dllPath))
+ 162 |             {
+ 163 |                 MessageBox.Show("The specified DLL file does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+ 164 |                 return;
+ 165 |             }
+ 166 | 
+ 167 |             try
+ 168 |             {
+ 169 |                 // First, try to get the icon count
+ 170 |                 uint iconCount = ExtractIconEx(dllPath, -1, null, null, 0);
+ 171 | 
+ 172 |                 for (int i = 0; i < iconCount; i++)
+ 173 |                 {
+ 174 |                     IntPtr[] largeIcons = new IntPtr[1];
+ 175 |                     uint extracted = ExtractIconEx(dllPath, i, largeIcons, null, 1);
+ 176 | 
+ 177 |                     if (extracted > 0 && largeIcons[0] != IntPtr.Zero)
+ 178 |                     {
+ 179 |                         using (Icon icon = System.Drawing.Icon.FromHandle(largeIcons[0]))
+ 180 |                         {
+ 181 |                             var bitmapSource = Imaging.CreateBitmapSourceFromHIcon(
+ 182 |                                 icon.Handle,
+ 183 |                                 Int32Rect.Empty,
+ 184 |                                 BitmapSizeOptions.FromEmptyOptions());
+ 185 | 
+ 186 |                             icons.Add(new IconInfo
+ 187 |                             {
+ 188 |                                 Index = i,
+ 189 |                                 Preview = bitmapSource,
+ 190 |                                 Size = $"{icon.Width}x{icon.Height}",
+ 191 |                                 Format = icon.Width == icon.Height ? "Square" : "Rectangle",
+ 192 |                                 Icon = (Icon)icon.Clone()
+ 193 |                             });
+ 194 |                         }
+ 195 | 
+ 196 |                         DestroyIcon(largeIcons[0]);
+ 197 |                     }
+ 198 |                 }
+ 199 | 
+ 200 |                 lvIcons.ItemsSource = icons;
+ 201 |             }
+ 202 |             catch (Exception ex)
+ 203 |             {
+ 204 |                 MessageBox.Show($"Error loading icons: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+ 205 |             }
+ 206 |         }
+ 207 | 
+ 208 |         private void ListBox_Dlls_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+ 209 |         {
+ 210 |             if (ListBox_Dlls.SelectedItem != null)
+ 211 |             {
+ 212 |                 LoadIcons(ListBox_Dlls.SelectedItem.ToString());
+ 213 |             }
+ 214 |         }
+ 215 | 
+ 216 |         private void BtnBrowse_Click(object sender, RoutedEventArgs e)
+ 217 |         {
+ 218 |             var openFileDialog = new OpenFileDialog
+ 219 |             {
+ 220 |                 Filter = "DLL files (*.dll)|*.dll|Executable files (*.exe)|*.exe|All files (*.*)|*.*",
+ 221 |                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System)
+ 222 |             };
+ 223 | 
+ 224 |             if (openFileDialog.ShowDialog() == true)
+ 225 |             {
+ 226 |                 string selectedDll = openFileDialog.FileName;
+ 227 |                 if (!ListBox_Dlls.Items.Contains(selectedDll))
+ 228 |                 {
+ 229 |                     ListBox_Dlls.Items.Add(selectedDll);
+ 230 |                 }
+ 231 |                 ListBox_Dlls.SelectedItem = selectedDll;
+ 232 |             }
+ 233 |         }
+ 234 | 
+ 235 |         private void BtnBrowseOutput_Click(object sender, RoutedEventArgs e)
+ 236 |         {
+ 237 |             // Using OpenFileDialog in folder selection mode as a workaround
+ 238 |             var openFolderDialog = new OpenFileDialog
+ 239 |             {
+ 240 |                 ValidateNames = false,
+ 241 |                 CheckFileExists = false,
+ 242 |                 CheckPathExists = true,
+ 243 |                 FileName = "Folder Selection",
+ 244 |                 Title = "Select output folder for extracted icons"
+ 245 |             };
+ 246 | 
+ 247 |             if (openFolderDialog.ShowDialog() == true)
+ 248 |             {
+ 249 |                 string selectedPath = Path.GetDirectoryName(openFolderDialog.FileName);
+ 250 |                 if (!string.IsNullOrEmpty(selectedPath))
+ 251 |                 {
+ 252 |                     txtOutputFolder.Text = selectedPath;
+ 253 |                 }
+ 254 |             }
+ 255 |         }
+ 256 | 
+ 257 |         private void BtnExtractAll_Click(object sender, RoutedEventArgs e)
+ 258 |         {
+ 259 |             ExtractIcons(false);
+ 260 |         }
+ 261 | 
+ 262 |         private void BtnExtractSelected_Click(object sender, RoutedEventArgs e)
+ 263 |         {
+ 264 |             ExtractIcons(true);
+ 265 |         }
+ 266 | 
+ 267 |         private void ExtractIcons(bool onlySelected)
+ 268 |         {
+ 269 |             string outputFolder = txtOutputFolder.Text;
+ 270 | 
+ 271 |             try
+ 272 |             {
+ 273 |                 if (!Directory.Exists(outputFolder))
+ 274 |                 {
+ 275 |                     Directory.CreateDirectory(outputFolder);
+ 276 |                 }
+ 277 | 
+ 278 |                 int count = 0;
+ 279 |                 var itemsToExtract = onlySelected ? lvIcons.SelectedItems : lvIcons.Items;
+ 280 | 
+ 281 |                 // Create subdirectory for extracted icons
+ 282 |                 string exportFolder = Path.Combine(outputFolder, "extracted_icons");
+ 283 |                 Directory.CreateDirectory(exportFolder);
+ 284 | 
+ 285 |                 foreach (IconInfo item in itemsToExtract)
+ 286 |                 {
+ 287 |                     // Save as PNG (32-bit with alpha)
+ 288 |                     string pngFileName = Path.Combine(exportFolder, $"icon_{item.Index}.png");
+ 289 |                     using (Bitmap bitmap = new Bitmap(item.Icon.Width, item.Icon.Height, PixelFormat.Format32bppArgb))
+ 290 |                     {
+ 291 |                         using (Graphics g = Graphics.FromImage(bitmap))
+ 292 |                         {
+ 293 |                             g.Clear(Color.Transparent);
+ 294 |                             g.DrawIcon(item.Icon, 0, 0);
+ 295 |                         }
+ 296 |                         bitmap.Save(pngFileName, ImageFormat.Png);
+ 297 |                     }
+ 298 | 
+ 299 |                     // Save as ICO (preserve original color depth)
+ 300 |                     string icoFileName = Path.Combine(exportFolder, $"icon_{item.Index}.ico");
+ 301 | 
+ 302 |                     IconsToHtml.ExtractHighQualityIconFromDll(ListBox_Dlls.SelectedItem.ToString(), item.Index, icoFileName);
+ 303 | 
+ 304 |                     //using (FileStream fs = new FileStream(icoFileName, FileMode.Create))
+ 305 |                     //{
+ 306 |                     //    // Create new icon to ensure proper color depth
+ 307 |                     //    using (Icon newIcon = new Icon(item.Icon, item.Icon.Size))
+ 308 |                     //    {
+ 309 |                     //        newIcon.Save(fs);
+ 310 |                     //    }
+ 311 |                     //}
+ 312 | 
+ 313 |                     count++;
+ 314 |                 }
+ 315 | 
+ 316 |                 MessageBox.Show($"Successfully extracted {count} icons (as .ico and .png) to:\n{exportFolder}",
+ 317 |                               "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+ 318 |             }
+ 319 |             catch (Exception ex)
+ 320 |             {
+ 321 |                 MessageBox.Show($"Error extracting icons: {ex.Message}", "Error",
+ 322 |                                MessageBoxButton.OK, MessageBoxImage.Error);
+ 323 |             }
+ 324 |         }
+ 325 | 
+ 326 |         private void BtnExportHtml_Click(object sender, RoutedEventArgs e)
+ 327 |         {
+ 328 |             if (ListBox_Dlls.SelectedItem == null)
+ 329 |             {
+ 330 |                 MessageBox.Show("Please select a DLL file first.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+ 331 |                 return;
+ 332 |             }
+ 333 | 
+ 334 |             string outputFolder = txtOutputFolder.Text;
+ 335 |             string dllPath = ListBox_Dlls.SelectedItem.ToString();
+ 336 | 
+ 337 |             try
+ 338 |             {
+ 339 |                 if (!Directory.Exists(outputFolder))
+ 340 |                 {
+ 341 |                     Directory.CreateDirectory(outputFolder);
+ 342 |                 }
+ 343 | 
+ 344 |                 IconsToHtml.ExtractIconsToCompositeImage(dllPath, outputFolder);
+ 345 |                 MessageBox.Show($"Composite image and individual icons (as both .ico and .png) have been created in:\n{outputFolder}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+ 346 |             }
+ 347 |             catch (Exception ex)
+ 348 |             {
+ 349 |                 MessageBox.Show($"Error creating output: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+ 350 |             }
+ 351 |         }
+ 352 |     }
+ 353 | }
+ 354 | 
+
+// -----------------------------------
+◈ End File: MainWindow.xaml.cs
+// ======================================================================
+
