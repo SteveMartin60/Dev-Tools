@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "password-generator", "passw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoThumbnailViewer", "VideoThumbnailViewer\VideoThumbnailViewer.csproj", "{E4A057F6-D0C1-4928-8835-F2500FC3B2A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Color-Swatches-WPF", "Color-Swatches-WPF\Color-Swatches-WPF.csproj", "{1AB6FED7-D138-4602-A73F-CF4170A48750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{E4A057F6-D0C1-4928-8835-F2500FC3B2A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4A057F6-D0C1-4928-8835-F2500FC3B2A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4A057F6-D0C1-4928-8835-F2500FC3B2A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AB6FED7-D138-4602-A73F-CF4170A48750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AB6FED7-D138-4602-A73F-CF4170A48750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AB6FED7-D138-4602-A73F-CF4170A48750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AB6FED7-D138-4602-A73F-CF4170A48750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

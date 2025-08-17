@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AvaloniaColorTableApp.MainWindow"
+        Title="Color Table"
+        Width="800"
+        Height="600">
+    <Grid>
+        <DataGrid Name="ColorDataGrid"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="True"
+                  CanUserSortColumns="True"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Color Name" Binding="{Binding Name}" Width="150"/>
+                <DataGridTextColumn Header="Hex Code" Binding="{Binding Hex}" Width="100"/>
+                <DataGridTextColumn Header="RGB Values" Binding="{Binding RGB}" Width="100"/>
+                <DataGridTemplateColumn Header="Swatch" Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding Brush}" Width="30" Height="30" Margin="10"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
