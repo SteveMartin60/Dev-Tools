@@ -34,7 +34,7 @@ namespace CodeConsolidator.ViewModels
                 {
                     _syntaxHighlighter.HighlightCSharpCode(fileContent, flowDocument);
                 }
-                else if (filePath.EndsWith(".xaml"))
+                else if (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml"))
                 {
                     _syntaxHighlighter.HighlightXamlCode(fileContent, flowDocument);
                 }
@@ -55,9 +55,11 @@ namespace CodeConsolidator.ViewModels
         {
             string fileIcon = filePath.EndsWith(".cs") ? "◈" :
                              filePath.EndsWith(".xaml") ? "◇" :
+                             filePath.EndsWith(".axaml") ? "◇" :
                              filePath.EndsWith(".csproj") ? "◉" : "⚙";
             var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
                              filePath.EndsWith(".xaml") ? Brushes.Orange :
+                             filePath.EndsWith(".axaml") ? Brushes.Orange :
                              filePath.EndsWith(".csproj") ? Brushes.MediumPurple : Brushes.Green;
 
             flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
@@ -83,9 +85,11 @@ namespace CodeConsolidator.ViewModels
         {
             string fileIcon = filePath.EndsWith(".cs") ? "◈" :
                              filePath.EndsWith(".xaml") ? "◇" :
+                             filePath.EndsWith(".axaml") ? "◇" :
                              filePath.EndsWith(".csproj") ? "◉" : "⚙";
             var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
                              filePath.EndsWith(".xaml") ? Brushes.Orange :
+                             filePath.EndsWith(".axaml") ? Brushes.Orange :
                              filePath.EndsWith(".csproj") ? Brushes.MediumPurple : Brushes.Green;
 
             flowDocument.Blocks.Add(new Paragraph(new Run($"// -----------------------------------"))
