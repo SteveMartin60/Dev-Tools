@@ -1,6 +1,21 @@
 <Project>
-  <PropertyGroup>
-    <Nullable>enable</Nullable>
-    <AvaloniaVersion>11.1.0</AvaloniaVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <AvaloniaVersion>11.1.0</AvaloniaVersion>
+        <!-- Add other global properties here -->
+
+        <!-- *** Add Output Path Configuration Here *** -->
+        <!-- Use an absolute path for consistency, or ensure the relative path resolves correctly -->
+        <!-- Example using an absolute path: -->
+        <!--
+        <BaseOutputPath>D:\DevBuilds\app-bin-xx\</BaseOutputPath>
+        <BaseIntermediateOutputPath>D:\DevBuilds\app-obj-xx\</BaseIntermediateOutputPath>
+        -->
+
+        <!-- Example using a relative path that resolves from the solution root -->
+        <!-- This assumes your .sln and Directory.Build.props are in the root,
+             and projects are in subdirectories. -->
+        <!-- Using MSBuildThisFileDirectory ensures the path is relative to THIS file's location -->
+        <BaseOutputPath>$(MSBuildThisFileDirectory)app\</BaseOutputPath>
+    </PropertyGroup>
 </Project>
