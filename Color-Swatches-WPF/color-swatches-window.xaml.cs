@@ -1,20 +1,21 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace ColorTableApp
 {
     public partial class MainWindow : Window
     {
+        private readonly List<ColorItem> _colors;
+        private readonly CollectionViewSource _viewSource;
+
         public MainWindow()
         {
             InitializeComponent();
-            LoadColors();
-        }
-
-        private void LoadColors()
-        {
-            var colors = new List<ColorItem>
+            _colors = new List<ColorItem>
             {
                 new ColorItem { Name = "AliceBlue",            Hex = "#FFF0F8FF", RGB = "240, 248, 255", Color = Colors.AliceBlue           },
                 new ColorItem { Name = "AntiqueWhite",         Hex = "#FAEBD7",   RGB = "250, 235, 215", Color = Colors.AntiqueWhite        },
@@ -158,13 +159,37 @@ namespace ColorTableApp
                 new ColorItem { Name = "YellowGreen",          Hex = "#FF9ACD32", RGB = "154, 206, 52",  Color = Colors.YellowGreen         }
             };
 
-            ColorDataGrid.ItemsSource = colors;
+            // Set up CollectionViewSource for filtering
+            _viewSource = new CollectionViewSource { Source = _colors };
+            _viewSource.Filter += ColorFilter;
+            ColorDataGrid.ItemsSource = _viewSource.View;
+        }
+
+        private void ColorFilter(object sender, FilterEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(FilterTextBox.Text))
+            {
+                e.Accepted = true; // Show all items if filter text is empty
+                return;
+            }
+
+            var colorItem = e.Item as ColorItem;
+            if (colorItem != null)
+            {
+                // Case-insensitive filter on color name
+                e.Accepted = colorItem.Name.ToLower().Contains(FilterTextBox.Text.ToLower());
+            }
+        }
+
+        private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Refresh the view to apply the filter
+            _viewSource.View.Refresh();
         }
 
         private void ColorDataGrid_CopyingRowClipboardContent(object sender, DataGridRowClipboardEventArgs e)
         {
             // Customize the clipboard content if needed
-            // For example, you can modify e.ClipboardRowContent to include only specific columns
         }
     }
 

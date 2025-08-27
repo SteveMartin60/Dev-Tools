@@ -2,10 +2,25 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Color Table" Height="600" Width="800" 
-        WindowStartupLocation="CenterScreen"
-        >
+        WindowStartupLocation="CenterScreen">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Filter TextBox -->
+        <TextBox x:Name="FilterTextBox" 
+                 Grid.Row="0" 
+                 Margin="10,10,10,5" 
+                 Padding="5" 
+                 FontSize="14" 
+                 TextChanged="FilterTextBox_TextChanged" 
+                 ToolTip="Enter a color name to filter"/>
+
+        <!-- DataGrid -->
         <DataGrid x:Name="ColorDataGrid"
+                  Grid.Row="1"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
