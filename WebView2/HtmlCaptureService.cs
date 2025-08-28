@@ -61,10 +61,12 @@ namespace WebView2Browser
 
                 string CaptureTitle = _webView.Source.Split("?")[0].Replace("https://", "").Replace("/", "-");
 
-                string filePath = Path.Combine(@"D:\Dev-Tools\WebView2\captured\", $"{CaptureTitle}{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.html");
+                string filePath   = Path.Combine(@"D:\Dev-Tools\WebView2\captured\", $"{CaptureTitle}{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.html");
+                string latestPath = Path.Combine(@"D:\Dev-Tools\WebView2\captured\latest.html");
 
                 // Save to file
-                File.WriteAllText(filePath, cleanHtml, Encoding.UTF8);
+                File.WriteAllText(filePath,   cleanHtml, Encoding.UTF8);
+                File.WriteAllText(latestPath, cleanHtml, Encoding.UTF8);
 
                 _statusText.Text = $"HTML saved to {filePath}";
                 //MessageBox.Show($"HTML content saved to:\n{filePath}", "Capture Complete", MessageBoxButton.OK, MessageBoxImage.Information);
