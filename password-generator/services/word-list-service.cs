@@ -22,10 +22,10 @@ namespace PasswordGenerator.Services
 
         List<string> superlatives = new List<string>();
 
-        string AdjectiveList { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\wordnet\dict\data.adj";
-        string AdVerbList    { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\wordnet\dict\data.adv";
-        string NounList      { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\wordnet\dict\data.noun";
-        string VerbList      { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\wordnet\dict\data.verb";
+        string AdjectiveList { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\data.adj";
+        string AdVerbList    { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\data.adv";
+        string NounList      { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\data.noun";
+        string VerbList      { get; set; } = @"D:\Dev-Tools\password-generator\word-lists\data.verb";
 
         int ColumnIndex = 0;
         public WordList GetDefaultWordLists(bool generateSuperlatives = false)
