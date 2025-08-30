@@ -25,7 +25,7 @@ namespace CodeConsolidator.Models
                            !directoryName.Contains("obj") &&
                            !directoryName.Contains("deprecated") &&
                            !directoryName.Contains("Temp") &&
-                           (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".csproj") || filePath.EndsWith(".sln"));
+                           (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml") || filePath.EndsWith(".csproj") || filePath.EndsWith(".sln"));
                 }).ToList();
             }
             catch (Exception ex)

@@ -208,7 +208,7 @@ namespace CodeConsolidator
                            !directoryName.Contains("obj") &&
                            !directoryName.Contains("deprecated") &&
                            !directoryName.Contains("Temp") &&
-                           (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".sln") || filePath.EndsWith(".csproj"));
+                           (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml") || filePath.EndsWith(".sln") || filePath.EndsWith(".csproj"));
 
                 }).ToList();
 
@@ -222,8 +222,8 @@ namespace CodeConsolidator
                     Application.Current.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Background);
 
                     // Add file header
-                    var fileIcon = filePath.EndsWith(".cs") ? "◈" : filePath.EndsWith(".xaml") ? "◇" : "⚙";
-                    var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue : filePath.EndsWith(".xaml") ? Brushes.Orange : Brushes.Green;
+                    var fileIcon = filePath.EndsWith(".cs") ? "◈" : (filePath.EndsWith(".xaml") || filePath.EndsWith(".xaml")) ? "◇" : "⚙";
+                    var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue : (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml")) ? Brushes.Orange : Brushes.Green;
 
                     flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
                     {
@@ -249,7 +249,7 @@ namespace CodeConsolidator
                     {
                         _syntaxHighlighter.HighlightCSharpCode(fileContent, flowDocument);
                     }
-                    else if (filePath.EndsWith(".xaml"))
+                    else if (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml"))
                     {
                         _syntaxHighlighter.HighlightXamlCode(fileContent, flowDocument);
                     }

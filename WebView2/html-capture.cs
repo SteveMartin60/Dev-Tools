@@ -86,9 +86,9 @@ namespace WebView2Browser
         {
             await SetMaxPageCount();
 
+                await CaptureHtml();
             while (CurrentPageIndex < MaxPageCount)
             {
-                await CaptureHtml();
 
                 CurrentAddress = BaseUrl.Replace("?q=fhd", "") + CurrentPageIndex++ + "/?q=fhd";
 
