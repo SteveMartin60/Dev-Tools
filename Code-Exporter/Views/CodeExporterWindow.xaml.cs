@@ -310,7 +310,7 @@ namespace CodeConsolidator
                 : "_NonRecursive";
 
             var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var defaultFileName = $"{baseFolderName}_CodeExport{recursiveIndicator}_{timestamp}.txt";
+            var defaultFileName = $"{baseFolderName}-code-export.txt";
 
             var saveFileDialog = new SaveFileDialog
             {
