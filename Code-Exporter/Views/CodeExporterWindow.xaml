@@ -23,17 +23,7 @@
             <Button Content="Refresh" Click="RefreshButton_Click" Margin="0 0 10 0"/>
             <Button Content="Clear" Click="ClearButton_Click" Margin="0 0 10 0"/>
             <TextBlock x:Name="StatusText" VerticalAlignment="Center" Margin="10 0 0 0" Foreground="Gray"/>
-            <Button x:Name="PinButton" 
-        Click="PinButton_Click" 
-        Margin="0 0 10 0"
-        Width="24" 
-        Height="24" 
-        Padding="0">
-                <Image x:Name="PinIcon" 
-           Width="16" 
-           Height="16"/>
-            </Button>
-            
+            <CheckBox Content="Project Files Only" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
         </StackPanel>
         <RichTextBox x:Name="CodeDisplay" 
                      Grid.Row="1"

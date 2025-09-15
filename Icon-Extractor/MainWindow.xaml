@@ -41,7 +41,7 @@
                 </ListBox>
 
                 <Button x:Name="btnBrowse" Content="Browse for more libraries..." 
-                        Style="{StaticResource SecondaryButton}"
+                        Style="{StaticResource SecondaryButton}" Click="BtnBrowse_Click"
                         Grid.Row="2" Margin="0,0,0,10"/>
 
                 <StackPanel Grid.Row="3" Orientation="Vertical">

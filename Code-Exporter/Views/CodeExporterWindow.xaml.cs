@@ -23,12 +23,13 @@ namespace CodeConsolidator
         private const string PinnedIconPath = "icon_233.png";
         private const string UnpinnedIconPath = "icon_228.png";
 
+        private bool ProjectFilesOnly { get; set; } = false;
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeProgressBar();
             EnsureIconsExist(); // Ensure icons are extracted and saved locally
-            InitializePinButtonIcons();
             _syntaxHighlighter = new SyntaxHighlighter(_darkMode);
             _themeService = new ThemeService(this, CodeDisplay, StatusText, TopControlPanel);
         }
@@ -105,34 +106,6 @@ namespace CodeConsolidator
                 // Clean up the icon handle
                 DestroyIcon(hIcon);
             }
-        }
-
-        /// <summary>
-        /// Initializes the pin button with the default "unpinned" icon.
-        /// </summary>
-        private void InitializePinButtonIcons()
-        {
-            // Load the initial "unpinned" icon
-            PinIcon.Source = LoadIconFromFile(UnpinnedIconPath);
-        }
-
-        /// <summary>
-        /// Handles the click event of the pin button.
-        /// Toggles the window's Topmost property and updates the icon.
-        /// </summary>
-        private void PinButton_Click(object sender, RoutedEventArgs e)
-        {
-            _isPinned = !_isPinned;
-            this.Topmost = _isPinned;
-
-            // Change the icon based on the pinned state
-            PinIcon.Source = _isPinned
-                ? LoadIconFromFile(PinnedIconPath) // Pinned icon
-                : LoadIconFromFile(UnpinnedIconPath); // Unpinned icon
-
-            StatusText.Text = _isPinned
-                ? "Window is now pinned (always on top)."
-                : "Window is no longer pinned.";
         }
 
         /// <summary>
@@ -215,8 +188,14 @@ namespace CodeConsolidator
                 _progressBar.Maximum = filteredFiles.Count;
                 var flowDocument = new FlowDocument();
 
+                if (ProjectFilesOnly)
+                {
+                    filteredFiles = filteredFiles.Where(f => f.EndsWith(".csproj")).ToList();
+                }
+
                 foreach (var filePath in filteredFiles)
                 {
+
                     _progressBar.Value++;
                     StatusText.Text = $"Processing {_progressBar.Value} of {filteredFiles.Count}...";
                     Application.Current.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Background);
@@ -415,5 +394,15 @@ namespace CodeConsolidator
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool DestroyIcon(IntPtr hIcon);
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ProjectFilesOnly = true;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ProjectFilesOnly = false;
+        }
     }
 }
