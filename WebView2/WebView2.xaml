@@ -66,7 +66,6 @@
         <TextBlock x:Name="StatusText" Margin="2" Grid.Row="2" Text="Test"/>
         <TabControl Grid.Row="1">
             <wv2:WebView2 x:Name="WebViewControl" Grid.Row="1"/>
-            <wv2:WebView2 x:Name="WebViewControl2" Grid.Row="1"/>
         </TabControl>
     </Grid>
 </Window>
