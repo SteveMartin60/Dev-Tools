@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace WebView2Browser
@@ -258,6 +259,21 @@ namespace WebView2Browser
                 MessageBox.Show($"Failed to capture HTML: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private static bool IsFocusInside(FrameworkElement container)
+        {
+            var fe = Keyboard.FocusedElement as DependencyObject;
+            if (fe == null) return false;
+
+            // Fast path: focused element *is* the WebView2 control (HwndHost)
+            if (fe == container) return true;
+
+            // Walk up the visual tree to see if the container is an ancestor
+            for (var parent = fe; parent != null; parent = VisualTreeHelper.GetParent(parent))
+                if (ReferenceEquals(parent, container))
+                    return true;
+
+            return false;
         }
     }
 }

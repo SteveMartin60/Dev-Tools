@@ -14,6 +14,15 @@ namespace WebView2Browser
     {
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            if (IsFocusInside(WebViewControl))
+            {
+                if (e.Key == Key.Home || e.Key == Key.End)
+                {
+                    // Let Chromium handle caret movement in the HTML input/textarea.
+                    // Do NOT call base.OnKeyDown(e); just return.
+                    return;
+                }
+            }
             // -----------------------------------------------------------------
             // TAB MANAGEMENT
             // -----------------------------------------------------------------
