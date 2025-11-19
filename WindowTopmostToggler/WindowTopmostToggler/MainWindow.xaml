@@ -4,88 +4,110 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Window Topmost Toggler (WPF)" Height="520" Width="960" MinHeight="420" MinWidth="760">
+        WindowStartupLocation="CenterScreen"
+        LocationChanged="Window_LocationChanged"
+        SizeChanged="Window_SizeChanged"
+        Title="Window Topmost Toggler (WPF)" Height="520" Width="960" MinHeight="420" MinWidth="760"
+        
+        >
+    <Window.Resources>
+        <!-- Very visible ToggleButton style -->
+        <Style x:Key="TopmostToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#777"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Content" Value="Set Topmost"/>
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content" Value="Topmost  ✓"/>
+                    <Setter Property="Background" Value="#2E7D32"/>
+                    <Setter Property="Foreground" Value="DeepPink"/>
+                    <Setter Property="BorderBrush" Value="#1B5E20"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#1976D2"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#E0E0E0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Badge-like visual indicator for IsTopmost -->
+        <Style x:Key="BadgeTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Text" Value="Normal"/>
+            <Setter Property="Background" Value="#EEEEEE"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsTopmost}" Value="True">
+                    <Setter Property="Text" Value="TOPMOST"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#333333"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsTopmost}" Value="False">
+                    <Setter Property="Text" Value="NORMAL"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#999999"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="8">
             <Button Content="Refresh" Width="110" Margin="0,0,12,0" Click="Refresh_Click"/>
             <TextBlock Text="Toggle 'Always on Top' for any visible window. No WinForms used." VerticalAlignment="Center"/>
         </StackPanel>
 
-        <ListView Name="WindowsList" Margin="8" ItemsSource="{Binding Windows}" SelectionMode="Single">
-            <ListView.Resources>
-                <!-- Very visible ToggleButton style -->
-                <Style x:Key="TopmostToggleStyle" TargetType="ToggleButton">
-                    <Setter Property="Width" Value="140"/>
-                    <Setter Property="Height" Value="30"/>
-                    <Setter Property="FontWeight" Value="SemiBold"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="BorderBrush" Value="#777"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="Content" Value="Set Topmost"/>
-                    <Setter Property="Background" Value="#F0F0F0"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Content" Value="Topmost  ✓"/>
-                            <Setter Property="Background" Value="#2E7D32"/>
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="BorderBrush" Value="#1B5E20"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="#1976D2"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#E0E0E0"/>
-                        </Trigger>
-                    </Style.Triggers>
+        <DataGrid ItemsSource="{Binding Windows}"
+          AutoGenerateColumns="False"
+          CanUserSortColumns="True"
+          GridLinesVisibility="All"
+          HeadersVisibility="Column"
+          VerticalGridLinesBrush="#FFD0D0D0"
+            HorizontalGridLinesBrush="#FFD0D0D0"
+            Margin="8">
+            <!-- Row Styles -->
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0"/>
                 </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <!-- toggle -->
+                <DataGridTemplateColumn Header="Toggle" SortMemberPath="IsTopmost" Width="160">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ToggleButton Style="{StaticResource TopmostToggleStyle}" IsChecked="{Binding IsTopmost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                <!-- Badge-like visual indicator for IsTopmost -->
-                <Style x:Key="BadgeTextBlockStyle" TargetType="TextBlock">
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Padding" Value="4,2"/>
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                    <Setter Property="TextAlignment" Value="Center"/>
-                    <Setter Property="Text" Value="Normal"/>
-                    <Setter Property="Background" Value="#EEEEEE"/>
-                    <Setter Property="Foreground" Value="#444"/>
-                    <Setter Property="TextWrapping" Value="NoWrap"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsTopmost}" Value="True">
-                            <Setter Property="Text" Value="TOPMOST"/>
-                            <Setter Property="Background" Value="#C8E6C9"/>
-                            <Setter Property="Foreground" Value="#1B5E20"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.Resources>
+                <!-- state -->
+                <DataGridTemplateColumn Header="State" SortMemberPath="IsTopmost" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource BadgeTextBlockStyle}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <ListView.View>
-                <GridView AllowsColumnReorder="True">
-                    <GridViewColumn Header="Toggle" Width="160">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <ToggleButton Style="{StaticResource TopmostToggleStyle}"
-                                              ToolTip="Click to toggle 'Always on Top'"
-                                              IsChecked="{Binding IsTopmost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn Header="State" Width="110">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Style="{StaticResource BadgeTextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-
-                    <GridViewColumn Header="Title" Width="360" DisplayMemberBinding="{Binding Title}"/>
-                    <GridViewColumn Header="Process" Width="220" DisplayMemberBinding="{Binding ProcessDisplay}"/>
-                    <GridViewColumn Header="Handle" Width="180" DisplayMemberBinding="{Binding HandleHex}"/>
-                    <GridViewColumn Header="Class" Width="220" DisplayMemberBinding="{Binding ClassName}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                <!-- text columns -->
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="360"/>
+                <DataGridTextColumn Header="Process" Binding="{Binding ProcessDisplay}" Width="220"/>
+                <DataGridTextColumn Header="Handle" Binding="{Binding HandleHex}" Width="180"/>
+                <DataGridTextColumn Header="Class" Binding="{Binding ClassName}" Width="220"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>

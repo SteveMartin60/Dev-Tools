@@ -5,5 +5,9 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>pin-map.ico</ApplicationIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="pin-map.ico" />
+  </ItemGroup>
 </Project>
