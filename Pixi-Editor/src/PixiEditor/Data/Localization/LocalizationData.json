@@ -1,0 +1,112 @@
+{
+  "$schema": "./LocalizationDataSchema.json",
+  "Languages": [
+    {
+      "name": "English",
+      "code": "en",
+      "localeFileName": "en.json",
+      "iconFileName": "en.png",
+      "lastUpdated": "2023-05-24 21:23:22"
+    },
+    {
+      "name": "Polski",
+      "code": "pl",
+      "localeFileName": "pl.json",
+      "iconFileName": "pl.png",
+      "lastUpdated": "2025-10-02 10:09:12"
+    },
+    {
+      "name": "Deutsch",
+      "code": "de",
+      "localeFileName": "de.json",
+      "iconFileName": "de.png",
+      "lastUpdated": "2025-07-24 17:51:17"
+    },
+    {
+      "name": "Español",
+      "code": "es",
+      "localeFileName": "es.json",
+      "iconFileName": "es.png",
+      "lastUpdated": "2025-09-11 01:59:19"
+    },
+    {
+      "name": "中文",
+      "code": "zh",
+      "remoteCode": "zh-CN",
+      "localeFileName": "zh.json",
+      "iconFileName": "zh.png",
+      "lastUpdated": "2023-05-15 03:23:28"
+    },
+    {
+      "name": "Русский",
+      "code": "ru",
+      "localeFileName": "ru.json",
+      "iconFileName": "ru.png",
+      "lastUpdated": "2025-07-28 08:51:44"
+    },
+    {
+      "name": "Українська",
+      "code": "uk",
+      "localeFileName": "uk.json",
+      "iconFileName": "uk.png",
+      "lastUpdated": "2025-06-28 12:26:13"
+    },
+    {
+      "name": "عربي",
+      "code": "ar",
+      "localeFileName": "ar.json",
+      "iconFileName": "ar.png",
+      "rightToLeft": true,
+      "lastUpdated": "2025-09-30 04:49:02"
+    },
+    {
+      "name": "Čeština",
+      "code": "cs",
+      "localeFileName": "cs.json",
+      "iconFileName": "cs.png",
+      "lastUpdated": "2025-07-25 12:03:22"
+    },
+    {
+      "name": "Português (Brasil)",
+      "code": "pt-br",
+      "localeFileName": "pt-br.json",
+      "iconFileName": "pt-br.png",
+      "lastUpdated": "2023-07-06 02:00:39"
+    },
+    {
+      "name": "Magyar",
+      "code": "hu",
+      "localeFileName": "hu.json",
+      "iconFileName": "hu.png",
+      "lastUpdated": "2023-05-08 22:07:37"
+    },
+    {
+      "name": "Türkçe",
+      "code": "tr",
+      "localeFileName": "tr.json",
+      "iconFileName": "tr.png",
+      "lastUpdated": "2025-08-07 18:24:00"
+    },
+    {
+      "name": "Français",
+      "code": "fr",
+      "localeFileName": "fr.json",
+      "iconFileName": "fr.png",
+      "lastUpdated": "2025-08-21 13:08:35"
+    },
+    {
+      "name": "Italiano",
+      "code": "it",
+      "localeFileName": "it.json",
+      "iconFileName": "it.png",
+      "lastUpdated": "2023-06-25 10:37:34"
+    },
+    {
+      "name": "Indonesia",
+      "code": "id",
+      "localeFileName": "id.json",
+      "iconFileName": "id.png",
+      "lastUpdated": "2025-08-08 10:04:52"
+    }
+  ]
+}

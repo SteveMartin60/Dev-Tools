@@ -1,0 +1,20 @@
+﻿using Drawie.Backend.Core.Numerics;
+using Drawie.Backend.Core.Shaders;
+using Drawie.Numerics;
+
+namespace Drawie.Backend.Core.ColorsImpl.Paintables;
+
+public abstract class Paintable : IDisposable, ICloneable
+{
+    public abstract bool AnythingVisible { get; }
+    public bool AbsoluteValues { get; set; } = false;
+    public RectD? Bounds { get; set; }
+
+    public abstract Shader? GetShader(RectD bounds, Matrix3X3 matrix);
+
+    public static implicit operator Paintable(Color color) => new ColorPaintable(color);
+    public abstract Paintable? Clone();
+    object ICloneable.Clone() => Clone();
+    public abstract void ApplyOpacity(double opacity);
+    public virtual void Dispose() { }
+}

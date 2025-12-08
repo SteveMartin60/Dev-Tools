@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Drawie.Backend.Skia\Drawie.Backend.Skia.csproj" />
+      <ProjectReference Include="..\Drawie.RenderApi.WebGl\Drawie.RenderApi.WebGl.csproj" />
+      <ProjectReference Include="..\Drawie.Windowing.Browser\Drawie.Windowing.Browser.csproj" />
+      <ProjectReference Include="..\DrawiEngine\DrawiEngine.csproj" />
+    </ItemGroup>
+
+</Project>

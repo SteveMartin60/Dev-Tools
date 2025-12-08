@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:HexEditor.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="viewModels:DocumentViewModel"
+             x:Class="HexEditor.Views.DocumentView">
+    <Design.DataContext>
+        <viewModels:DocumentViewModel/>
+    </Design.DataContext>
+    <Grid>
+        <Interaction.Behaviors>
+            <EventTriggerBehavior EventName="GotFocus">
+                <InvokeCommandAction Command="{Binding GotFocusCommand}"/>
+            </EventTriggerBehavior>
+        </Interaction.Behaviors>
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Lines}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <SelectableTextBlock Text="{Binding }" FontSize="12"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

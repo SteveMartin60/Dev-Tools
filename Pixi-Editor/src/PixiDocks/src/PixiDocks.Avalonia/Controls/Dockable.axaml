@@ -1,0 +1,29 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:PixiDocks.Avalonia.Controls">
+    <Design.PreviewWith>
+        <controls:Dockable>
+            <Grid Width="150" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Width="60" Height="30" Content="Hello"/>
+            </Grid>
+        </controls:Dockable>
+    </Design.PreviewWith>
+
+    <ControlTheme TargetType="controls:Dockable" x:Key="{x:Type controls:Dockable}">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentControl DockPanel.Dock="Bottom"
+                                BorderThickness="0, 2, 0, 0"
+                                Content="{TemplateBinding Content}"/>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ ContentControl">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeDockSelectedBrush}"/>
+        </Style>
+
+        <Style Selector="^:focused /template/ ContentControl">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeDockAccentBrush}"/>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

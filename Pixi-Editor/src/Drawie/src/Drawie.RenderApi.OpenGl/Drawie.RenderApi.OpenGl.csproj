@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Drawie.RenderApi\Drawie.RenderApi.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Silk.NET.OpenGL" Version="2.22.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="silk.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+</Project>

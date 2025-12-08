@@ -1,0 +1,22 @@
+<Styles xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="PixiDocks.Avalonia.PixiDockSimpleTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <MergeResourceInclude Source="Accents.axaml"/>
+                <MergeResourceInclude Source="Controls/Dockable.axaml"/>
+                <MergeResourceInclude Source="Controls/DockableArea.axaml"/>
+                <MergeResourceInclude Source="Controls/HostWindow.axaml"/>
+                <MergeResourceInclude Source="Controls/HostWindowTitleBar.axaml"/>
+                <MergeResourceInclude Source="Controls/DockableAreaRegion.axaml"/>
+                <MergeResourceInclude Source="Controls/DockableAreaStripItem.axaml"/>
+                <MergeResourceInclude Source="Controls/DockableTree.axaml"/>
+                <MergeResourceInclude Source="Themes/PixiDockTabControl.axaml"/>
+                <MergeResourceInclude Source="Controls/TabCustomizationSettingsTemplate.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <StyleInclude Source="Styles/DockableAreaStyles.axaml"/>
+</Styles>

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.0" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PixiDocks.Core\PixiDocks.Core.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Images\*"/>
+        <None Remove="Assets\x.svg"/>
+        <AvaloniaResource Include="Assets\x.svg"/>
+    </ItemGroup>
+
+</Project>
