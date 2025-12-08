@@ -1,0 +1,218 @@
+﻿@page "/poststats"
+@using JH.Service.Reddit
+@using JH.Service.Reddit.Models
+@inject IRedditService redditService
+
+<PageTitle>Post Statistics</PageTitle>
+
+<h1>Post Statistics</h1>
+
+<div>
+    <label>Listen to Subreddit:</label>
+    <input type="text" @bind="subredditName" placeholder="Enter subreddit name" disabled="disabled" />
+    @*  <button @onclick="LoadSubredditDataAsync">Load Subreddit</button> *@
+</div>
+<div>
+    <label>Sort Order:</label>
+    <input type="radio" id="mostRecent" name="sortOrder" value="MostRecent" @onchange="OnSortOrderChanged" checked="checked" />
+    <label for="mostRecent">Most Recent</label>
+    <input type="radio" id="upVotes" name="sortOrder" value="UpVotes" @onchange="OnSortOrderChanged" />
+    <label for="upVotes">UpVotes</label>
+
+</div>
+
+@if (subreddit == null)
+{
+    <p>Enter a subreddit name to load posts.</p>
+}
+else if (subreddit.Posts == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p />
+    <div>
+        <p><strong>User with the Most Upvoted Post:</strong> @userWithHighestUpvotedPostScore (@userWithHighestUpvotedPostScore) </p>
+        <p><strong>User with the Most Posts:</strong> @userWithMostPosts (@userWithMostPostsCount)</p>
+    </div>
+
+    <div class="grid-container">
+        @foreach (var post in subreddit.Posts)
+        {
+            <div class="grid-item">
+                <h6>@post.Title</h6>
+                <p><strong>Author:</strong> @post.Author</p>
+                <p><strong>Score:</strong> @post.Score</p>
+                <p><strong>Comments:</strong> @post.NumberOfComments</p>
+                @if (!string.IsNullOrWhiteSpace(post.Thumbnail) && post.Thumbnail != "self")
+                {
+                    <img src="@post.Thumbnail" alt="Post Thumbnail" />
+                }
+                <a href="@post.Url" target="_blank">Read more</a>
+            </div>
+        }
+    </div>
+}
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .grid-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+        .grid-item h6 {
+            margin-top: 0;
+        }
+
+        .grid-item p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        .grid-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .grid-item a {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: blue;
+            text-decoration: underline;
+        }
+</style>
+
+
+@code {
+
+    private Subreddit subreddit;
+    private string subredditName;
+
+    private string userWithmostUpvotedPost;
+    private string userWithHighestUpvotedPostScore;
+    private string userWithMostPosts;
+    private string userWithMostPostsCount;
+    private string sortOrder = "MostRecent"; // Default sort order
+    private string lastBefore = "t3_190w6l5";   // start somewhere in the middle of the subreddit
+
+    /// <summary>
+    /// Load the subreddit data for a given subreddit name
+    /// </summary>
+    /// <returns></returns>
+    private async Task LoadSubredditDataAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(subredditName))
+        {
+            Subreddit subredditResult = await redditService.GetSubredditAsync(subredditName, lastBefore, 5);
+            if (subreddit?.Name != subredditResult.Name)            
+                subreddit = subredditResult;            
+            else            
+                subreddit.Posts.AddRange(subredditResult.Posts);
+
+
+            GetStats();
+            ApplySort();
+
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    /// <summary>
+    /// Calculate the Most Post by user and Most Upvoted Post for the subreddit
+    /// </summary>
+    private void GetStats()
+    {
+        if (subreddit?.Posts != null)
+        {
+            var authorStats = SubredditService.GetAuthorWithMostPosts(subreddit);
+           
+            userWithMostPostsCount = authorStats.PostCount;
+            userWithMostPosts = authorStats.Author;
+
+            var mostUpvotedPostStats = SubredditService.GetAuthorWithMostUpvotedPost(subreddit);
+            userWithmostUpvotedPost = mostUpvotedPostStats.Author;
+            userWithHighestUpvotedPostScore = mostUpvotedPostStats.Score.ToString();
+        }
+    }
+
+
+    /// <summary>
+    /// On page initialize load subreddit with 'Blazor' as the default
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnInitializedAsync()
+    {
+        // I initially thought we had to authenticate and acquire a token.  I left this here to show my initial work
+        // var token = await AuthenticatedRedditService.GetAccessTokenAsync("{enter ClientID}", "{enter secret}");
+        // await AuthenticatedRedditService.GetMeAsync(token.access_token);
+
+        subredditName = "Blazor";
+
+        //attach to the event
+        if (redditService is RedditService service)
+            service.SubredditUpdated += OnSubredditUpdated;
+
+
+        await LoadSubredditDataAsync();
+
+    }
+
+    /// <summary>
+    /// Handle sorting by either Most Recent or by Upvotes
+    /// </summary>
+    private void ApplySort()
+    {
+        if (sortOrder == "MostRecent")
+            subreddit.Posts = subreddit.Posts.OrderByDescending(p => p.CreatedUTC).ToList();
+        else
+            subreddit.Posts = subreddit.Posts.OrderByDescending(p => p.Score).ToList();
+
+    }
+
+    /// <summary>
+    /// Handle sort order being changed
+    /// </summary>
+    private void OnSortOrderChanged(ChangeEventArgs e)
+    {
+        sortOrder = e.Value.ToString();
+        ApplySort();
+    }
+
+    private async Task LoadSubredditDataAsyncWrapper()
+    {
+        await LoadSubredditDataAsync();
+    }
+
+
+
+    private void OnSubredditUpdated(object sender, SubredditEventArgs e)
+    {
+        // Call the async method without awaiting it
+
+        lastBefore = e.Before;
+        var _ = LoadSubredditDataAsyncWrapper();
+    }
+
+
+    // Make sure to unsubscribe when the component is disposed
+    public void Dispose()
+    {
+        if (redditService is RedditService service)
+        {
+            service.SubredditUpdated -= OnSubredditUpdated;
+        }
+    }
+
+}

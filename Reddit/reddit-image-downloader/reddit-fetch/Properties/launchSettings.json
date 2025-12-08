@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "reddit-fetch download": {
+      "commandName": "Project",
+      "commandLineArgs": "download",
+      "workingDirectory": "$(ProjectDir)"
+    },
+    "reddit-fetch list": {
+      "commandName": "Project",
+      "commandLineArgs": "list"
+    },
+    "reddit-fetch add aww": {
+      "commandName": "Project",
+      "commandLineArgs": "add-subreddit aww"
+    }
+  }
+}

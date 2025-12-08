@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <RootNamespace>reddit_fetch</RootNamespace>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="reddit-fetch.zip" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CoenM.ImageSharp.ImageHash" Version="1.3.6" />
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+        <PackageReference Include="System.CommandLine" Version="2.0.0" />
+    </ItemGroup>
+
+</Project>
