@@ -1,0 +1,67 @@
+<Window x:Class="ScreenColorPicker.PickerOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        Focusable="True"
+        Title="PickerOverlay"
+        KeyDown="Window_KeyDown"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseMove="Window_MouseMove"
+        Loaded="Window_Loaded">
+    <!-- Slight dim so user knows picker is active -->
+    <Canvas Background="#01000000">
+        <!-- Floating magnifier + color info near cursor -->
+        <Border x:Name="PreviewBorder"
+                Width="120"
+                Height="140"
+                BorderBrush="White"
+                BorderThickness="1"
+                CornerRadius="4"
+                Background="#CC000000"
+                Visibility="Collapsed">
+            <StackPanel Margin="4">
+                <!-- Magnifier (zoomed pixels) -->
+                <Border x:Name="PreviewMagnifierBox"
+                        Width="110"
+                        Height="90"
+                        BorderBrush="White"
+                        BorderThickness="1"
+                        Margin="0,0,0,4">
+                    <Grid>
+                        <!-- Zoomed pixel region -->
+                        <Image x:Name="PreviewMagnifierImage"
+                               Stretch="Fill"/>
+
+                        <!-- Fine crosshair in the center -->
+                        <Path Stroke="Magenta"
+                              StrokeThickness="0.5"
+                              Data="M 0,0.5 L 1,0.5 M 0.5,0 L 0.5,1"
+                              Stretch="Fill"
+                              SnapsToDevicePixels="True" />
+                    </Grid>
+                </Border>
+
+                <!-- Solid swatch of center pixel -->
+                <Border x:Name="PreviewColorBox"
+                        Width="110"
+                        Height="18"
+                        BorderBrush="White"
+                        BorderThickness="1"
+                        Margin="0,0,0,2" />
+
+                <!-- Hex text (was getting clipped before, now with room) -->
+                <TextBlock x:Name="PreviewHex"
+                           Foreground="White"
+                           FontSize="10"
+                           HorizontalAlignment="Center"
+                           Margin="0,2,0,0"
+                           TextTrimming="None"/>
+            </StackPanel>
+        </Border>
+    </Canvas>
+</Window>

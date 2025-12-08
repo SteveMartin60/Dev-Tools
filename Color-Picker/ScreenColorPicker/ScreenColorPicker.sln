@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenColorPicker", "ScreenColorPicker.csproj", "{B9B790C7-5EE7-BF7E-FBA9-33B8F9443235}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9B790C7-5EE7-BF7E-FBA9-33B8F9443235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9B790C7-5EE7-BF7E-FBA9-33B8F9443235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9B790C7-5EE7-BF7E-FBA9-33B8F9443235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9B790C7-5EE7-BF7E-FBA9-33B8F9443235}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09B3B946-BEE0-47F5-8704-86A2AD4DE531}
+	EndGlobalSection
+EndGlobal
