@@ -50,5 +50,21 @@ namespace ScreenColorPicker
             RgbText.Text = $"R: {color.R}, G: {color.G}, B: {color.B}";
             HexText.Text = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
+
+        private void CopyRgb_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(RgbText.Text))
+            {
+                Clipboard.SetText(RgbText.Text);
+            }
+        }
+
+        private void CopyHex_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(HexText.Text))
+            {
+                Clipboard.SetText(HexText.Text);
+            }
+        }
     }
 }
