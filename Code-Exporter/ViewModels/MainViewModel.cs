@@ -25,9 +25,38 @@ namespace CodeConsolidator.ViewModels
 
             flowDocument.Blocks.Clear();
 
+            // ------------------------------------------------------------------
+            // Export information header (descriptive only)
+            // ------------------------------------------------------------------
+
+            flowDocument.Blocks.Add(new Paragraph(new Run("EXPORT INFO"))
+            {
+                FontWeight = FontWeights.Bold
+            });
+
+            flowDocument.Blocks.Add(new Paragraph(new Run(
+                $"Generated (UTC): {DateTime.UtcNow:O}")));
+
+            flowDocument.Blocks.Add(new Paragraph(new Run(
+                $"Root folder: {folderPath.Replace('\\', '/')}")));
+
+            flowDocument.Blocks.Add(new Paragraph(new Run(
+                $"Files enumerated: {filteredFiles.Count}")));
+
+            flowDocument.Blocks.Add(new Paragraph(new Run(
+                "// ======================================================================"))
+            {
+                Foreground = Brushes.Gray
+            });
+
+            // ------------------------------------------------------------------
+            // File contents
+            // ------------------------------------------------------------------
+
             foreach (var filePath in filteredFiles)
             {
                 AddFileHeader(flowDocument, filePath, folderPath);
+
                 var fileContent = File.ReadAllText(filePath);
 
                 if (filePath.EndsWith(".cs"))
@@ -54,26 +83,31 @@ namespace CodeConsolidator.ViewModels
         private void AddFileHeader(FlowDocument flowDocument, string filePath, string folderPath)
         {
             string fileIcon = filePath.EndsWith(".cs") ? "◈" :
-                             filePath.EndsWith(".xaml") ? "◇" :
-                             filePath.EndsWith(".axaml") ? "◇" :
-                             filePath.EndsWith(".csproj") ? "◉" : "⚙";
-            var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
-                             filePath.EndsWith(".xaml") ? Brushes.Orange :
-                             filePath.EndsWith(".axaml") ? Brushes.Orange :
-                             filePath.EndsWith(".csproj") ? Brushes.MediumPurple : Brushes.Green;
+                      filePath.EndsWith(".xaml") ? "◇" :
+                      filePath.EndsWith(".axaml") ? "◇" :
+                      filePath.EndsWith(".csproj") ? "◉" : "⚙";
 
-            flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
+            var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
+                      filePath.EndsWith(".xaml") ? Brushes.Orange :
+                      filePath.EndsWith(".axaml") ? Brushes.Orange :
+                      filePath.EndsWith(".csproj") ? Brushes.MediumPurple :
+                      Brushes.Green;
+
+            var relativePath = Path.GetRelativePath(folderPath, filePath)
+                           .Replace('\\', '/');
+
+            flowDocument.Blocks.Add(new Paragraph(new Run("// ======================================================================"))
             {
                 Foreground = Brushes.Gray
             });
 
-            flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} Begin File: {filePath.Substring(folderPath.Length + 1)}"))
+            flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} Begin File: {relativePath}"))
             {
                 Foreground = headerColor,
                 FontWeight = FontWeights.Bold
             });
 
-            flowDocument.Blocks.Add(new Paragraph(new Run($"// -----------------------------------"))
+            flowDocument.Blocks.Add(new Paragraph(new Run("// -----------------------------------"))
             {
                 Foreground = Brushes.Gray
             });
@@ -84,26 +118,31 @@ namespace CodeConsolidator.ViewModels
         private void AddFileFooter(FlowDocument flowDocument, string filePath, string folderPath)
         {
             string fileIcon = filePath.EndsWith(".cs") ? "◈" :
-                             filePath.EndsWith(".xaml") ? "◇" :
-                             filePath.EndsWith(".axaml") ? "◇" :
-                             filePath.EndsWith(".csproj") ? "◉" : "⚙";
-            var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
-                             filePath.EndsWith(".xaml") ? Brushes.Orange :
-                             filePath.EndsWith(".axaml") ? Brushes.Orange :
-                             filePath.EndsWith(".csproj") ? Brushes.MediumPurple : Brushes.Green;
+                      filePath.EndsWith(".xaml") ? "◇" :
+                      filePath.EndsWith(".axaml") ? "◇" :
+                      filePath.EndsWith(".csproj") ? "◉" : "⚙";
 
-            flowDocument.Blocks.Add(new Paragraph(new Run($"// -----------------------------------"))
+            var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
+                      filePath.EndsWith(".xaml") ? Brushes.Orange :
+                      filePath.EndsWith(".axaml") ? Brushes.Orange :
+                      filePath.EndsWith(".csproj") ? Brushes.MediumPurple :
+                      Brushes.Green;
+
+            var relativePath = Path.GetRelativePath(folderPath, filePath)
+                           .Replace('\\', '/');
+
+            flowDocument.Blocks.Add(new Paragraph(new Run("// -----------------------------------"))
             {
                 Foreground = Brushes.Gray
             });
 
-            flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} End File: {filePath.Substring(folderPath.Length + 1)}"))
+            flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} End File: {relativePath}"))
             {
                 Foreground = headerColor,
                 FontWeight = FontWeights.Bold
             });
 
-            flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
+            flowDocument.Blocks.Add(new Paragraph(new Run("// ======================================================================"))
             {
                 Foreground = Brushes.Gray
             });

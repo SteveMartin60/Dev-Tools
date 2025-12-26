@@ -1,0 +1,1104 @@
+// ======================================================================
+◇ Begin File: App.xaml
+// -----------------------------------
+
+   1 | <Application x:Class="CodeConsolidator.App"<Application x:Class="CodeConsolidator.App"
+   2 |              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |              StartupUri="Views/CodeExporterWindow.xaml">
+   5 |     <Application.Resources>
+   6 |     </Application.Resources>
+   7 | </Application>
+
+// -----------------------------------
+◇ End File: App.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: App.xaml.cs
+// -----------------------------------
+
+   1 | using System.Configuration;
+   2 | using System.Data;
+   3 | using System.Windows;
+   4 | 
+   5 | namespace CodeConsolidator
+   6 | {
+   7 |     /// <summary>
+   8 |     /// Interaction logic for App.xaml
+   9 |     /// </summary>
+  10 |     public partial class App : Application
+  11 |     {
+  12 |     }
+  13 | 
+  14 | }
+  15 | 
+
+// -----------------------------------
+◈ End File: App.xaml.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: AssemblyInfo.cs
+// -----------------------------------
+
+   1 | using System.Windows;
+   2 | 
+   3 | [assembly: ThemeInfo(
+   4 |     ResourceDictionaryLocation.None,            //where theme specific resource dictionaries are located
+   5 |                                                 //(used if a resource is not found in the page,
+   6 |                                                 // or application resource dictionaries)
+   7 |     ResourceDictionaryLocation.SourceAssembly   //where the generic resource dictionary is located
+   8 |                                                 //(used if a resource is not found in the page,
+   9 |                                                 // app, or any theme specific resource dictionaries)
+  10 | )]
+  11 | 
+
+// -----------------------------------
+◈ End File: AssemblyInfo.cs
+// ======================================================================
+
+// ======================================================================
+⚙ Begin File: CodeExporter.csproj
+// -----------------------------------
+
+   1 | <Project Sdk="Microsoft.NET.Sdk">
+   2 |   <PropertyGroup>
+   3 |     <OutputType>WinExe</OutputType>
+   4 |     <TargetFramework>net9.0-windows</TargetFramework>
+   5 |     <Nullable>enable</Nullable>
+   6 |     <ImplicitUsings>enable</ImplicitUsings>
+   7 |     <UseWPF>true</UseWPF>
+   8 |     <ApplicationIcon>Icons\icon_243.ico</ApplicationIcon>
+   9 |   </PropertyGroup>
+  10 | 
+  11 |   <ItemGroup>
+  12 |     <Compile Remove="Exported-Code\**" />
+  13 |     <EmbeddedResource Remove="Exported-Code\**" />
+  14 |     <None Remove="Exported-Code\**" />
+  15 |     <Page Remove="Exported-Code\**" />
+  16 |   </ItemGroup>
+  17 | 
+  18 |   <ItemGroup>
+  19 |     <Resource Include="Icons\icon_243.ico">
+  20 |       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  21 |     </Resource>
+  22 |   </ItemGroup>
+  23 | 
+  24 |   <ItemGroup>
+  25 |     <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
+  26 |   </ItemGroup>
+  27 | 
+  28 |   <ItemGroup>
+  29 |     <Resource Include="Icons\icon_228.png">
+  30 |       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  31 |     </Resource>
+  32 |     <Resource Include="Icons\icon_233.png">
+  33 |       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  34 |     </Resource>
+  35 |   </ItemGroup>
+  36 | </Project>
+  37 | 
+
+// -----------------------------------
+⚙ End File: CodeExporter.csproj
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: Models\FileProcessor.cs
+// -----------------------------------
+
+   1 | using System;
+   2 | using System.Collections.Generic;
+   3 | using System.IO;
+   4 | 
+   5 | namespace CodeConsolidator.Models
+   6 | {
+   7 |     public class FileProcessor
+   8 |     {
+   9 |         public List<string> GetFilteredFiles(string folderPath, bool searchSubfolders)
+  10 |         {
+  11 |             var filteredFiles = new List<string>();
+  12 |             try
+  13 |             {
+  14 |                 var searchOption = searchSubfolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+  15 |                 var allFiles = Directory.GetFiles(folderPath, "*.*", searchOption);
+  16 |                 var temporaryPatterns = new List<string> { "~$*", "*.tmp", "*.bak", "*.swp" };
+  17 | 
+  18 |                 filteredFiles = allFiles.Where(filePath =>
+  19 |                 {
+  20 |                     var fileName = Path.GetFileName(filePath);
+  21 |                     var directoryName = Path.GetDirectoryName(filePath);
+  22 | 
+  23 |                     return !temporaryPatterns.Any(pattern => fileName.StartsWith(pattern.Trim('*'))) &&
+  24 |                            !directoryName.Contains("bin") &&
+  25 |                            !directoryName.Contains("obj") &&
+  26 |                            !directoryName.Contains("deprecated") &&
+  27 |                            !directoryName.Contains("Temp") &&
+  28 |                            (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml") || filePath.EndsWith(".csproj") || filePath.EndsWith(".sln"));
+  29 |                 }).ToList();
+  30 |             }
+  31 |             catch (Exception ex)
+  32 |             {
+  33 |                 throw new Exception($"Error processing files: {ex.Message}");
+  34 |             }
+  35 | 
+  36 |             return filteredFiles;
+  37 |         }
+  38 |     }
+  39 | }
+  40 | 
+
+// -----------------------------------
+◈ End File: Models\FileProcessor.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: Services\SyntaxHighlighter.cs
+// -----------------------------------
+
+   1 | using System;
+   2 | using System.Linq;
+   3 | using System.Windows;
+   4 | using System.Windows.Documents;
+   5 | using System.Windows.Media;
+   6 | using System.Windows.Shapes;
+   7 | 
+   8 | namespace CodeConsolidator.Services
+   9 | {
+  10 |     public class SyntaxHighlighter
+  11 |     {
+  12 |         private readonly bool _darkMode;
+  13 | 
+  14 |         public SyntaxHighlighter(bool darkMode)
+  15 |         {
+  16 |             _darkMode = darkMode;
+  17 |         }
+  18 | 
+  19 |         public void HighlightCSharpCode(string code, FlowDocument flowDocument)
+  20 |         {
+  21 |             var lines = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+  22 |             var keywords = new[] { "using", "namespace", "class", "void", "return", "if", "else", "for", "foreach", "while", "do", "switch", "case", "break", "continue", "var", "new", "this", "base", "true", "false", "null" };
+  23 |             int lineNumber = 1;
+  24 | 
+  25 | 
+  26 |             for (int i = 0; i < lines.Length; i++)
+  27 |             //foreach (var line in lines)
+  28 |             {
+  29 |                 var line = lines[i];
+  30 | 
+  31 |                 var paragraph = CreateParagraph(lineNumber++, line);
+  32 | 
+  33 |                 foreach (var keyword in keywords)
+  34 |                 {
+  35 |                     int index = 0;
+  36 |                     while (index >= 0 && index < line.Length)
+  37 |                     {
+  38 |                         index = line.IndexOf(keyword, index, StringComparison.Ordinal);
+  39 |                         if (index < 0) break;
+  40 | 
+  41 |                         bool isWholeWord = (index == 0 || !char.IsLetterOrDigit(line[index - 1])) &&
+  42 |                                            (index + keyword.Length >= line.Length ||
+  43 |                                             !char.IsLetterOrDigit(line[index + keyword.Length]));
+  44 | 
+  45 |                         if (isWholeWord)
+  46 |                         {
+  47 |                             AddTextBeforeKeyword(paragraph, line.Substring(0, index));
+  48 |                             AddHighlightedKeyword(paragraph, keyword);
+  49 |                             line = line.Substring(index + keyword.Length);
+  50 |                             index = 0;
+  51 |                         }
+  52 |                         else
+  53 |                         {
+  54 |                             index += keyword.Length;
+  55 |                         }
+  56 |                     }
+  57 |                 }
+  58 | 
+  59 |                 AddRemainingText(paragraph, line);
+  60 |                 flowDocument.Blocks.Add(paragraph);
+  61 |             }
+  62 |         }
+  63 | 
+  64 |         public void HighlightXamlCode(string code, FlowDocument flowDocument)
+  65 |         {
+  66 |             var lines = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+  67 |             int lineNumber = 1;
+  68 | 
+  69 |             foreach (var line in lines)
+  70 |             {
+  71 |                 var paragraph = CreateParagraph(lineNumber++, line);
+  72 |                 var processedLine = line;
+  73 | 
+  74 |                 int tagStart = 0;
+  75 |                 while ((tagStart = processedLine.IndexOf('<')) >= 0)
+  76 |                 {
+  77 |                     AddTextBeforeTag(paragraph, processedLine.Substring(0, tagStart));
+  78 |                     processedLine = processedLine.Substring(tagStart);
+  79 |                     tagStart = 0;
+  80 | 
+  81 |                     int tagEnd = processedLine.IndexOf('>');
+  82 |                     if (tagEnd < 0)
+  83 |                     {
+  84 |                         AddUnclosedTag(paragraph, processedLine);
+  85 |                         break;
+  86 |                     }
+  87 | 
+  88 |                     var tag = processedLine.Substring(0, tagEnd + 1);
+  89 |                     AddHighlightedTag(paragraph, tag);
+  90 |                     processedLine = processedLine.Substring(tagEnd + 1);
+  91 |                 }
+  92 | 
+  93 |                 AddRemainingText(paragraph, processedLine);
+  94 |                 flowDocument.Blocks.Add(paragraph);
+  95 |             }
+  96 |         }
+  97 | 
+  98 |         // Add this method to the SyntaxHighlighter class in Services/SyntaxHighlighter.cs
+  99 |         public void HighlightCsProjCode(string code, FlowDocument flowDocument)
+ 100 |         {
+ 101 |             var lines = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+ 102 |             int lineNumber = 1;
+ 103 | 
+ 104 |             foreach (var line in lines)
+ 105 |             {
+ 106 |                 var paragraph = CreateParagraph(lineNumber++, line);
+ 107 |                 var processedLine = line;
+ 108 | 
+ 109 |                 // Highlight XML tags
+ 110 |                 int tagStart = 0;
+ 111 |                 while ((tagStart = processedLine.IndexOf('<')) >= 0)
+ 112 |                 {
+ 113 |                     AddTextBeforeTag(paragraph, processedLine.Substring(0, tagStart));
+ 114 |                     processedLine = processedLine.Substring(tagStart);
+ 115 |                     tagStart = 0;
+ 116 | 
+ 117 |                     int tagEnd = processedLine.IndexOf('>');
+ 118 |                     if (tagEnd < 0)
+ 119 |                     {
+ 120 |                         AddUnclosedTag(paragraph, processedLine);
+ 121 |                         break;
+ 122 |                     }
+ 123 | 
+ 124 |                     var tag = processedLine.Substring(0, tagEnd + 1);
+ 125 | 
+ 126 |                     // Special highlighting for important csproj elements
+ 127 |                     if (tag.StartsWith("<Project") || tag.StartsWith("</Project") ||
+ 128 |                         tag.StartsWith("<PropertyGroup") || tag.StartsWith("</PropertyGroup") ||
+ 129 |                         tag.StartsWith("<ItemGroup") || tag.StartsWith("</ItemGroup"))
+ 130 |                     {
+ 131 |                         paragraph.Inlines.Add(new Run(tag)
+ 132 |                         {
+ 133 |                             Foreground = _darkMode ? Brushes.LightGreen : Brushes.DarkGreen,
+ 134 |                             FontWeight = FontWeights.Bold
+ 135 |                         });
+ 136 |                     }
+ 137 |                     else if (tag.StartsWith("<PackageReference") || tag.StartsWith("<ProjectReference") ||
+ 138 |                              tag.StartsWith("<Reference") || tag.StartsWith("<Compile") ||
+ 139 |                              tag.StartsWith("<None") || tag.StartsWith("<Content"))
+ 140 |                     {
+ 141 |                         paragraph.Inlines.Add(new Run(tag)
+ 142 |                         {
+ 143 |                             Foreground = _darkMode ? Brushes.LightBlue : Brushes.Blue
+ 144 |                         });
+ 145 |                     }
+ 146 |                     else
+ 147 |                     {
+ 148 |                         AddHighlightedTag(paragraph, tag);
+ 149 |                     }
+ 150 | 
+ 151 |                     processedLine = processedLine.Substring(tagEnd + 1);
+ 152 |                 }
+ 153 | 
+ 154 |                 AddRemainingText(paragraph, processedLine);
+ 155 |                 flowDocument.Blocks.Add(paragraph);
+ 156 |             }
+ 157 |         }
+ 158 | 
+ 159 |         public void HighlightSlnCode(string code, FlowDocument flowDocument)
+ 160 |         {
+ 161 |             var lines = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+ 162 |             int lineNumber = 1;
+ 163 | 
+ 164 |             foreach (var line in lines)
+ 165 |             {
+ 166 |                 var paragraph = CreateParagraph(lineNumber++, line);
+ 167 | 
+ 168 |                 if (line.Trim().StartsWith("Project("))
+ 169 |                 {
+ 170 |                     // Highlight project references
+ 171 |                     AddHighlightedKeyword(paragraph, "Project");
+ 172 |                     AddTextBeforeKeyword(paragraph, line.Substring(0, line.IndexOf("Project")));
+ 173 |                     AddRemainingText(paragraph, line.Substring(line.IndexOf("Project") + "Project".Length));
+ 174 |                 }
+ 175 |                 else if (line.Trim().StartsWith("GlobalSection("))
+ 176 |                 {
+ 177 |                     // Highlight global sections
+ 178 |                     AddHighlightedKeyword(paragraph, "GlobalSection");
+ 179 |                     AddTextBeforeKeyword(paragraph, line.Substring(0, line.IndexOf("GlobalSection")));
+ 180 |                     AddRemainingText(paragraph, line.Substring(line.IndexOf("GlobalSection") + "GlobalSection".Length));
+ 181 |                 }
+ 182 |                 else
+ 183 |                 {
+ 184 |                     // Default text
+ 185 |                     AddRemainingText(paragraph, line);
+ 186 |                 }
+ 187 | 
+ 188 |                 flowDocument.Blocks.Add(paragraph);
+ 189 |             }
+ 190 |         }
+ 191 | 
+ 192 |         private Paragraph CreateParagraph(int lineNumber, string line)
+ 193 |         {
+ 194 |             var paragraph = new Paragraph();
+ 195 |             paragraph.Inlines.Add(new Run($"{lineNumber.ToString().PadLeft(4)} | ")
+ 196 |             {
+ 197 |                 Foreground = Brushes.Gray,
+ 198 |                 FontFamily = new FontFamily("Consolas")
+ 199 |             });
+ 200 |             return paragraph;
+ 201 |         }
+ 202 | 
+ 203 |         private void AddTextBeforeKeyword(Paragraph paragraph, string text)
+ 204 |         {
+ 205 |             paragraph.Inlines.Add(new Run(text));
+ 206 |         }
+ 207 | 
+ 208 |         private void AddHighlightedKeyword(Paragraph paragraph, string keyword)
+ 209 |         {
+ 210 |             paragraph.Inlines.Add(new Run(keyword)
+ 211 |             {
+ 212 |                 Foreground = _darkMode ? Brushes.LightBlue : Brushes.Blue,
+ 213 |                 FontWeight = FontWeights.Bold
+ 214 |             });
+ 215 |         }
+ 216 | 
+ 217 |         private void AddHighlightedTag(Paragraph paragraph, string tag)
+ 218 |         {
+ 219 |             paragraph.Inlines.Add(new Run(tag)
+ 220 |             {
+ 221 |                 Foreground = _darkMode ? Brushes.LightCoral : Brushes.DarkRed
+ 222 |             });
+ 223 |         }
+ 224 | 
+ 225 |         private void AddUnclosedTag(Paragraph paragraph, string tag)
+ 226 |         {
+ 227 |             paragraph.Inlines.Add(new Run(tag)
+ 228 |             {
+ 229 |                 Foreground = _darkMode ? Brushes.LightCoral : Brushes.DarkRed
+ 230 |             });
+ 231 |         }
+ 232 | 
+ 233 |         private void AddTextBeforeTag(Paragraph paragraph, string text)
+ 234 |         {
+ 235 |             paragraph.Inlines.Add(new Run(text));
+ 236 |         }
+ 237 | 
+ 238 |         private void AddRemainingText(Paragraph paragraph, string text)
+ 239 |         {
+ 240 |             if (!string.IsNullOrEmpty(text))
+ 241 |             {
+ 242 |                 paragraph.Inlines.Add(new Run(text));
+ 243 |             }
+ 244 |         }
+ 245 |     }
+ 246 | }
+ 247 | 
+
+// -----------------------------------
+◈ End File: Services\SyntaxHighlighter.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: Services\ThemeService.cs
+// -----------------------------------
+
+   1 | using System.Windows;
+   2 | using System.Windows.Controls;
+   3 | using System.Windows.Media;
+   4 | 
+   5 | namespace CodeConsolidator.Services
+   6 | {
+   7 |     public class ThemeService
+   8 |     {
+   9 |         private readonly Window _window;
+  10 |         private readonly RichTextBox _codeDisplay;
+  11 |         private readonly TextBlock _statusText;
+  12 |         private readonly Panel _controlPanel;
+  13 | 
+  14 |         private bool _darkMode;
+  15 | 
+  16 |         public ThemeService(Window window, RichTextBox codeDisplay, TextBlock statusText, Panel controlPanel)
+  17 |         {
+  18 |             _window = window;
+  19 |             _codeDisplay = codeDisplay;
+  20 |             _statusText = statusText;
+  21 |             _controlPanel = controlPanel;
+  22 |         }
+  23 | 
+  24 |         public bool IsDarkMode()
+  25 |         {
+  26 |             return _darkMode;
+  27 |         }
+  28 | 
+  29 |         public void ToggleDarkMode()
+  30 |         {
+  31 |             _darkMode = !_darkMode;
+  32 | 
+  33 |             _window.Background = _darkMode ? Brushes.DarkSlateGray : Brushes.White;
+  34 |             _window.Foreground = _darkMode ? Brushes.White : Brushes.Black;
+  35 | 
+  36 |             _codeDisplay.Background = _darkMode ? Brushes.DimGray : Brushes.White;
+  37 |             _codeDisplay.Foreground = _darkMode ? Brushes.White : Brushes.Black;
+  38 | 
+  39 |             _statusText.Foreground = _darkMode ? Brushes.LightGray : Brushes.Gray;
+  40 | 
+  41 |             foreach (var child in _controlPanel.Children)
+  42 |             {
+  43 |                 if (child is Button button)
+  44 |                 {
+  45 |                     button.Background = _darkMode ? Brushes.SlateGray : SystemColors.ControlBrush;
+  46 |                     button.Foreground = _darkMode ? Brushes.White : SystemColors.ControlTextBrush;
+  47 |                 }
+  48 |                 else if (child is CheckBox checkBox)
+  49 |                 {
+  50 |                     checkBox.Foreground = _darkMode ? Brushes.White : SystemColors.ControlTextBrush;
+  51 |                 }
+  52 |             }
+  53 |         }
+  54 |     }
+  55 | }
+  56 | 
+
+// -----------------------------------
+◈ End File: Services\ThemeService.cs
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: ViewModels\MainViewModel.cs
+// -----------------------------------
+
+   1 | using CodeConsolidator.Models;
+   2 | using CodeConsolidator.Services;
+   3 | using System.Collections.Generic;
+   4 | using System.IO;
+   5 | using System.Windows;
+   6 | using System.Windows.Documents;
+   7 | using System.Windows.Media;
+   8 | 
+   9 | namespace CodeConsolidator.ViewModels
+  10 | {
+  11 |     public class MainViewModel
+  12 |     {
+  13 |         private readonly FileProcessor _fileProcessor;
+  14 |         private readonly SyntaxHighlighter _syntaxHighlighter;
+  15 | 
+  16 |         public MainViewModel(bool darkMode)
+  17 |         {
+  18 |             _fileProcessor = new FileProcessor();
+  19 |             _syntaxHighlighter = new SyntaxHighlighter(darkMode);
+  20 |         }
+  21 | 
+  22 |         public void ProcessFolder(string folderPath, bool recursive, FlowDocument flowDocument)
+  23 |         {
+  24 |             var filteredFiles = _fileProcessor.GetFilteredFiles(folderPath, recursive);
+  25 | 
+  26 |             flowDocument.Blocks.Clear();
+  27 | 
+  28 |             // ------------------------------------------------------------------
+  29 |             // Export information header (descriptive only)
+  30 |             // ------------------------------------------------------------------
+  31 | 
+  32 |             flowDocument.Blocks.Add(new Paragraph(new Run("EXPORT INFO"))
+  33 |             {
+  34 |                 FontWeight = FontWeights.Bold
+  35 |             });
+  36 | 
+  37 |             flowDocument.Blocks.Add(new Paragraph(new Run(
+  38 |                 $"Generated (UTC): {DateTime.UtcNow:O}")));
+  39 | 
+  40 |             flowDocument.Blocks.Add(new Paragraph(new Run(
+  41 |                 $"Root folder: {folderPath.Replace('\\', '/')}")));
+  42 | 
+  43 |             flowDocument.Blocks.Add(new Paragraph(new Run(
+  44 |                 $"Files enumerated: {filteredFiles.Count}")));
+  45 | 
+  46 |             flowDocument.Blocks.Add(new Paragraph(new Run(
+  47 |                 "// ======================================================================"))
+  48 |             {
+  49 |                 Foreground = Brushes.Gray
+  50 |             });
+  51 | 
+  52 |             // ------------------------------------------------------------------
+  53 |             // File contents
+  54 |             // ------------------------------------------------------------------
+  55 | 
+  56 |             foreach (var filePath in filteredFiles)
+  57 |             {
+  58 |                 AddFileHeader(flowDocument, filePath, folderPath);
+  59 | 
+  60 |                 var fileContent = File.ReadAllText(filePath);
+  61 | 
+  62 |                 if (filePath.EndsWith(".cs"))
+  63 |                 {
+  64 |                     _syntaxHighlighter.HighlightCSharpCode(fileContent, flowDocument);
+  65 |                 }
+  66 |                 else if (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml"))
+  67 |                 {
+  68 |                     _syntaxHighlighter.HighlightXamlCode(fileContent, flowDocument);
+  69 |                 }
+  70 |                 else if (filePath.EndsWith(".csproj"))
+  71 |                 {
+  72 |                     _syntaxHighlighter.HighlightCsProjCode(fileContent, flowDocument);
+  73 |                 }
+  74 |                 else if (filePath.EndsWith(".sln"))
+  75 |                 {
+  76 |                     _syntaxHighlighter.HighlightSlnCode(fileContent, flowDocument);
+  77 |                 }
+  78 | 
+  79 |                 AddFileFooter(flowDocument, filePath, folderPath);
+  80 |             }
+  81 |         }
+  82 | 
+  83 |         private void AddFileHeader(FlowDocument flowDocument, string filePath, string folderPath)
+  84 |         {
+  85 |             string fileIcon = filePath.EndsWith(".cs") ? "◈" :
+  86 |                       filePath.EndsWith(".xaml") ? "◇" :
+  87 |                       filePath.EndsWith(".axaml") ? "◇" :
+  88 |                       filePath.EndsWith(".csproj") ? "◉" : "⚙";
+  89 | 
+  90 |             var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
+  91 |                       filePath.EndsWith(".xaml") ? Brushes.Orange :
+  92 |                       filePath.EndsWith(".axaml") ? Brushes.Orange :
+  93 |                       filePath.EndsWith(".csproj") ? Brushes.MediumPurple :
+  94 |                       Brushes.Green;
+  95 | 
+  96 |             var relativePath = Path.GetRelativePath(folderPath, filePath)
+  97 |                            .Replace('\\', '/');
+  98 | 
+  99 |             flowDocument.Blocks.Add(new Paragraph(new Run("// ======================================================================"))
+ 100 |             {
+ 101 |                 Foreground = Brushes.Gray
+ 102 |             });
+ 103 | 
+ 104 |             flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} Begin File: {relativePath}"))
+ 105 |             {
+ 106 |                 Foreground = headerColor,
+ 107 |                 FontWeight = FontWeights.Bold
+ 108 |             });
+ 109 | 
+ 110 |             flowDocument.Blocks.Add(new Paragraph(new Run("// -----------------------------------"))
+ 111 |             {
+ 112 |                 Foreground = Brushes.Gray
+ 113 |             });
+ 114 | 
+ 115 |             flowDocument.Blocks.Add(new Paragraph());
+ 116 |         }
+ 117 | 
+ 118 |         private void AddFileFooter(FlowDocument flowDocument, string filePath, string folderPath)
+ 119 |         {
+ 120 |             string fileIcon = filePath.EndsWith(".cs") ? "◈" :
+ 121 |                       filePath.EndsWith(".xaml") ? "◇" :
+ 122 |                       filePath.EndsWith(".axaml") ? "◇" :
+ 123 |                       filePath.EndsWith(".csproj") ? "◉" : "⚙";
+ 124 | 
+ 125 |             var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue :
+ 126 |                       filePath.EndsWith(".xaml") ? Brushes.Orange :
+ 127 |                       filePath.EndsWith(".axaml") ? Brushes.Orange :
+ 128 |                       filePath.EndsWith(".csproj") ? Brushes.MediumPurple :
+ 129 |                       Brushes.Green;
+ 130 | 
+ 131 |             var relativePath = Path.GetRelativePath(folderPath, filePath)
+ 132 |                            .Replace('\\', '/');
+ 133 | 
+ 134 |             flowDocument.Blocks.Add(new Paragraph(new Run("// -----------------------------------"))
+ 135 |             {
+ 136 |                 Foreground = Brushes.Gray
+ 137 |             });
+ 138 | 
+ 139 |             flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} End File: {relativePath}"))
+ 140 |             {
+ 141 |                 Foreground = headerColor,
+ 142 |                 FontWeight = FontWeights.Bold
+ 143 |             });
+ 144 | 
+ 145 |             flowDocument.Blocks.Add(new Paragraph(new Run("// ======================================================================"))
+ 146 |             {
+ 147 |                 Foreground = Brushes.Gray
+ 148 |             });
+ 149 | 
+ 150 |             flowDocument.Blocks.Add(new Paragraph());
+ 151 |         }
+ 152 |     }
+ 153 | }
+ 154 | 
+
+// -----------------------------------
+◈ End File: ViewModels\MainViewModel.cs
+// ======================================================================
+
+// ======================================================================
+◇ Begin File: Views\CodeExporterWindow.xaml
+// -----------------------------------
+
+   1 | <Window x:Class="CodeConsolidator.MainWindow"<Window x:Class="CodeConsolidator.MainWindow"
+   2 |         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   3 |         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   4 |         Title="Code Exporter" Height="900" Width="1600"
+   5 |         WindowStartupLocation="CenterScreen"
+   6 |         Topmost="False" Icon="/Icons/icon_243.ico">
+   7 |     <Grid x:Name="MainGrid">
+   8 |         <Grid.RowDefinitions>
+   9 |             <RowDefinition Height="Auto"/>
+  10 |             <RowDefinition Height="*"/>
+  11 |             <RowDefinition Height="Auto"/>
+  12 |         </Grid.RowDefinitions>
+  13 | 
+  14 |         <StackPanel x:Name="TopControlPanel" Orientation="Horizontal" Grid.Row="0" Margin="5">
+  15 |             <Button Content="Select Folder" Click="SelectFolderButton_Click" Margin="0 0 10 0"/>
+  16 |             <CheckBox x:Name="RecursiveSearchCheckBox" <CheckBox x:Name="RecursiveSearchCheckBox" 
+  17 |               Content="Search Subfolders" 
+  18 |               VerticalAlignment="Center"
+  19 |               Margin="0 0 10 0"
+  20 |               IsChecked="True"/>
+  21 |             <Button Content="Export Code" Click="ExportCodeButton_Click" Margin="0 0 10 0"/>
+  22 |             <Button Content="Toggle Dark Mode" Click="ToggleDarkModeButton_Click" Margin="0 0 10 0"/>
+  23 |             <Button Content="Refresh" Click="RefreshButton_Click" Margin="0 0 10 0"/>
+  24 |             <Button Content="Clear" Click="ClearButton_Click" Margin="0 0 10 0"/>
+  25 |             <TextBlock x:Name="StatusText" VerticalAlignment="Center" Margin="10 0 0 0" Foreground="Gray"/>
+  26 |             <CheckBox Content="Project Files Only" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+  27 |         </StackPanel>
+  28 |         <RichTextBox x:Name="CodeDisplay" <RichTextBox x:Name="CodeDisplay" 
+  29 |                      Grid.Row="1"
+  30 |                      VerticalScrollBarVisibility="Auto"
+  31 |                      HorizontalScrollBarVisibility="Auto"
+  32 |                      FontFamily="Consolas"
+  33 |                      FontSize="12"
+  34 |                      IsReadOnly="True">
+  35 |             <FlowDocument />
+  36 |         </RichTextBox>
+  37 |     </Grid>
+  38 | </Window>
+  39 |     
+
+// -----------------------------------
+◇ End File: Views\CodeExporterWindow.xaml
+// ======================================================================
+
+// ======================================================================
+◈ Begin File: Views\CodeExporterWindow.xaml.cs
+// -----------------------------------
+
+   1 | using System;
+   2 | using System.IO;
+   3 | using System.Windows;
+   4 | using System.Windows.Controls;
+   5 | using System.Windows.Interop;
+   6 | using System.Windows.Media;
+   7 | using System.Windows.Media.Imaging;
+   8 | using Microsoft.Win32;
+   9 | using CodeConsolidator.Services;
+  10 | using System.Runtime.InteropServices;
+  11 | using System.Windows.Documents;
+  12 | 
+  13 | namespace CodeConsolidator
+  14 | {
+  15 |     public partial class MainWindow : Window
+  16 |     {
+  17 |         private ThemeService _themeService;
+  18 |         private bool _darkMode = false;
+  19 |         private ProgressBar _progressBar;
+  20 |         private SyntaxHighlighter _syntaxHighlighter;
+  21 |         private string _lastSelectedFolderPath;
+  22 |         private bool _isPinned = false; // Tracks whether the window is pinned (topmost)
+  23 |         private const string PinnedIconPath = "icon_233.png";
+  24 |         private const string UnpinnedIconPath = "icon_228.png";
+  25 | 
+  26 |         private bool ProjectFilesOnly { get; set; } = false;
+  27 | 
+  28 |         public MainWindow()
+  29 |         {
+  30 |             InitializeComponent();
+  31 |             InitializeProgressBar();
+  32 |             EnsureIconsExist(); // Ensure icons are extracted and saved locally
+  33 |             _syntaxHighlighter = new SyntaxHighlighter(_darkMode);
+  34 |             _themeService = new ThemeService(this, CodeDisplay, StatusText, TopControlPanel);
+  35 |         }
+  36 | 
+  37 |         /// <summary>
+  38 |         /// Converts an icon handle to a BitmapSource for WPF.
+  39 |         /// </summary>
+  40 |         private BitmapSource LoadIconFromHandle(IntPtr hIcon)
+  41 |         {
+  42 |             if (hIcon == IntPtr.Zero)
+  43 |             {
+  44 |                 throw new ArgumentException("Icon handle cannot be null or zero.");
+  45 |             }
+  46 | 
+  47 |             try
+  48 |             {
+  49 |                 return Imaging.CreateBitmapSourceFromHIcon(
+  50 |                     hIcon,
+  51 |                     Int32Rect.Empty, // Use the entire icon
+  52 |                     BitmapSizeOptions.FromEmptyOptions() // No resizing
+  53 |                 );
+  54 |             }
+  55 |             finally
+  56 |             {
+  57 |                 // Destroy the icon handle to avoid memory leaks
+  58 |                 DestroyIcon(hIcon);
+  59 |             }
+  60 |         }
+  61 | 
+  62 |         /// <summary>
+  63 |         /// Ensures that the required icons exist in the application directory.
+  64 |         /// If not, extracts them from imageres.dll and saves them locally.
+  65 |         /// </summary>
+  66 |         private void EnsureIconsExist()
+  67 |         {
+  68 |             if (!File.Exists(PinnedIconPath))
+  69 |             {
+  70 |                 ExtractAndSaveIcon("imageres.dll", 129, PinnedIconPath); // Pinned icon
+  71 |             }
+  72 | 
+  73 |             if (!File.Exists(UnpinnedIconPath))
+  74 |             {
+  75 |                 ExtractAndSaveIcon("imageres.dll", 130, UnpinnedIconPath); // Unpinned icon
+  76 |             }
+  77 |         }
+  78 | 
+  79 |         /// <summary>
+  80 |         /// Extracts an icon from a DLL and saves it to the specified file path.
+  81 |         /// </summary>
+  82 |         private void ExtractAndSaveIcon(string dllName, int iconIndex, string outputPath)
+  83 |         {
+  84 |             // Load the icon from the DLL
+  85 |             IntPtr hIcon = LoadImage(IntPtr.Zero, dllName, 1, 0, 0, (uint)(0x00000080 | iconIndex));
+  86 |             if (hIcon == IntPtr.Zero)
+  87 |             {
+  88 |                 StatusText.Text = $"Failed to extract icon with index {iconIndex} from {dllName}.";
+  89 |                 return;
+  90 |             }
+  91 | 
+  92 |             try
+  93 |             {
+  94 |                 // Convert the icon handle to a System.Drawing.Icon
+  95 |                 using (var icon = System.Drawing.Icon.FromHandle(hIcon))
+  96 |                 {
+  97 |                     // Save the icon to the specified file path
+  98 |                     using (var stream = new FileStream(outputPath, FileMode.Create))
+  99 |                     {
+ 100 |                         icon.Save(stream);
+ 101 |                     }
+ 102 |                 }
+ 103 |             }
+ 104 |             finally
+ 105 |             {
+ 106 |                 // Clean up the icon handle
+ 107 |                 DestroyIcon(hIcon);
+ 108 |             }
+ 109 |         }
+ 110 | 
+ 111 |         /// <summary>
+ 112 |         /// Loads an icon from a local file.
+ 113 |         /// </summary>
+ 114 |         private BitmapSource LoadIconFromFile(string filePath)
+ 115 |         {
+ 116 |             if (File.Exists(filePath))
+ 117 |             {
+ 118 |                 return new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute));
+ 119 |             }
+ 120 | 
+ 121 |             StatusText.Text = $"Icon file not found: {filePath}";
+ 122 |             return null;
+ 123 |         }
+ 124 | 
+ 125 |         /// <summary>
+ 126 |         /// Initializes the progress bar control.
+ 127 |         /// </summary>
+ 128 |         private void InitializeProgressBar()
+ 129 |         {
+ 130 |             _progressBar = new ProgressBar
+ 131 |             {
+ 132 |                 Height = 5,
+ 133 |                 HorizontalAlignment = HorizontalAlignment.Stretch,
+ 134 |                 Margin = new Thickness(0, 5, 0, 0),
+ 135 |                 Visibility = Visibility.Collapsed
+ 136 |             };
+ 137 |             MainGrid.Children.Add(_progressBar);
+ 138 |             Grid.SetRow(_progressBar, 2);
+ 139 |         }
+ 140 | 
+ 141 |         /// <summary>
+ 142 |         /// Handles the folder selection process.
+ 143 |         /// </summary>
+ 144 |         private void SelectFolderButton_Click(object sender, RoutedEventArgs e)
+ 145 |         {
+ 146 |             var folderDialog = new OpenFolderDialog();
+ 147 |             if (folderDialog.ShowDialog() == true)
+ 148 |             {
+ 149 |                 ProcessSelectedFolder(folderDialog.FolderName);
+ 150 |             }
+ 151 |         }
+ 152 | 
+ 153 |         /// <summary>
+ 154 |         /// Processes the selected folder and displays its contents.
+ 155 |         /// </summary>
+ 156 |         private void ProcessSelectedFolder(string folderPath)
+ 157 |         {
+ 158 |             CodeDisplay.Document.Blocks.Clear();
+ 159 |             var filteredFiles = new List<string>();
+ 160 | 
+ 161 |             try
+ 162 |             {
+ 163 |                 _progressBar.Visibility = Visibility.Visible;
+ 164 |                 _progressBar.Value = 0;
+ 165 |                 StatusText.Text = "Searching files...";
+ 166 |                 Application.Current.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Background);
+ 167 | 
+ 168 |                 var searchOption = RecursiveSearchCheckBox.IsChecked == true
+ 169 |                     ? SearchOption.AllDirectories
+ 170 |                     : SearchOption.TopDirectoryOnly;
+ 171 | 
+ 172 |                 var allFiles = Directory.GetFiles(folderPath, "*.*", searchOption);
+ 173 |                 var temporaryPatterns = new[] { "~$*", "*.tmp", "*.bak", "*.swp" };
+ 174 | 
+ 175 |                 filteredFiles = allFiles.Where(filePath =>
+ 176 |                 {
+ 177 |                     var fileName = Path.GetFileName(filePath);
+ 178 |                     var directoryName = Path.GetDirectoryName(filePath);
+ 179 |                     return !temporaryPatterns.Any(pattern => fileName.StartsWith(pattern.Trim('*'))) &&
+ 180 |                            !directoryName.Contains("bin") &&
+ 181 |                            !directoryName.Contains("obj") &&
+ 182 |                            !directoryName.Contains("deprecated") &&
+ 183 |                            !directoryName.Contains("Temp") &&
+ 184 |                            (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml") || filePath.EndsWith(".sln") || filePath.EndsWith(".csproj"));
+ 185 | 
+ 186 |                 }).ToList();
+ 187 | 
+ 188 |                 _progressBar.Maximum = filteredFiles.Count;
+ 189 |                 var flowDocument = new FlowDocument();
+ 190 | 
+ 191 |                 if (ProjectFilesOnly)
+ 192 |                 {
+ 193 |                     filteredFiles = filteredFiles.Where(f => f.EndsWith(".csproj")).ToList();
+ 194 |                 }
+ 195 | 
+ 196 |                 foreach (var filePath in filteredFiles)
+ 197 |                 {
+ 198 | 
+ 199 |                     _progressBar.Value++;
+ 200 |                     StatusText.Text = $"Processing {_progressBar.Value} of {filteredFiles.Count}...";
+ 201 |                     Application.Current.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Background);
+ 202 | 
+ 203 |                     // Add file header
+ 204 |                     var fileIcon = filePath.EndsWith(".cs") ? "◈" : (filePath.EndsWith(".xaml") || filePath.EndsWith(".xaml")) ? "◇" : "⚙";
+ 205 |                     var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue : (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml")) ? Brushes.Orange : Brushes.Green;
+ 206 | 
+ 207 |                     flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
+ 208 |                     {
+ 209 |                         Foreground = Brushes.Gray
+ 210 |                     });
+ 211 | 
+ 212 |                     flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} Begin File: {filePath.Substring(folderPath.Length + 1)}"))
+ 213 |                     {
+ 214 |                         Foreground = headerColor,
+ 215 |                         FontWeight = FontWeights.Bold
+ 216 |                     });
+ 217 | 
+ 218 |                     flowDocument.Blocks.Add(new Paragraph(new Run($"// -----------------------------------"))
+ 219 |                     {
+ 220 |                         Foreground = Brushes.Gray
+ 221 |                     });
+ 222 | 
+ 223 |                     flowDocument.Blocks.Add(new Paragraph());
+ 224 | 
+ 225 |                     // Add file content with syntax highlighting
+ 226 |                     var fileContent = File.ReadAllText(filePath);
+ 227 |                     if (filePath.EndsWith(".cs"))
+ 228 |                     {
+ 229 |                         _syntaxHighlighter.HighlightCSharpCode(fileContent, flowDocument);
+ 230 |                     }
+ 231 |                     else if (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml"))
+ 232 |                     {
+ 233 |                         _syntaxHighlighter.HighlightXamlCode(fileContent, flowDocument);
+ 234 |                     }
+ 235 |                     else if (filePath.EndsWith(".sln"))
+ 236 |                     {
+ 237 |                         _syntaxHighlighter.HighlightSlnCode(fileContent, flowDocument);
+ 238 |                     }
+ 239 |                     else if (filePath.EndsWith(".csproj"))
+ 240 |                     {
+ 241 |                         _syntaxHighlighter.HighlightCsProjCode(fileContent, flowDocument);
+ 242 |                     }
+ 243 | 
+ 244 |                     // Add file footer
+ 245 |                     flowDocument.Blocks.Add(new Paragraph());
+ 246 |                     flowDocument.Blocks.Add(new Paragraph(new Run($"// -----------------------------------"))
+ 247 |                     {
+ 248 |                         Foreground = Brushes.Gray
+ 249 |                     });
+ 250 | 
+ 251 |                     flowDocument.Blocks.Add(new Paragraph(new Run($"{fileIcon} End File: {filePath.Substring(folderPath.Length + 1)}"))
+ 252 |                     {
+ 253 |                         Foreground = headerColor,
+ 254 |                         FontWeight = FontWeights.Bold
+ 255 |                     });
+ 256 | 
+ 257 |                     flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
+ 258 |                     {
+ 259 |                         Foreground = Brushes.Gray
+ 260 |                     });
+ 261 | 
+ 262 |                     flowDocument.Blocks.Add(new Paragraph());
+ 263 |                 }
+ 264 | 
+ 265 |                 CodeDisplay.Document = flowDocument;
+ 266 |                 StatusText.Text = $"Loaded {filteredFiles.Count} files ({(RecursiveSearchCheckBox.IsChecked == true ? "recursive" : "non-recursive")})";
+ 267 |                 _progressBar.Visibility = Visibility.Collapsed;
+ 268 |                 _lastSelectedFolderPath = folderPath;
+ 269 |             }
+ 270 |             catch (Exception ex)
+ 271 |             {
+ 272 |                 MessageBox.Show($"Error processing files: {ex.Message}");
+ 273 |                 StatusText.Text = $"Error: {ex.Message} (loaded {filteredFiles.Count} files)";
+ 274 |                 _progressBar.Visibility = Visibility.Collapsed;
+ 275 |             }
+ 276 |         }
+ 277 | 
+ 278 |         /// <summary>
+ 279 |         /// Exports the displayed code to a text file.
+ 280 |         /// </summary>
+ 281 |         private void ExportCodeButton_Click(object sender, RoutedEventArgs e)
+ 282 |         {
+ 283 |             var baseFolderName = _lastSelectedFolderPath != null
+ 284 |                 ? Path.GetFileName(_lastSelectedFolderPath)
+ 285 |                 : "ExportedCode";
+ 286 | 
+ 287 |             var recursiveIndicator = RecursiveSearchCheckBox.IsChecked == true
+ 288 |                 ? "_Recursive"
+ 289 |                 : "_NonRecursive";
+ 290 | 
+ 291 |             var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+ 292 |             var defaultFileName = $"{baseFolderName}-code-export.txt";
+ 293 | 
+ 294 |             var saveFileDialog = new SaveFileDialog
+ 295 |             {
+ 296 |                 Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
+ 297 |                 FileName = defaultFileName
+ 298 |             };
+ 299 | 
+ 300 |             if (saveFileDialog.ShowDialog() == true)
+ 301 |             {
+ 302 |                 try
+ 303 |                 {
+ 304 |                     var textRange = new TextRange(
+ 305 |                         CodeDisplay.Document.ContentStart,
+ 306 |                         CodeDisplay.Document.ContentEnd
+ 307 |                     );
+ 308 | 
+ 309 |                     File.WriteAllText(saveFileDialog.FileName, textRange.Text);
+ 310 |                     StatusText.Text = $"Successfully saved to {saveFileDialog.FileName}";
+ 311 |                 }
+ 312 |                 catch (Exception ex)
+ 313 |                 {
+ 314 |                     MessageBox.Show($"Error saving file: {ex.Message}");
+ 315 |                     StatusText.Text = $"Error: {ex.Message}";
+ 316 |                 }
+ 317 |             }
+ 318 |         }
+ 319 | 
+ 320 |         /// <summary>
+ 321 |         /// Toggles dark mode for the application.
+ 322 |         /// </summary>
+ 323 |         private void ToggleDarkModeButton_Click(object sender, RoutedEventArgs e)
+ 324 |         {
+ 325 |             ToggleDarkMode();
+ 326 |         }
+ 327 | 
+ 328 |         private void ToggleDarkMode()
+ 329 |         {
+ 330 |             _darkMode = !_darkMode;
+ 331 | 
+ 332 |             Background = _darkMode ? Brushes.DarkSlateGray : Brushes.White;
+ 333 |             Foreground = _darkMode ? Brushes.White : Brushes.Black;
+ 334 | 
+ 335 |             CodeDisplay.Background = _darkMode ? Brushes.DimGray : Brushes.White;
+ 336 |             CodeDisplay.Foreground = _darkMode ? Brushes.White : Brushes.Black;
+ 337 | 
+ 338 |             StatusText.Foreground = _darkMode ? Brushes.LightGray : Brushes.Gray;
+ 339 | 
+ 340 |             foreach (var child in TopControlPanel.Children)
+ 341 |             {
+ 342 |                 if (child is Button button)
+ 343 |                 {
+ 344 |                     button.Background = _darkMode ? Brushes.SlateGray : SystemColors.ControlBrush;
+ 345 |                     button.Foreground = _darkMode ? Brushes.White : SystemColors.ControlTextBrush;
+ 346 |                 }
+ 347 |                 else if (child is CheckBox checkBox)
+ 348 |                 {
+ 349 |                     checkBox.Foreground = _darkMode ? Brushes.White : SystemColors.ControlTextBrush;
+ 350 |                 }
+ 351 |             }
+ 352 | 
+ 353 |             _syntaxHighlighter = new SyntaxHighlighter(_darkMode);
+ 354 | 
+ 355 |             if (CodeDisplay.Document != null)
+ 356 |             {
+ 357 |                 var currentDoc = CodeDisplay.Document;
+ 358 |                 var tempDoc = new FlowDocument();
+ 359 |                 var range = new TextRange(currentDoc.ContentStart, currentDoc.ContentEnd);
+ 360 |                 var rangeNew = new TextRange(tempDoc.ContentStart, tempDoc.ContentEnd);
+ 361 |                 rangeNew.Text = range.Text;
+ 362 | 
+ 363 |                 CodeDisplay.Document = tempDoc;
+ 364 |                 CodeDisplay.Document = currentDoc;
+ 365 |             }
+ 366 |         }
+ 367 | 
+ 368 |         /// <summary>
+ 369 |         /// Refreshes the displayed folder contents.
+ 370 |         /// </summary>
+ 371 |         private void RefreshButton_Click(object sender, RoutedEventArgs e)
+ 372 |         {
+ 373 |             if (!string.IsNullOrEmpty(_lastSelectedFolderPath))
+ 374 |             {
+ 375 |                 ProcessSelectedFolder(_lastSelectedFolderPath);
+ 376 |             }
+ 377 |             else
+ 378 |             {
+ 379 |                 StatusText.Text = "No folder selected to refresh.";
+ 380 |             }
+ 381 |         }
+ 382 | 
+ 383 |         /// <summary>
+ 384 |         /// Clears the displayed code.
+ 385 |         /// </summary>
+ 386 |         private void ClearButton_Click(object sender, RoutedEventArgs e)
+ 387 |         {
+ 388 |             CodeDisplay.Document.Blocks.Clear();
+ 389 |             StatusText.Text = "Code display cleared.";
+ 390 |         }
+ 391 | 
+ 392 |         [DllImport("user32.dll", SetLastError = true)]
+ 393 |         private static extern IntPtr LoadImage(IntPtr hinst, string lpszName, uint uType, int cxDesired, int cyDesired, uint fuLoad);
+ 394 | 
+ 395 |         [DllImport("user32.dll", SetLastError = true)]
+ 396 |         private static extern bool DestroyIcon(IntPtr hIcon);
+ 397 | 
+ 398 |         private void CheckBox_Checked(object sender, RoutedEventArgs e)
+ 399 |         {
+ 400 |             ProjectFilesOnly = true;
+ 401 |         }
+ 402 | 
+ 403 |         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+ 404 |         {
+ 405 |             ProjectFilesOnly = false;
+ 406 |         }
+ 407 |     }
+ 408 | }
+
+// -----------------------------------
+◈ End File: Views\CodeExporterWindow.xaml.cs
+// ======================================================================
+
