@@ -1,0 +1,1 @@
+ffplay -fflags nobuffer -flags low_delay -framedrop -probesize 32 -analyzeduration 0 rtsp://127.0.0.1:8554/cam252_stream1

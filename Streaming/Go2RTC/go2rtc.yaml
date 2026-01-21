@@ -1,0 +1,14 @@
+api:
+  listen: ":1984"
+
+rtsp:
+  listen: ":8554"
+
+webrtc:
+  listen: ":8555"
+
+streams:
+  cam252_stream0: "onvif://admin:admin@192.168.7.252:8899?subtype=000"
+  cam252_stream1: "onvif://admin:admin@192.168.7.252:8899?subtype=001"
+  cam252_stream2: "onvif://admin:admin@192.168.7.252:8899?subtype=002"
+  cam252_snapshot: "onvif://admin:admin@192.168.7.252:8899?subtype=000&snapshot"
