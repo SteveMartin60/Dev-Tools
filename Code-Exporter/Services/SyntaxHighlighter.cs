@@ -22,12 +22,9 @@ namespace CodeConsolidator.Services
             var keywords = new[] { "using", "namespace", "class", "void", "return", "if", "else", "for", "foreach", "while", "do", "switch", "case", "break", "continue", "var", "new", "this", "base", "true", "false", "null" };
             int lineNumber = 1;
 
-
             for (int i = 0; i < lines.Length; i++)
-            //foreach (var line in lines)
             {
                 var line = lines[i];
-
                 var paragraph = CreateParagraph(lineNumber++, line);
 
                 foreach (var keyword in keywords)
@@ -66,64 +63,75 @@ namespace CodeConsolidator.Services
             var lines = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             int lineNumber = 1;
 
-            foreach (var line in lines)
+            foreach (var originalLine in lines)
             {
-                var paragraph = CreateParagraph(lineNumber++, line);
-                var processedLine = line;
+                var line = originalLine;
+                var paragraph = CreateParagraph(lineNumber++, originalLine);
 
                 int tagStart = 0;
-                while ((tagStart = processedLine.IndexOf('<')) >= 0)
+                while (tagStart >= 0 && tagStart < line.Length)
                 {
-                    AddTextBeforeTag(paragraph, processedLine.Substring(0, tagStart));
-                    processedLine = processedLine.Substring(tagStart);
-                    tagStart = 0;
+                    tagStart = line.IndexOf('<', tagStart);
+                    if (tagStart < 0) break;
 
-                    int tagEnd = processedLine.IndexOf('>');
+                    if (tagStart > 0)
+                    {
+                        AddTextBeforeTag(paragraph, line.Substring(0, tagStart));
+                    }
+
+                    int tagEnd = line.IndexOf('>', tagStart);
                     if (tagEnd < 0)
                     {
-                        AddUnclosedTag(paragraph, processedLine);
+                        AddUnclosedTag(paragraph, line.Substring(tagStart));
+                        line = string.Empty;
                         break;
                     }
 
-                    var tag = processedLine.Substring(0, tagEnd + 1);
+                    int tagLength = tagEnd - tagStart + 1;
+                    var tag = line.Substring(tagStart, tagLength);
                     AddHighlightedTag(paragraph, tag);
-                    processedLine = processedLine.Substring(tagEnd + 1);
+
+                    line = line.Substring(tagStart + tagLength);
+                    tagStart = 0;
                 }
 
-                AddRemainingText(paragraph, processedLine);
+                AddRemainingText(paragraph, line);
                 flowDocument.Blocks.Add(paragraph);
             }
         }
 
-        // Add this method to the SyntaxHighlighter class in Services/SyntaxHighlighter.cs
         public void HighlightCsProjCode(string code, FlowDocument flowDocument)
         {
             var lines = code.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             int lineNumber = 1;
 
-            foreach (var line in lines)
+            foreach (var originalLine in lines)
             {
+                var line = originalLine;
                 var paragraph = CreateParagraph(lineNumber++, line);
-                var processedLine = line;
 
-                // Highlight XML tags
                 int tagStart = 0;
-                while ((tagStart = processedLine.IndexOf('<')) >= 0)
+                while (tagStart >= 0 && tagStart < line.Length)
                 {
-                    AddTextBeforeTag(paragraph, processedLine.Substring(0, tagStart));
-                    processedLine = processedLine.Substring(tagStart);
-                    tagStart = 0;
+                    tagStart = line.IndexOf('<', tagStart);
+                    if (tagStart < 0) break;
 
-                    int tagEnd = processedLine.IndexOf('>');
+                    if (tagStart > 0)
+                    {
+                        AddTextBeforeTag(paragraph, line.Substring(0, tagStart));
+                    }
+
+                    int tagEnd = line.IndexOf('>', tagStart);
                     if (tagEnd < 0)
                     {
-                        AddUnclosedTag(paragraph, processedLine);
+                        AddUnclosedTag(paragraph, line.Substring(tagStart));
+                        line = string.Empty;
                         break;
                     }
 
-                    var tag = processedLine.Substring(0, tagEnd + 1);
+                    int tagLength = tagEnd - tagStart + 1;
+                    var tag = line.Substring(tagStart, tagLength);
 
-                    // Special highlighting for important csproj elements
                     if (tag.StartsWith("<Project") || tag.StartsWith("</Project") ||
                         tag.StartsWith("<PropertyGroup") || tag.StartsWith("</PropertyGroup") ||
                         tag.StartsWith("<ItemGroup") || tag.StartsWith("</ItemGroup"))
@@ -148,10 +156,11 @@ namespace CodeConsolidator.Services
                         AddHighlightedTag(paragraph, tag);
                     }
 
-                    processedLine = processedLine.Substring(tagEnd + 1);
+                    line = line.Substring(tagStart + tagLength);
+                    tagStart = 0;
                 }
 
-                AddRemainingText(paragraph, processedLine);
+                AddRemainingText(paragraph, line);
                 flowDocument.Blocks.Add(paragraph);
             }
         }
@@ -167,21 +176,26 @@ namespace CodeConsolidator.Services
 
                 if (line.Trim().StartsWith("Project("))
                 {
-                    // Highlight project references
+                    int idx = line.IndexOf("Project");
+                    if (idx > 0)
+                    {
+                        AddTextBeforeKeyword(paragraph, line.Substring(0, idx));
+                    }
                     AddHighlightedKeyword(paragraph, "Project");
-                    AddTextBeforeKeyword(paragraph, line.Substring(0, line.IndexOf("Project")));
-                    AddRemainingText(paragraph, line.Substring(line.IndexOf("Project") + "Project".Length));
+                    AddRemainingText(paragraph, line.Substring(idx + "Project".Length));
                 }
                 else if (line.Trim().StartsWith("GlobalSection("))
                 {
-                    // Highlight global sections
+                    int idx = line.IndexOf("GlobalSection");
+                    if (idx > 0)
+                    {
+                        AddTextBeforeKeyword(paragraph, line.Substring(0, idx));
+                    }
                     AddHighlightedKeyword(paragraph, "GlobalSection");
-                    AddTextBeforeKeyword(paragraph, line.Substring(0, line.IndexOf("GlobalSection")));
-                    AddRemainingText(paragraph, line.Substring(line.IndexOf("GlobalSection") + "GlobalSection".Length));
+                    AddRemainingText(paragraph, line.Substring(idx + "GlobalSection".Length));
                 }
                 else
                 {
-                    // Default text
                     AddRemainingText(paragraph, line);
                 }
 
@@ -202,7 +216,10 @@ namespace CodeConsolidator.Services
 
         private void AddTextBeforeKeyword(Paragraph paragraph, string text)
         {
-            paragraph.Inlines.Add(new Run(text));
+            if (!string.IsNullOrEmpty(text))
+            {
+                paragraph.Inlines.Add(new Run(text));
+            }
         }
 
         private void AddHighlightedKeyword(Paragraph paragraph, string keyword)
@@ -232,7 +249,10 @@ namespace CodeConsolidator.Services
 
         private void AddTextBeforeTag(Paragraph paragraph, string text)
         {
-            paragraph.Inlines.Add(new Run(text));
+            if (!string.IsNullOrEmpty(text))
+            {
+                paragraph.Inlines.Add(new Run(text));
+            }
         }
 
         private void AddRemainingText(Paragraph paragraph, string text)

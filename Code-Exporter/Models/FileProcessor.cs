@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CodeConsolidator.Models
 {
@@ -20,17 +21,21 @@ namespace CodeConsolidator.Models
                     var fileName = Path.GetFileName(filePath);
                     var directoryName = Path.GetDirectoryName(filePath);
 
-                    return !temporaryPatterns.Any(pattern => fileName.StartsWith(pattern.Trim('*'))) &&
-                           !directoryName.Contains("bin") &&
-                           !directoryName.Contains("obj") &&
-                           !directoryName.Contains("deprecated") &&
-                           !directoryName.Contains("Temp") &&
-                           (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml") || filePath.EndsWith(".csproj") || filePath.EndsWith(".sln"));
+                    return !temporaryPatterns.Any(pattern => fileName.StartsWith(pattern.Trim('*'), StringComparison.OrdinalIgnoreCase)) &&
+                           !directoryName.Contains("bin", StringComparison.OrdinalIgnoreCase) &&
+                           !directoryName.Contains("obj", StringComparison.OrdinalIgnoreCase) &&
+                           !directoryName.Contains("deprecated", StringComparison.OrdinalIgnoreCase) &&
+                           !directoryName.Contains("Temp", StringComparison.OrdinalIgnoreCase) &&
+                           (filePath.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
+                            filePath.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase) ||
+                            filePath.EndsWith(".axaml", StringComparison.OrdinalIgnoreCase) ||
+                            filePath.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
+                            filePath.EndsWith(".sln", StringComparison.OrdinalIgnoreCase));
                 }).ToList();
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error processing files: {ex.Message}");
+                throw new InvalidOperationException($"Error processing files: {ex.Message}", ex);
             }
 
             return filteredFiles;

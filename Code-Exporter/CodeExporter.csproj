@@ -16,6 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="App.xaml.txt" />
+    <None Remove="Code-Exporter.zip" />
+    <None Remove="CodeExporter.csproj.txt" />
+    <None Remove="Views\CodeExporterWindow.xaml.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Icons\icon_243.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

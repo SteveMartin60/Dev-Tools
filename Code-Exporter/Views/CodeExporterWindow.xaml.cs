@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -19,7 +21,7 @@ namespace CodeConsolidator
         private ProgressBar _progressBar;
         private SyntaxHighlighter _syntaxHighlighter;
         private string _lastSelectedFolderPath;
-        private bool _isPinned = false; // Tracks whether the window is pinned (topmost)
+        private bool _isPinned = false;
         private const string PinnedIconPath = "icon_233.png";
         private const string UnpinnedIconPath = "icon_228.png";
 
@@ -29,14 +31,11 @@ namespace CodeConsolidator
         {
             InitializeComponent();
             InitializeProgressBar();
-            EnsureIconsExist(); // Ensure icons are extracted and saved locally
+            EnsureIconsExist();
             _syntaxHighlighter = new SyntaxHighlighter(_darkMode);
             _themeService = new ThemeService(this, CodeDisplay, StatusText, TopControlPanel);
         }
 
-        /// <summary>
-        /// Converts an icon handle to a BitmapSource for WPF.
-        /// </summary>
         private BitmapSource LoadIconFromHandle(IntPtr hIcon)
         {
             if (hIcon == IntPtr.Zero)
@@ -48,40 +47,31 @@ namespace CodeConsolidator
             {
                 return Imaging.CreateBitmapSourceFromHIcon(
                     hIcon,
-                    Int32Rect.Empty, // Use the entire icon
-                    BitmapSizeOptions.FromEmptyOptions() // No resizing
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
                 );
             }
             finally
             {
-                // Destroy the icon handle to avoid memory leaks
                 DestroyIcon(hIcon);
             }
         }
 
-        /// <summary>
-        /// Ensures that the required icons exist in the application directory.
-        /// If not, extracts them from imageres.dll and saves them locally.
-        /// </summary>
         private void EnsureIconsExist()
         {
             if (!File.Exists(PinnedIconPath))
             {
-                ExtractAndSaveIcon("imageres.dll", 129, PinnedIconPath); // Pinned icon
+                ExtractAndSaveIcon("imageres.dll", 129, PinnedIconPath);
             }
 
             if (!File.Exists(UnpinnedIconPath))
             {
-                ExtractAndSaveIcon("imageres.dll", 130, UnpinnedIconPath); // Unpinned icon
+                ExtractAndSaveIcon("imageres.dll", 130, UnpinnedIconPath);
             }
         }
 
-        /// <summary>
-        /// Extracts an icon from a DLL and saves it to the specified file path.
-        /// </summary>
         private void ExtractAndSaveIcon(string dllName, int iconIndex, string outputPath)
         {
-            // Load the icon from the DLL
             IntPtr hIcon = LoadImage(IntPtr.Zero, dllName, 1, 0, 0, (uint)(0x00000080 | iconIndex));
             if (hIcon == IntPtr.Zero)
             {
@@ -91,10 +81,8 @@ namespace CodeConsolidator
 
             try
             {
-                // Convert the icon handle to a System.Drawing.Icon
                 using (var icon = System.Drawing.Icon.FromHandle(hIcon))
                 {
-                    // Save the icon to the specified file path
                     using (var stream = new FileStream(outputPath, FileMode.Create))
                     {
                         icon.Save(stream);
@@ -103,14 +91,10 @@ namespace CodeConsolidator
             }
             finally
             {
-                // Clean up the icon handle
                 DestroyIcon(hIcon);
             }
         }
 
-        /// <summary>
-        /// Loads an icon from a local file.
-        /// </summary>
         private BitmapSource LoadIconFromFile(string filePath)
         {
             if (File.Exists(filePath))
@@ -122,9 +106,6 @@ namespace CodeConsolidator
             return null;
         }
 
-        /// <summary>
-        /// Initializes the progress bar control.
-        /// </summary>
         private void InitializeProgressBar()
         {
             _progressBar = new ProgressBar
@@ -138,9 +119,6 @@ namespace CodeConsolidator
             Grid.SetRow(_progressBar, 2);
         }
 
-        /// <summary>
-        /// Handles the folder selection process.
-        /// </summary>
         private void SelectFolderButton_Click(object sender, RoutedEventArgs e)
         {
             var folderDialog = new OpenFolderDialog();
@@ -150,9 +128,6 @@ namespace CodeConsolidator
             }
         }
 
-        /// <summary>
-        /// Processes the selected folder and displays its contents.
-        /// </summary>
         private void ProcessSelectedFolder(string folderPath)
         {
             CodeDisplay.Document.Blocks.Clear();
@@ -177,10 +152,10 @@ namespace CodeConsolidator
                     var fileName = Path.GetFileName(filePath);
                     var directoryName = Path.GetDirectoryName(filePath);
                     return !temporaryPatterns.Any(pattern => fileName.StartsWith(pattern.Trim('*'))) &&
-                           !directoryName.Contains("bin") &&
-                           !directoryName.Contains("obj") &&
-                           !directoryName.Contains("deprecated") &&
-                           !directoryName.Contains("Temp") &&
+                           !directoryName.Contains("bin", StringComparison.OrdinalIgnoreCase) &&
+                           !directoryName.Contains("obj", StringComparison.OrdinalIgnoreCase) &&
+                           !directoryName.Contains("deprecated", StringComparison.OrdinalIgnoreCase) &&
+                           !directoryName.Contains("Temp", StringComparison.OrdinalIgnoreCase) &&
                            (filePath.EndsWith(".cs") || filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml") || filePath.EndsWith(".sln") || filePath.EndsWith(".csproj"));
 
                 }).ToList();
@@ -195,13 +170,11 @@ namespace CodeConsolidator
 
                 foreach (var filePath in filteredFiles)
                 {
-
                     _progressBar.Value++;
                     StatusText.Text = $"Processing {_progressBar.Value} of {filteredFiles.Count}...";
                     Application.Current.Dispatcher.Invoke(() => { }, System.Windows.Threading.DispatcherPriority.Background);
 
-                    // Add file header
-                    var fileIcon = filePath.EndsWith(".cs") ? "◈" : (filePath.EndsWith(".xaml") || filePath.EndsWith(".xaml")) ? "◇" : "⚙";
+                    var fileIcon = filePath.EndsWith(".cs") ? "◈" : (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml")) ? "◇" : "⚙";
                     var headerColor = filePath.EndsWith(".cs") ? Brushes.DodgerBlue : (filePath.EndsWith(".xaml") || filePath.EndsWith(".axaml")) ? Brushes.Orange : Brushes.Green;
 
                     flowDocument.Blocks.Add(new Paragraph(new Run($"// ======================================================================"))
@@ -222,7 +195,6 @@ namespace CodeConsolidator
 
                     flowDocument.Blocks.Add(new Paragraph());
 
-                    // Add file content with syntax highlighting
                     var fileContent = File.ReadAllText(filePath);
                     if (filePath.EndsWith(".cs"))
                     {
@@ -241,7 +213,6 @@ namespace CodeConsolidator
                         _syntaxHighlighter.HighlightCsProjCode(fileContent, flowDocument);
                     }
 
-                    // Add file footer
                     flowDocument.Blocks.Add(new Paragraph());
                     flowDocument.Blocks.Add(new Paragraph(new Run($"// -----------------------------------"))
                     {
@@ -275,9 +246,6 @@ namespace CodeConsolidator
             }
         }
 
-        /// <summary>
-        /// Exports the displayed code to a text file.
-        /// </summary>
         private void ExportCodeButton_Click(object sender, RoutedEventArgs e)
         {
             var baseFolderName = _lastSelectedFolderPath != null
@@ -288,7 +256,6 @@ namespace CodeConsolidator
                 ? "_Recursive"
                 : "_NonRecursive";
 
-            var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var defaultFileName = $"{baseFolderName}-code-export.txt";
 
             var saveFileDialog = new SaveFileDialog
@@ -317,9 +284,6 @@ namespace CodeConsolidator
             }
         }
 
-        /// <summary>
-        /// Toggles dark mode for the application.
-        /// </summary>
         private void ToggleDarkModeButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleDarkMode();
@@ -352,22 +316,12 @@ namespace CodeConsolidator
 
             _syntaxHighlighter = new SyntaxHighlighter(_darkMode);
 
-            if (CodeDisplay.Document != null)
+            if (!string.IsNullOrEmpty(_lastSelectedFolderPath))
             {
-                var currentDoc = CodeDisplay.Document;
-                var tempDoc = new FlowDocument();
-                var range = new TextRange(currentDoc.ContentStart, currentDoc.ContentEnd);
-                var rangeNew = new TextRange(tempDoc.ContentStart, tempDoc.ContentEnd);
-                rangeNew.Text = range.Text;
-
-                CodeDisplay.Document = tempDoc;
-                CodeDisplay.Document = currentDoc;
+                ProcessSelectedFolder(_lastSelectedFolderPath);
             }
         }
 
-        /// <summary>
-        /// Refreshes the displayed folder contents.
-        /// </summary>
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrEmpty(_lastSelectedFolderPath))
@@ -380,9 +334,6 @@ namespace CodeConsolidator
             }
         }
 
-        /// <summary>
-        /// Clears the displayed code.
-        /// </summary>
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             CodeDisplay.Document.Blocks.Clear();
