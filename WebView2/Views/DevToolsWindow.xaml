@@ -1,0 +1,11 @@
+<!-- DevToolsWindow.xaml -->
+<Window x:Class="WebView2Browser.DevToolsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="Developer Tools" Height="600" Width="800"
+        WindowStartupLocation="CenterOwner">
+	<Grid>
+		<wv2:WebView2 x:Name="DevToolsWebView"/>
+	</Grid>
+</Window>

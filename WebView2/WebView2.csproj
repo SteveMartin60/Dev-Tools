@@ -10,6 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="captured\**" />
+    <EmbeddedResource Remove="captured\**" />
+    <None Remove="captured\**" />
+    <Page Remove="captured\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="WebView2-code-export.txt" />
     <None Remove="WebView2_CodeExport_Recursive_2025-08-03_15-11-31.txt" />
   </ItemGroup>
 
@@ -28,7 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="captured\" />
+    <Folder Include="Handlers\" />
+    <Folder Include="Input\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Storage\" />
   </ItemGroup>
 
 </Project>
