@@ -695,89 +695,198 @@
 ◈ Begin File: Handlers\ImageToggleHandler.cs
 // -----------------------------------
 
-   1 | 
-   2 | using Microsoft.Web.WebView2.Core;
-   3 | using System;
-   4 | using System.Collections.Generic;
-   5 | using System.Linq;
-   6 | using System.Text;
-   7 | using System.Threading.Tasks;
-   8 | 
-   9 | namespace WebView2Browser
-  10 | {
-  11 |     public class ImageToggleHandler
-  12 |     {
-  13 |         private readonly CoreWebView2 _webView;
-  14 |         private bool _imagesDisabled = true; // Default to blocked
-  15 |         private bool _videosDisabled = true; // Default to blocked
-  16 |         private bool _backgroundImagesDisabled = true;
-  17 | 
-  18 |         public ImageToggleHandler(CoreWebView2 webView)
-  19 |         {
-  20 |             _webView = webView ?? throw new ArgumentNullException(nameof(webView));
-  21 |             InitializeBlocking();
-  22 |             SetupNavigationHandlers();
+   1 | using Microsoft.Web.WebView2.Core;
+   2 | using System;
+   3 | using System.Threading.Tasks;
+   4 | 
+   5 | namespace WebView2Browser.Handlers
+   6 | {
+   7 |     public class ImageToggleHandler
+   8 |     {
+   9 |         private readonly CoreWebView2 _webView;
+  10 |         private bool _imagesDisabled = false;
+  11 |         private bool _videosDisabled = false;
+  12 | 
+  13 |         public ImageToggleHandler(CoreWebView2 webView)
+  14 |         {
+  15 |             _webView = webView ?? throw new ArgumentNullException(nameof(webView));
+  16 |             InitializeBlocking();
+  17 |         }
+  18 | 
+  19 |         public void ToggleImages()
+  20 |         {
+  21 |             _imagesDisabled = !_imagesDisabled;
+  22 |             ApplyBlocking();
   23 |         }
   24 | 
-  25 |         public void ToggleImages()
+  25 |         public void ToggleVideos()
   26 |         {
-  27 |             _imagesDisabled = !_imagesDisabled;
-  28 |         }
-  29 | 
-  30 |         public void ToggleVideos()
-  31 |         {
-  32 |             _videosDisabled = !_videosDisabled;
-  33 |         }
-  34 | 
-  35 |         public void ToggleResourceLoading(bool disableImages, bool disableVideos)
-  36 |         {
-  37 |             _imagesDisabled = disableImages;
-  38 |             _videosDisabled = disableVideos;
-  39 |             _webView.Reload();
-  40 |         }
-  41 | 
-  42 |         private void InitializeBlocking()
-  43 |         {
-  44 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
-  45 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Media);
-  46 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Other);
-  47 |             _webView.WebResourceRequested += OnWebResourceRequested;
-  48 |         }
-  49 | 
-  50 |         private void OnWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
-  51 |         {
-  52 |             if (_imagesDisabled && e.ResourceContext == CoreWebView2WebResourceContext.Image)
-  53 |             {
-  54 |                 e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Image blocked by browser settings");
-  55 |                 return;
-  56 |             }
-  57 | 
-  58 |             if (_videosDisabled && e.ResourceContext == CoreWebView2WebResourceContext.Media)
-  59 |             {
-  60 |                 e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Media blocked by browser settings");
-  61 |                 return;
-  62 |             }
-  63 | 
-  64 |             if (_backgroundImagesDisabled && 
-  65 |                 (e.ResourceContext == CoreWebView2WebResourceContext.Image || e.ResourceContext == CoreWebView2WebResourceContext.Other))
-  66 |             {
-  67 |                 string requestUri = e.Request.Uri;
-  68 |                 if (requestUri.StartsWith("blob:", StringComparison.OrdinalIgnoreCase))
-  69 |                 {
-  70 |                     e.Response = _webView.Environment.CreateWebResourceResponse(null, 403, "Forbidden", "Blob background image blocked");
-  71 |                     return;
-  72 |                 }
-  73 |             }
-  74 |         }
-  75 | 
-  76 |         private void SetupNavigationHandlers()
-  77 |         {
-  78 |             _webView.AddScriptToExecuteOnDocumentCreatedAsync(
-  79 |                 "(() => { document.querySelectorAll('img').forEach(img => { if (!img.src.startsWith('data:')) img.style.display = 'none'; }); })();");
-  80 |         }
-  81 |     }
-  82 | }
-  83 | 
+  27 |             _videosDisabled = !_videosDisabled;
+  28 |             ApplyBlocking();
+  29 |         }
+  30 | 
+  31 |         private void InitializeBlocking()
+  32 |         {
+  33 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Image);
+  34 |             _webView.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.Media);
+  35 |             _webView.WebResourceRequested += OnWebResourceRequested;
+  36 |             _webView.NavigationCompleted += OnNavigationCompleted;
+  37 |         }
+  38 | 
+  39 |         private void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+  40 |         {
+  41 |             if (e.IsSuccess) ApplyBlocking();
+  42 |         }
+  43 | 
+  44 |         private async void ApplyBlocking()
+  45 |         {
+  46 |             string script = $$"""
+  47 |                 (() => {
+  48 |                     const imagesDisabled = {{_imagesDisabled.ToString().ToLower()}};
+  49 |                     const videosDisabled = {{_videosDisabled.ToString().ToLower()}};
+  50 | 
+  51 |                     const cssId = '__resourceToggleStyles';
+  52 |                     let styleEl = document.getElementById(cssId);
+  53 |                     if (!styleEl) {
+  54 |                         styleEl = document.createElement('style');
+  55 |                         styleEl.id = cssId;
+  56 |                         document.head.appendChild(styleEl);
+  57 |                     }
+  58 |                     
+  59 |                     const cssRules = `
+  60 |                         ${imagesDisabled ? 'img, picture, source[type="image"] { display: none !important; visibility: hidden !important; }' : ''}
+  61 |                         ${videosDisabled ? 'video, audio, iframe[src*="youtube.com/embed"] { display: none !important; visibility: hidden !important; }' : ''}
+  62 |                         
+  63 |                         ${videosDisabled ? `
+  64 |                             ytd-player, #movie_player, .html5-video-container, 
+  65 |                             .html5-video-player, #player-container, #cinematics,
+  66 |                             #theater-background, ytd-watch-flexy, #primary-inner
+  67 |                             { display: none !important; visibility: hidden !important; }
+  68 |                         ` : ''}
+  69 |                         
+  70 |                         ${imagesDisabled ? `
+  71 |                             ytd-thumbnail, #thumbnail, .thumbnail-container, 
+  72 |                             .yt-img-shadow, yt-img-shadow, .yt-simple-endpoint,
+  73 |                             ytd-rich-item-renderer, ytd-grid-video-renderer,
+  74 |                             ytd-compact-video-renderer, ytd-reel-item-renderer,
+  75 |                             ytd-shorts-lockup-view-model, ytd-reel-shelf-renderer
+  76 |                             { display: none !important; visibility: hidden !important; }
+  77 |                             
+  78 |                             [style*="background-image"], .yt-thumb, .yt-thumb-simple,
+  79 |                             .yt-thumb-legacy, .yt-thumb-clip, .yt-thumb-square
+  80 |                             { background-image: none !important; background-color: #1a1a1a !important; }
+  81 |                         ` : ''}
+  82 |                         
+  83 |                         ${imagesDisabled || videosDisabled ? `
+  84 |                             ytd-reel-video-renderer, ytd-shorts-player, 
+  85 |                             #shorts-container, .shorts-lockup-view-model,
+  86 |                             ytd-rich-shelf-renderer[subtitle-text*="Shorts"],
+  87 |                             tp-yt-paper-listbox[ytd-guide-renderer] a[href*="/shorts"]
+  88 |                             { display: none !important; }
+  89 |                         ` : ''}
+  90 |                     `;
+  91 |                     styleEl.textContent = cssRules;
+  92 | 
+  93 |                     const hideElements = (root, selector, hide) => {
+  94 |                         root.querySelectorAll(selector).forEach(el => {
+  95 |                             if (hide) {
+  96 |                                 el.style.setProperty('display', 'none', 'important');
+  97 |                                 el.style.setProperty('visibility', 'hidden', 'important');
+  98 |                                 if (el.tagName === 'VIDEO') { el.pause(); el.src = ''; }
+  99 |                             } else {
+ 100 |                                 el.style.removeProperty('display');
+ 101 |                                 el.style.removeProperty('visibility');
+ 102 |                             }
+ 103 |                         });
+ 104 |                         root.querySelectorAll('*').forEach(el => {
+ 105 |                             if (el.shadowRoot) hideElements(el.shadowRoot, selector, hide);
+ 106 |                         });
+ 107 |                     };
+ 108 | 
+ 109 |                     if (videosDisabled) {
+ 110 |                         hideElements(document, 'video, ytd-player, #movie_player, .html5-video-player', true);
+ 111 |                     } else {
+ 112 |                         hideElements(document, 'video, ytd-player, #movie_player, .html5-video-player', false);
+ 113 |                     }
+ 114 |                     if (imagesDisabled) {
+ 115 |                         hideElements(document, 'img, ytd-thumbnail, #thumbnail, .yt-img-shadow', true);
+ 116 |                     } else {
+ 117 |                         hideElements(document, 'img, ytd-thumbnail, #thumbnail, .yt-img-shadow', false);
+ 118 |                     }
+ 119 | 
+ 120 |                     if (videosDisabled && !window.__ytNetworkBlocker) {
+ 121 |                         window.__ytNetworkBlocker = true;
+ 122 |                         const blockPatterns = ['/videoplayback', '.mpd', '.m3u8', '/init?', '/range?', 'googlevideo.com'];
+ 123 |                         
+ 124 |                         const originalFetch = window.fetch;
+ 125 |                         window.fetch = function(...args) {
+ 126 |                             const url = args[0]?.url || args[0];
+ 127 |                             if (typeof url === 'string' && blockPatterns.some(p => url.includes(p))) {
+ 128 |                                 return Promise.resolve(new Response(null, { status: 403 }));
+ 129 |                             }
+ 130 |                             return originalFetch.apply(this, args);
+ 131 |                         };
+ 132 |                         
+ 133 |                         const originalOpen = XMLHttpRequest.prototype.open;
+ 134 |                         XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+ 135 |                             if (typeof url === 'string' && blockPatterns.some(p => url.includes(p))) {
+ 136 |                                 this.abort();
+ 137 |                                 return;
+ 138 |                             }
+ 139 |                             return originalOpen.apply(this, [method, url, ...rest]);
+ 140 |                         };
+ 141 |                     }
+ 142 | 
+ 143 |                     if (!window.__rtObserver) {
+ 144 |                         window.__rtObserver = new MutationObserver(() => {
+ 145 |                             if (videosDisabled) hideElements(document, 'video, ytd-player', true);
+ 146 |                             if (imagesDisabled) hideElements(document, 'img, ytd-thumbnail', true);
+ 147 |                         });
+ 148 |                         window.__rtObserver.observe(document.body, { childList: true, subtree: true });
+ 149 |                     }
+ 150 |                 })();
+ 151 |             """;
+ 152 | 
+ 153 |             try { await _webView.ExecuteScriptAsync(script); }
+ 154 |             catch { }
+ 155 |         }
+ 156 | 
+ 157 |         private void OnWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)
+ 158 |         {
+ 159 |             if (_imagesDisabled && e.ResourceContext == CoreWebView2WebResourceContext.Image)
+ 160 |             {
+ 161 |                 e.Response = _webView.Environment.CreateWebResourceResponse(
+ 162 |                     null, 403, "Forbidden", "Image blocked");
+ 163 |                 return;
+ 164 |             }
+ 165 | 
+ 166 |             if (_videosDisabled && e.ResourceContext == CoreWebView2WebResourceContext.Media)
+ 167 |             {
+ 168 |                 e.Response = _webView.Environment.CreateWebResourceResponse(
+ 169 |                     null, 403, "Forbidden", "Media blocked");
+ 170 |                 return;
+ 171 |             }
+ 172 | 
+ 173 |             // YouTube-specific network blocking at WebView2 level - FIXED: use e.Request.Uri
+ 174 |             if (_videosDisabled)
+ 175 |             {
+ 176 |                 var uri = e.Request?.Uri?.ToString() ?? string.Empty;
+ 177 |                 if (uri.Contains("youtube.com") || uri.Contains("youtu.be"))
+ 178 |                 {
+ 179 |                     if (uri.Contains("/videoplayback") ||
+ 180 |                         uri.Contains(".mpd") ||
+ 181 |                         uri.Contains(".m3u8") ||
+ 182 |                         uri.Contains("googlevideo.com"))
+ 183 |                     {
+ 184 |                         e.Response = _webView.Environment.CreateWebResourceResponse(
+ 185 |                             null, 403, "Forbidden", "YouTube video blocked");
+ 186 |                         return;
+ 187 |                     }
+ 188 |                 }
+ 189 |             }
+ 190 |         }
+ 191 |     }
+ 192 | }
 
 // -----------------------------------
 ◈ End File: Handlers\ImageToggleHandler.cs
@@ -1666,17 +1775,17 @@
    4 | using System.Windows;
    5 | using System.Windows.Controls;
    6 | using WebView2Browser.Core;
-   7 | //using WebView2Browser.Handlers;
-   8 | using WebView2Browser.Services;
-   9 | 
-  10 | namespace WebView2Browser
-  11 | {
-  12 |     public partial class MainWindow : Window
-  13 |     {
-  14 |         private bool _isInitialized = false;
+   7 | using WebView2Browser.Services;
+   8 | 
+   9 | namespace WebView2Browser
+  10 | {
+  11 |     public partial class MainWindow : Window
+  12 |     {
+  13 |         private bool _isInitialized = false;
+  14 |         private DateTime _navigationStartTime;
   15 |         private WebViewNavigationHandler NavigationHandler { get; set; }
   16 |         private DevToolsWindow DevToolsWindow { get; set; }
-  17 |         private ImageToggleHandler ImageToggleHandler { get; set; }
+  17 |         private Handlers.ImageToggleHandler ImageToggleHandler { get; set; }
   18 |         private AdBlocker AdBlocker { get; set; }
   19 |         private HtmlCaptureService HtmlCaptureService { get; set; }
   20 |         private HtmlCaptureManager CaptureManager { get; set; }
@@ -1686,83 +1795,88 @@
   24 |             InitializeComponent();
   25 |             Loaded += MainWindow_Loaded;
   26 |             Closing += MainWindow_Closing;
-  27 |             _ = InitializeAsync();
-  28 |         }
-  29 | 
-  30 |         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-  31 |         {
-  32 |             while (!_isInitialized) await Task.Delay(50);
-  33 |             Loaded -= MainWindow_Loaded;
-  34 |             Activate(); AddressBar.Focus(); AddressBar.SelectAll();
-  35 |         }
-  36 | 
-  37 |         private void MainWindow_Closing(object? sender, CancelEventArgs e)
-  38 |         {
-  39 |             try { NavigationHandler?.Dispose(); WebViewControl?.Dispose(); }
-  40 |             catch (Exception ex)
-  41 |             {
-  42 |                 MessageBox.Show($"Error during cleanup: {ex.Message}", "Warning",
-  43 |                     MessageBoxButton.OK, MessageBoxImage.Warning);
-  44 |             }
-  45 |         }
-  46 | 
-  47 |         private async void InitializeAsync()
-  48 |         {
-  49 |             try
-  50 |             {
-  51 |                 UpdateStatus("Initializing WebView2 environment…", 0);
-  52 |                 var environment = await WebViewEnvironment.GetSharedEnvironmentAsync();
-  53 |                 await WebViewControl.EnsureCoreWebView2Async(environment);
-  54 | 
-  55 |                 NavigationHandler = new WebViewNavigationHandler(
-  56 |                     WebViewControl.CoreWebView2, StatusText, AddressBar, LoadingProgressBar);
-  57 |                 NavigationHandler.ProgressChanged += OnNavigationProgress;
-  58 |                 NavigationHandler.NavigationFailed += OnNavigationFailed;
-  59 |                 NavigationHandler.SetupNavigationHandlers();
-  60 | 
-  61 |                 WebViewSecuritySettings.ApplySecureSettings(WebViewControl.CoreWebView2.Settings);
-  62 |                 WebViewControl.CoreWebView2.Settings.UserAgent =
-  63 |                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-  64 |                     "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+  27 |             AddressBar.KeyDown += AddressBar_KeyDown;
+  28 |             ToggleImagesButton.Checked += ToggleImages_Changed;
+  29 |             ToggleImagesButton.Unchecked += ToggleImages_Changed;
+  30 |             ToggleVideosButton.Checked += ToggleVideos_Changed;
+  31 |             ToggleVideosButton.Unchecked += ToggleVideos_Changed;
+  32 |             InitializeAsync();
+  33 |         }
+  34 | 
+  35 |         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+  36 |         {
+  37 |             while (!_isInitialized) await Task.Delay(50);
+  38 |             Loaded -= MainWindow_Loaded;
+  39 |             Activate(); AddressBar.Focus(); AddressBar.SelectAll();
+  40 |         }
+  41 | 
+  42 |         private void MainWindow_Closing(object? sender, CancelEventArgs e)
+  43 |         {
+  44 |             try { NavigationHandler?.Dispose(); WebViewControl?.Dispose(); }
+  45 |             catch (Exception ex)
+  46 |             {
+  47 |                 MessageBox.Show($"Error during cleanup: {ex.Message}", "Warning",
+  48 |                     MessageBoxButton.OK, MessageBoxImage.Warning);
+  49 |             }
+  50 |         }
+  51 | 
+  52 |         private async void InitializeAsync()
+  53 |         {
+  54 |             try
+  55 |             {
+  56 |                 UpdateStatus("Initializing WebView2 environment…", 0);
+  57 |                 var environment = await WebViewEnvironment.GetSharedEnvironmentAsync();
+  58 |                 await WebViewControl.EnsureCoreWebView2Async(environment);
+  59 | 
+  60 |                 NavigationHandler = new WebViewNavigationHandler(
+  61 |                     WebViewControl.CoreWebView2, StatusText, AddressBar, LoadingProgressBar);
+  62 |                 NavigationHandler.ProgressChanged += OnNavigationProgress;
+  63 |                 NavigationHandler.NavigationFailed += OnNavigationFailed;
+  64 |                 NavigationHandler.SetupNavigationHandlers();
   65 | 
-  66 |                 WebViewControl.CoreWebView2.PermissionRequested += (s, e) =>
-  67 |                 {
-  68 |                     if (e.PermissionKind == CoreWebView2PermissionKind.Geolocation)
-  69 |                     { e.State = CoreWebView2PermissionState.Deny; e.Handled = true; }
-  70 |                 };
-  71 |                 WebViewControl.CoreWebView2.ProcessFailed += OnProcessFailed;
-  72 | 
-  73 |                 AdBlocker = new AdBlocker(WebViewControl.CoreWebView2);
-  74 |                 ImageToggleHandler = new ImageToggleHandler(WebViewControl.CoreWebView2);
-  75 |                 HtmlCaptureService = new HtmlCaptureService(WebViewControl.CoreWebView2, StatusText);
-  76 |                 CaptureManager = new HtmlCaptureManager(HtmlCaptureService, NavigationHandler, @"D:\TS-RO\");
+  66 |                 WebViewSecuritySettings.ApplySecureSettings(WebViewControl.CoreWebView2.Settings);
+  67 |                 WebViewControl.CoreWebView2.Settings.UserAgent =
+  68 |                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+  69 |                     "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+  70 | 
+  71 |                 WebViewControl.CoreWebView2.PermissionRequested += (s, e) =>
+  72 |                 {
+  73 |                     if (e.PermissionKind == CoreWebView2PermissionKind.Geolocation)
+  74 |                     { e.State = CoreWebView2PermissionState.Deny; e.Handled = true; }
+  75 |                 };
+  76 |                 WebViewControl.CoreWebView2.ProcessFailed += OnProcessFailed;
   77 | 
-  78 |                 string findHelperJsPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\findHelper.js");
-  79 |                 if (System.IO.File.Exists(findHelperJsPath))
-  80 |                 {
-  81 |                     string findScript = System.IO.File.ReadAllText(findHelperJsPath);
-  82 |                     await WebViewControl.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(findScript);
-  83 |                 }
-  84 |                 WebViewControl.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
-  85 |                 _isInitialized = true;
-  86 |                 UpdateStatus("Ready", 100);
-  87 |             }
-  88 |             catch (Exception ex)
-  89 |             {
-  90 |                 UpdateStatus("Initialization failed", 0, true);
-  91 |                 MessageBox.Show($"Failed to initialize WebView2:\n{ex.Message}", "Error",
-  92 |                     MessageBoxButton.OK, MessageBoxImage.Error);
-  93 |             }
-  94 |         }
-  95 | 
-  96 |         private void UpdateStatus(string message, int progressPercent, bool isError = false)
-  97 |         {
-  98 |             StatusText.Text = message; LoadingProgressBar.Value = progressPercent;
-  99 |             StatusText.Foreground = isError ? System.Windows.Media.Brushes.Red : System.Windows.Media.Brushes.Black;
- 100 |         }
- 101 |     }
- 102 | }
- 103 | 
+  78 |                 AdBlocker = new AdBlocker(WebViewControl.CoreWebView2);
+  79 |                 ImageToggleHandler = new Handlers.ImageToggleHandler(WebViewControl.CoreWebView2);
+  80 |                 HtmlCaptureService = new HtmlCaptureService(WebViewControl.CoreWebView2, StatusText);
+  81 |                 CaptureManager = new HtmlCaptureManager(HtmlCaptureService, NavigationHandler, @"D:\TS-RO\");
+  82 | 
+  83 |                 string findHelperJsPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\findHelper.js");
+  84 |                 if (System.IO.File.Exists(findHelperJsPath))
+  85 |                 {
+  86 |                     string findScript = System.IO.File.ReadAllText(findHelperJsPath);
+  87 |                     await WebViewControl.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(findScript);
+  88 |                 }
+  89 |                 WebViewControl.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
+  90 |                 _isInitialized = true;
+  91 |                 UpdateStatus("Ready", 100);
+  92 |             }
+  93 |             catch (Exception ex)
+  94 |             {
+  95 |                 UpdateStatus("Initialization failed", 0, true);
+  96 |                 MessageBox.Show($"Failed to initialize WebView2:\n{ex.Message}", "Error",
+  97 |                     MessageBoxButton.OK, MessageBoxImage.Error);
+  98 |             }
+  99 |         }
+ 100 | 
+ 101 |         private void UpdateStatus(string message, int progressPercent, bool isError = false)
+ 102 |         {
+ 103 |             StatusText.Text = message; LoadingProgressBar.Value = progressPercent;
+ 104 |             StatusText.Foreground = isError ? System.Windows.Media.Brushes.Red : System.Windows.Media.Brushes.Black;
+ 105 |         }
+ 106 |     }
+ 107 | }
+ 108 | 
 
 // -----------------------------------
 ◈ End File: Views\WebView2.xaml.cs
@@ -1781,63 +1895,125 @@
    7 |     {
    8 |         private async void BackButton_Click(object sender, RoutedEventArgs e)
    9 |         {
-  10 |             if (_isInitialized && WebViewControl.CoreWebView2.CanGoBack) NavigationHandler.GoBack();
-  11 |         }
-  12 |         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
-  13 |         {
-  14 |             if (_isInitialized && WebViewControl.CoreWebView2.CanGoForward) NavigationHandler.GoForward();
-  15 |         }
-  16 |         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
-  17 |         {
-  18 |             if (_isInitialized) NavigationHandler.Refresh();
-  19 |         }
-  20 |         private async void HomeButton_Click(object sender, RoutedEventArgs e)
+  10 |             if (_isInitialized && WebViewControl.CoreWebView2.CanGoBack)
+  11 |                 NavigationHandler.GoBack();
+  12 |         }
+  13 | 
+  14 |         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
+  15 |         {
+  16 |             if (_isInitialized && WebViewControl.CoreWebView2.CanGoForward)
+  17 |                 NavigationHandler.GoForward();
+  18 |         }
+  19 | 
+  20 |         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
   21 |         {
-  22 |             if (_isInitialized) await NavigationHandler.NavigateToAddressAsync("about:blank");
-  23 |         }
-  24 |         private async void GoButton_Click(object sender, RoutedEventArgs e)
-  25 |             => await NavigationHandler.NavigateToAddressAsync();
-  26 |         private async void AddressBar_KeyDown(object sender, KeyEventArgs e)
+  22 |             if (_isInitialized)
+  23 |                 NavigationHandler.Refresh();
+  24 |         }
+  25 | 
+  26 |         private async void HomeButton_Click(object sender, RoutedEventArgs e)
   27 |         {
-  28 |             if (e.Key == Key.Enter) await NavigationHandler.NavigateToAddressAsync();
-  29 |         }
-  30 |         private async void StopButton_Click(object sender, RoutedEventArgs e)
-  31 |         {
-  32 |             if (_isInitialized) { WebViewControl.CoreWebView2.Stop(); StatusText.Text = "Loading stopped"; }
-  33 |         }
-  34 |         private async void DevToolsButton_Click(object sender, RoutedEventArgs e)
-  35 |         {
-  36 |             if (!_isInitialized) return;
-  37 |             try
-  38 |             {
-  39 |                 if (DevToolsWindow == null || !DevToolsWindow.IsLoaded)
-  40 |                 {
-  41 |                     var environment = await WebViewEnvironment.GetSharedEnvironmentAsync();
-  42 |                     DevToolsWindow = new DevToolsWindow(WebViewControl.CoreWebView2, environment);
-  43 |                     DevToolsWindow.Closed += (s, args) => DevToolsWindow = null;
-  44 |                     DevToolsWindow.Show();
-  45 |                 }
-  46 |                 else DevToolsWindow.Activate();
-  47 |             }
-  48 |             catch (Exception ex)
-  49 |             {
-  50 |                 MessageBox.Show($"Failed to open DevTools: {ex.Message}", "Error",
-  51 |                     MessageBoxButton.OK, MessageBoxImage.Error);
-  52 |             }
-  53 |         }
-  54 |         private void ToggleImages_Changed(object sender, RoutedEventArgs e)
-  55 |         {
-  56 |             if (!_isInitialized) return;
-  57 |             ImageToggleHandler.ToggleImages();
-  58 |         }
-  59 |         private void ToggleVideos_Changed(object sender, RoutedEventArgs e)
-  60 |         {
-  61 |             if (!_isInitialized) return;
-  62 |             ImageToggleHandler.ToggleVideos();
-  63 |         }
-  64 |     }
-  65 | }
-  66 | 
+  28 |             if (_isInitialized)
+  29 |                 await NavigationHandler.NavigateToAddressAsync("about:blank");
+  30 |         }
+  31 | 
+  32 |         private async void GoButton_Click(object sender, RoutedEventArgs e)
+  33 |         {
+  34 |             await NavigationHandler.NavigateToAddressAsync();
+  35 |         }
+  36 | 
+  37 |         private async void AddressBar_KeyDown(object sender, KeyEventArgs e)
+  38 |         {
+  39 |             if (e.Key == Key.Enter)
+  40 |                 await NavigationHandler.NavigateToAddressAsync();
+  41 |         }
+  42 | 
+  43 |         private async void StopButton_Click(object sender, RoutedEventArgs e)
+  44 |         {
+  45 |             if (_isInitialized)
+  46 |             {
+  47 |                 WebViewControl.CoreWebView2.Stop();
+  48 |                 StatusText.Text = "Loading stopped";
+  49 |             }
+  50 |         }
+  51 | 
+  52 |         private async void DevToolsButton_Click(object sender, RoutedEventArgs e)
+  53 |         {
+  54 |             if (!_isInitialized) return;
+  55 |             try
+  56 |             {
+  57 |                 if (DevToolsWindow == null || !DevToolsWindow.IsLoaded)
+  58 |                 {
+  59 |                     var environment = await WebViewEnvironment.GetSharedEnvironmentAsync();
+  60 |                     DevToolsWindow = new DevToolsWindow(WebViewControl.CoreWebView2, environment);
+  61 |                     DevToolsWindow.Closed += (s, args) => DevToolsWindow = null;
+  62 |                     DevToolsWindow.Show();
+  63 |                 }
+  64 |                 else
+  65 |                 {
+  66 |                     DevToolsWindow.Activate();
+  67 |                 }
+  68 |             }
+  69 |             catch (Exception ex)
+  70 |             {
+  71 |                 MessageBox.Show($"Failed to open DevTools: {ex.Message}", "Error",
+  72 |                     MessageBoxButton.OK, MessageBoxImage.Error);
+  73 |             }
+  74 |         }
+  75 | 
+  76 |         private void ToggleImages_Changed(object sender, RoutedEventArgs e)
+  77 |         {
+  78 |             if (!_isInitialized) return;
+  79 |             ImageToggleHandler.ToggleImages();
+  80 |             ToggleImagesButton.Content = ToggleImagesButton.IsChecked == true ? "Images On" : "Images Off";
+  81 |         }
+  82 | 
+  83 |         private void ToggleVideos_Changed(object sender, RoutedEventArgs e)
+  84 |         {
+  85 |             if (!_isInitialized) return;
+  86 |             ImageToggleHandler.ToggleVideos();
+  87 |             // FIX: Changed from ToggleImagesButton to ToggleVideosButton
+  88 |             ToggleVideosButton.Content = ToggleVideosButton.IsChecked == true ? "Videos On" : "Videos Off";
+  89 |         }
+  90 | 
+  91 |         private async void FindNext_Click(object sender, RoutedEventArgs e)
+  92 |         {
+  93 |             await FindAsync("next", FindBox.Text);
+  94 |         }
+  95 | 
+  96 |         private async void FindPrev_Click(object sender, RoutedEventArgs e)
+  97 |         {
+  98 |             await FindAsync("prev", FindBox.Text);
+  99 |         }
+ 100 | 
+ 101 |         private async void FindBox_KeyDown(object sender, KeyEventArgs e)
+ 102 |         {
+ 103 |             if (e.Key == Key.Enter)
+ 104 |                 await FindAsync("start", FindBox.Text);
+ 105 |         }
+ 106 | 
+ 107 |         private async Task FindAsync(string command, string term = null)
+ 108 |         {
+ 109 |             if (WebViewControl?.CoreWebView2 == null) return;
+ 110 |             try
+ 111 |             {
+ 112 |                 var message = new
+ 113 |                 {
+ 114 |                     command = command,
+ 115 |                     term = term,
+ 116 |                     caseSensitive = CaseSensitiveChk?.IsChecked == true
+ 117 |                 };
+ 118 |                 string jsonMessage = System.Text.Json.JsonSerializer.Serialize(message);
+ 119 |                 WebViewControl.CoreWebView2.PostWebMessageAsString(jsonMessage);
+ 120 |             }
+ 121 |             catch (Exception ex)
+ 122 |             {
+ 123 |                 System.Diagnostics.Debug.WriteLine($"FindAsync error: {ex.Message}");
+ 124 |             }
+ 125 |         }
+ 126 |     }
+ 127 | }
+ 128 | 
 
 // -----------------------------------
 ◈ End File: Views\WebView2.xaml.Handlers.cs

@@ -14,7 +14,7 @@ namespace WebView2Browser
         private DateTime _navigationStartTime;
         private WebViewNavigationHandler NavigationHandler { get; set; }
         private DevToolsWindow DevToolsWindow { get; set; }
-        private ImageToggleHandler ImageToggleHandler { get; set; }
+        private Handlers.ImageToggleHandler ImageToggleHandler { get; set; }
         private AdBlocker AdBlocker { get; set; }
         private HtmlCaptureService HtmlCaptureService { get; set; }
         private HtmlCaptureManager CaptureManager { get; set; }
@@ -25,10 +25,10 @@ namespace WebView2Browser
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
             AddressBar.KeyDown += AddressBar_KeyDown;
-            ToggleImagesButton.Checked += ToggleImages_Changed;
-            ToggleImagesButton.Unchecked += ToggleImages_Changed;
-            ToggleVideosButton.Checked += ToggleVideos_Changed;
-            ToggleVideosButton.Unchecked += ToggleVideos_Changed;
+            //ToggleImagesButton.Checked += ToggleImages_Changed;
+            //ToggleImagesButton.Unchecked += ToggleImages_Changed;
+            //ToggleVideosButton.Checked += ToggleVideos_Changed;
+            //ToggleVideosButton.Unchecked += ToggleVideos_Changed;
             InitializeAsync();
         }
 
@@ -76,7 +76,7 @@ namespace WebView2Browser
                 WebViewControl.CoreWebView2.ProcessFailed += OnProcessFailed;
 
                 AdBlocker = new AdBlocker(WebViewControl.CoreWebView2);
-                ImageToggleHandler = new ImageToggleHandler(WebViewControl.CoreWebView2);
+                ImageToggleHandler = new Handlers.ImageToggleHandler(WebViewControl.CoreWebView2);
                 HtmlCaptureService = new HtmlCaptureService(WebViewControl.CoreWebView2, StatusText);
                 CaptureManager = new HtmlCaptureManager(HtmlCaptureService, NavigationHandler, @"D:\TS-RO\");
 
